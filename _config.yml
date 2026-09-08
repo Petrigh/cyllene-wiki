@@ -19,7 +19,7 @@ heading_anchors: true
 color_scheme: campaign          # defined in assets/css/just-the-docs-custom.scss
 
 aux_links:
-  Edit on GitHub: https://github.com/YOUR-USER/YOUR-REPO
+  Edit on GitHub: https://github.com/Petrigh/cyllene-wiki
 
 # ---- Behaviour ---------------------------------------------------------
 defaults:
@@ -38,3 +38,4 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - vendor/
+  - templates
