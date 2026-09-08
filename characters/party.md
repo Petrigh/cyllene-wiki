@@ -2,33 +2,30 @@
 title: The Party
 parent: Characters
 nav_order: 1
-summary: Who is at the table, and what they can do
+summary: Quien se sienta en la mesa
 ---
 
 # The Party
 
-Roster page. Each player keeps their own page; this table is so everyone else
-can plan a fight without asking.
+Roster, esto es mas para estar al tanto de que es capaz el equipo para tomar decisiones en el proximo combate.
 
-| Character | Player | Class & level | AC | HP | Passive Perception | Languages |
+| Character | Player | Class & level | Passive Perception | Languages |
 |---|---|---|---|---|---|---|
 | Vess Ardenmoor | Ana | Warlock 4 | 14 | 31 | 11 | Common, Infernal |
 | — | — | — | — | — | — | — |
 
-## Group resources
+## Recursos
 
-- **Healing available per day:** 2 × *cure wounds*, 4 potions
-- **Who can pick a lock:** nobody, which keeps coming up
-- **Ritual casters:** Vess (*speak with dead*)
-- **Party funds:** 148 gp, held by Vess, tracked in [Session logs](../sessions/)
+- **Curaciones disponibles por dia:** 2 × *cure wounds*
+- **Fondos:** X gp, lo tiene todo [Iri](iri.md)
 
-## Marching order
+## Orden de formacion
 
-Front: — · Middle: — · Back: —
+Frente: — · Medio: — · Detras: —
 
-## Standing orders
+## Leyes que se imparten al grupo
 
-Things the party agreed to do every time, so it does not need re-litigating.
+Reglas que el grupo acordo a seguir.
 
-- Check for a second exit before opening anything sealed.
-- Nobody accepts a bargain from a fey without saying it out loud first.
+- No se acepta apsolutamente nada de las feys.
+- [Denzen](denzen.md) no puede saber donde esta la muñeca.

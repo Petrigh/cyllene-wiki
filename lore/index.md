@@ -6,7 +6,7 @@ has_children: true
 
 # Lore
 
-The world behind the adventure: history, gods, calendar, languages.
+El mundo detras de la aventura
 
 {% assign kids = site.pages | where: "parent", page.title | sort: "title" %}
 {% if kids.size > 0 %}
@@ -16,7 +16,7 @@ The world behind the adventure: history, gods, calendar, languages.
 {% endfor %}
 </ul>
 {% else %}
-Nothing here yet.
+Aun no se han agregado.
 {% endif %}
 
 New page? Copy [any template](../templates/).

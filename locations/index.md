@@ -6,7 +6,7 @@ has_children: true
 
 # Locations
 
-Places the party has been, or been told about. A location earns a page once it has a name and one interesting thing in it.
+Lugares que la party a visitado, o tiene informacion al respecto
 
 {% assign kids = site.pages | where: "parent", page.title | sort: "title" %}
 {% if kids.size > 0 %}
@@ -16,7 +16,6 @@ Places the party has been, or been told about. A location earns a page once it h
 {% endfor %}
 </ul>
 {% else %}
-Nothing here yet.
+Aun no se han agregado.
 {% endif %}
 
-New page? Copy [the location template](../templates/).

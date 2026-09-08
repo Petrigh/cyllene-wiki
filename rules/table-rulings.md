@@ -1,29 +1,15 @@
 ---
-title: Table rulings
+title: Tabla de reglas
 parent: House Rules
 nav_order: 1
 summary: Rulings we made and intend to keep
 ---
 
-# Table rulings
+# Tabla de reglas
 
-Dated, so we can see when we changed our minds. If a ruling here contradicts
-the books, this page wins.
-
-| Date | Situation | Ruling |
+| Fecha | Situacion | Regla |
 |---|---|---|
-| 2026-09-05 | Potions | Drinking one is a bonus action; feeding one to someone else is an action. |
-| 2026-09-05 | Death saves | Rolled openly. No secret death. |
-| 2026-09-05 | Inspiration | One per player per session, awarded by another player, not the DM. |
+| | Exta des/ventajas | Si se obtiene des/ventaja de mas de una fuente, se aplica la modificacion normal mas un (+/- 2) por cada fuente extra |
 
-## Things we decided not to use
+## Elementos que se establecio no utilizar
 
-- Encumbrance by weight. We track "bulky things" instead, by common sense.
-- Material components with no cost.
-
-## Table logistics
-
-- Sessions run Saturdays, 17:00–21:00, Lleida time.
-- Absent players: character stays present and is played as cautiously as possible.
-- Session zero notes and safety tools live here. Lines and veils are respected
-  without discussion and without needing a reason.

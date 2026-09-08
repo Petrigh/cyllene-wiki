@@ -6,7 +6,7 @@ has_children: true
 
 # Bestiary
 
-Creatures the party has fought, studied, or been warned about. Record what the party learned, not the full stat block.
+Criaturas que la party enfrento, estudio o fue avisada acerca.
 
 {% assign kids = site.pages | where: "parent", page.title | sort: "title" %}
 {% if kids.size > 0 %}
@@ -16,7 +16,6 @@ Creatures the party has fought, studied, or been warned about. Record what the p
 {% endfor %}
 </ul>
 {% else %}
-Nothing here yet.
+Aun no se han agregado.
 {% endif %}
 
-New page? Copy [the creature template](../templates/).

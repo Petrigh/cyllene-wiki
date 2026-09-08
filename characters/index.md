@@ -6,7 +6,7 @@ has_children: true
 
 # Characters
 
-Everyone with a name and a face. Party members first, then anyone the party has spoken to for longer than a sentence.
+Lista de personajes, al principio se encuentran los PCs, y debajo el resto de NPCs
 
 {% assign kids = site.pages | where: "parent", page.title | sort: "title" %}
 {% if kids.size > 0 %}
@@ -16,7 +16,6 @@ Everyone with a name and a face. Party members first, then anyone the party has 
 {% endfor %}
 </ul>
 {% else %}
-Nothing here yet.
+Aun no se han agregado.
 {% endif %}
 
-New page? Copy [the PC or NPC template](../templates/).

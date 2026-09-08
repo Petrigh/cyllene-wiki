@@ -1,8 +1,8 @@
 # ---- Site identity -----------------------------------------------------
-title: The Ashen Compact          # rename to your campaign
-description: Campaign wiki for a Dungeons & Dragons game
+title: Cyllene
+description: Campaign wiki for a Dungeons & Dragons 5e
 # If you publish at https://USER.github.io/REPO/ set baseurl to /REPO
-baseurl: ""
+baseurl: "/cyllene-wiki"
 url: ""
 
 # ---- Theme -------------------------------------------------------------

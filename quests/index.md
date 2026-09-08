@@ -6,7 +6,7 @@ has_children: true
 
 # Quests
 
-Open threads. A quest leaves this list only when the party knows it is finished.
+Hilos a seguir
 
 {% assign kids = site.pages | where: "parent", page.title | sort: "title" %}
 {% if kids.size > 0 %}
@@ -16,7 +16,6 @@ Open threads. A quest leaves this list only when the party knows it is finished.
 {% endfor %}
 </ul>
 {% else %}
-Nothing here yet.
+Aun no se han agregado.
 {% endif %}
 
-New page? Copy [the quest template](../templates/).

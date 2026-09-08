@@ -6,7 +6,7 @@ has_children: true
 
 # House Rules
 
-Rulings we made at the table and intend to keep. Dated, so we can tell when we changed our minds.
+Reglas que hemos decidido sobre la mesa.
 
 {% assign kids = site.pages | where: "parent", page.title | sort: "title" %}
 {% if kids.size > 0 %}
@@ -16,7 +16,6 @@ Rulings we made at the table and intend to keep. Dated, so we can tell when we c
 {% endfor %}
 </ul>
 {% else %}
-Nothing here yet.
+Aun no se han agregado.
 {% endif %}
 
-New page? Copy [any template](../templates/).

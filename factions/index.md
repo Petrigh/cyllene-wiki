@@ -6,7 +6,7 @@ has_children: true
 
 # Factions
 
-Any group that wants something and can act on it. Track the party's standing at the top of each page.
+Cada grupo u organizacion que desea algo y es capaz de actuar para conseguirlo.
 
 {% assign kids = site.pages | where: "parent", page.title | sort: "title" %}
 {% if kids.size > 0 %}
@@ -16,7 +16,5 @@ Any group that wants something and can act on it. Track the party's standing at 
 {% endfor %}
 </ul>
 {% else %}
-Nothing here yet.
+Aun no se han agregado.
 {% endif %}
-
-New page? Copy [the faction template](../templates/).

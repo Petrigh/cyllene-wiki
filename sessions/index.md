@@ -6,7 +6,7 @@ has_children: true
 
 # Sessions
 
-One page per game night. Written by whoever volunteers, ideally the same evening.
+Notas sobre la sesion. Idealmente tomadas el mismo dia.
 
 {% assign kids = site.pages | where: "parent", page.title | sort: "title" %}
 {% if kids.size > 0 %}
@@ -16,7 +16,5 @@ One page per game night. Written by whoever volunteers, ideally the same evening
 {% endfor %}
 </ul>
 {% else %}
-Nothing here yet.
+Aun no se han agregado.
 {% endif %}
-
-New page? Copy [the session template](../templates/).

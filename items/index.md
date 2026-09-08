@@ -6,7 +6,7 @@ has_children: true
 
 # Items
 
-Magic items, contracts, keys, and anything the party has argued over who carries.
+Items magicos, contratos, llaves, o cualquier elemento que la party haya deliberado que hay un portador designado.
 
 {% assign kids = site.pages | where: "parent", page.title | sort: "title" %}
 {% if kids.size > 0 %}
@@ -16,7 +16,5 @@ Magic items, contracts, keys, and anything the party has argued over who carries
 {% endfor %}
 </ul>
 {% else %}
-Nothing here yet.
+Aun no se han agregado.
 {% endif %}
-
-New page? Copy [the item template](../templates/).
