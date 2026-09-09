@@ -12,9 +12,9 @@ Lista de personajes. Arriba los PCs, debajo el resto de NPCs.
 {% assign pcs  = site.pages | where: "parent", "The Party" | sort: "title" %}
 {% assign npcs = site.pages | where: "parent", page.title | where: "type", "npc" | sort: "title" %}
 
-## The Party
+## [The Party](party.md)
 
-Roster, recursos y leyes del grupo en [The Party]({{ "/characters/party.html" | relative_url }}).
+Roster de PCs.
 
 {% if pcs.size > 0 %}
 <ul>

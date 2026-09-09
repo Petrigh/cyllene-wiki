@@ -14,7 +14,7 @@ plugins:
 search_enabled: true
 search:
   heading_level: 1
-  previews: 1
+  previews: 0
 heading_anchors: true
 color_scheme: campaign          # defined in assets/css/just-the-docs-custom.scss
 
