@@ -2,7 +2,7 @@
 title: Tierras Robadas
 parent: Locations
 summary: 
-kind:
+kind: region
 ---
 
 # Tierras Robadas

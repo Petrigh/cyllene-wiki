@@ -10,7 +10,7 @@ Aun no lo saben, pero jugarian bien al rugby
 
 ## Reputacion con la party
 
-**Hostiles:** La party entorpecio trafico de [RCaine](../items/rcaine.md). Ademas de que la party robo un casino de [Brolwund](../locations/brolwund.md) y asesino a un par de sus integrantes.
+**Hostiles:** La party entorpecio trafico de [RCaine](../items/rcaine.md). Ademas de que la party robo un casino de [Brolwund](../locations/settlements/brolwund.md) y asesino a un par de sus integrantes.
 
 ## Intereses
 

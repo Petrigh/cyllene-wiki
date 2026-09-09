@@ -6,7 +6,17 @@ nav_order: 3
 
 # Location template
 
-Copy into `locations/`.
+Copy into the subfolder that matches the kind:
+
+| `kind:` | Folder | For |
+|---|---|---|
+| `settlement` | `locations/settlements/` | Towns, cities, camps |
+| `building` | `locations/buildings/` | Chapels, inns, towers, a single structure |
+| `nature` | `locations/nature/` | Forests, caves, rivers, mountains |
+| `region` | `locations/regions/` | Large territories holding the above |
+
+`parent:` stays `Locations` whichever folder you use — `kind:` is what sorts the
+page into its section on the Locations index.
 
 ---
 
@@ -15,7 +25,7 @@ Copy into `locations/`.
 title: Greyfen
 parent: Locations
 summary: Fen-side town of two thousand, built on a drained lake
-kind: Town
+kind: settlement
 region: The Sallowmarch
 ---
 ```

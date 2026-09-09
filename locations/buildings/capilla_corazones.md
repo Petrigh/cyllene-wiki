@@ -2,9 +2,9 @@
 title: Capilla de Corazones
 parent: Locations
 summary: 
-kind: Edificacion
+kind: building
 ---
 
 # Capilla de Corazones
-Capilla ubicada en [Brolwund](../locations/brolwund.md).
+Capilla ubicada en [Brolwund](../settlements/brolwund.md).
 

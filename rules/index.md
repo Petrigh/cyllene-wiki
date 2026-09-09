@@ -1,7 +1,7 @@
 ---
 title: House Rules
 nav_order: 10
-has_children: true
+has_children: false
 has_toc: false
 ---
 

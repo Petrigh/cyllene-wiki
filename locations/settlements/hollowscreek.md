@@ -2,7 +2,7 @@
 title: HollowsCreek
 parent: Locations
 summary: 
-kind: Settlement
+kind: settlement
 ---
 
 # HollowsCreek

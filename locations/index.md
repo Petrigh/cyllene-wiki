@@ -1,18 +1,28 @@
 ---
 title: Locations
 nav_order: 3
-has_children: true
+has_children: false
 has_toc: false
 ---
 
 # Locations
 
-Lugares que la party a visitado, o tiene informacion al respecto
+Lugares que la party a visitado, o tiene informacion al respecto.
 
-{% assign kids = site.pages | where: "parent", page.title | sort: "title" %}
-{% if kids.size > 0 %}
+{% assign all         = site.pages | where: "parent", page.title | sort: "title" %}
+{% assign settlements = all | where: "kind", "settlement" %}
+{% assign buildings   = all | where: "kind", "building" %}
+{% assign nature      = all | where: "kind", "nature" %}
+{% assign regions     = all | where: "kind", "region" %}
+{% assign known       = "settlement,building,nature,region" | split: "," %}
+
+## Settlements
+
+Pueblos, ciudades y campamentos.
+
+{% if settlements.size > 0 %}
 <ul>
-{% for kid in kids %}
+{% for kid in settlements %}
   <li><a href="{{ kid.url | relative_url }}">{{ kid.title }}</a>{% if kid.summary %} — {{ kid.summary }}{% endif %}</li>
 {% endfor %}
 </ul>
@@ -20,3 +30,58 @@ Lugares que la party a visitado, o tiene informacion al respecto
 Aun no se han agregado.
 {% endif %}
 
+## Buildings
+
+Edificaciones puntuales: capillas, posadas, torres, casinos.
+
+{% if buildings.size > 0 %}
+<ul>
+{% for kid in buildings %}
+  <li><a href="{{ kid.url | relative_url }}">{{ kid.title }}</a>{% if kid.summary %} — {{ kid.summary }}{% endif %}</li>
+{% endfor %}
+</ul>
+{% else %}
+Aun no se han agregado.
+{% endif %}
+
+## Natural Locations
+
+Bosques, cuevas, rios, montañas y todo lo que no construyo nadie.
+
+{% if nature.size > 0 %}
+<ul>
+{% for kid in nature %}
+  <li><a href="{{ kid.url | relative_url }}">{{ kid.title }}</a>{% if kid.summary %} — {{ kid.summary }}{% endif %}</li>
+{% endfor %}
+</ul>
+{% else %}
+Aun no se han agregado.
+{% endif %}
+
+## Regions
+
+Territorios grandes que contienen a los lugares de arriba.
+
+{% if regions.size > 0 %}
+<ul>
+{% for kid in regions %}
+  <li><a href="{{ kid.url | relative_url }}">{{ kid.title }}</a>{% if kid.summary %} — {{ kid.summary }}{% endif %}</li>
+{% endfor %}
+</ul>
+{% else %}
+Aun no se han agregado.
+{% endif %}
+
+{% assign otros = 0 %}
+{% for kid in all %}{% unless known contains kid.kind %}{% assign otros = otros | plus: 1 %}{% endunless %}{% endfor %}
+{% if otros > 0 %}
+## Sin clasificar
+
+Les falta un `kind:` valido en el front matter.
+
+<ul>
+{% for kid in all %}{% unless known contains kid.kind %}
+  <li><a href="{{ kid.url | relative_url }}">{{ kid.title }}</a>{% if kid.summary %} — {{ kid.summary }}{% endif %}</li>
+{% endunless %}{% endfor %}
+</ul>
+{% endif %}

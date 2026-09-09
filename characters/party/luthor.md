@@ -10,4 +10,4 @@ type: pc
 
 ## Objetivos
 
-- Recuperar las [Tierras Robadas](../../locations/tierras_robadas.md).
+- Recuperar las [Tierras Robadas](../../locations/regions/tierras_robadas.md).
