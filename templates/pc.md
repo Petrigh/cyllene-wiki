@@ -6,14 +6,16 @@ nav_order: 2
 
 # Player character template
 
-Copy into `characters/`. Written by the player, edited by nobody else.
+Copy into `characters/party/`. Written by the player, edited by nobody else.
 
 ---
 
 ```yaml
 ---
 title: Vess Ardenmoor
-parent: Characters
+parent: The Party
+grand_parent: Characters
+type: pc
 summary: Tiefling warlock paying off a debt she did not sign
 player: Ana
 class: Warlock 4 (Fiend)
