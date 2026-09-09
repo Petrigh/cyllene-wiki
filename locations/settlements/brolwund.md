@@ -2,7 +2,7 @@
 title: Brolwund
 parent: Locations
 summary: 
-kind: Settlement
+kind: settlement
 ---
 
 # Brolwund

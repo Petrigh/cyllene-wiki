@@ -13,7 +13,11 @@ static site. Notion *imports* Markdown and CSV cleanly, and GitHub Pages
 ```
 index.md            Wiki home
 characters/         The party + NPCs
-locations/          Settlements, dungeons, regions
+locations/          Places, split by kind
+  settlements/      Towns, cities, camps
+  buildings/        Chapels, inns, towers, single structures
+  nature/           Forests, caves, rivers, mountains
+  regions/          Large territories that contain the above
 factions/           Groups with goals, and party standing
 sessions/           One page per game night
 quests/             Open threads
@@ -90,6 +94,10 @@ GitHub *and* on the built site, because GitHub Pages rewrites them.
 
 ## Notes
 
+- Location pages need `kind:` — one of `settlement`, `building`, `nature`,
+  `region`. It decides which section of `locations/index.md` the page is
+  listed under; anything else lands in *Sin clasificar*. Keep `parent:
+  Locations` regardless of which subfolder the file sits in.
 - Frontmatter fields beyond `title`, `nav_order` and `parent` (`status`,
   `faction`, `cr`, `rarity`…) do nothing by default. They are there so the same
   files map onto Notion properties, and so you can build filtered lists later.

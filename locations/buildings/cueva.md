@@ -2,7 +2,7 @@
 title: Cueva
 parent: Locations
 summary: 
-kind: Edificacion
+kind: building
 ---
 
 # Cueva
