@@ -17,6 +17,7 @@ lowercase-with-hyphens, and change `parent: Templates` to `parent: Characters`.
 ---
 title: Marrow Quillane
 parent: Characters
+type: npc
 summary: Undertaker in Greyfen who knows which graves are empty
 status: Alive
 faction: None
