@@ -1,0 +1,178 @@
+{%- comment -%}
+  Mapa interactivo de Cyllene.
+
+  Uso:  {% include campaign_map.html %}
+        {% include campaign_map.html image="/assets/img/otro-mapa.jpg" height="500px" %}
+
+  Los marcadores salen del front matter de cada pagina. Para poner una
+  ubicacion en el mapa, agregale map_x y map_y (porcentaje desde la esquina
+  superior izquierda, 0-100):
+
+      ---
+      title: Brolwund
+      parent: Locations
+      kind: settlement
+      map_x: 67.6
+      map_y: 35.6
+      ---
+
+  Para sacar las coordenadas de un lugar nuevo, abri el mapa con ?pick al
+  final de la URL (ej. /cyllene-wiki/?pick) y clickea donde va el marcador:
+  te muestra las dos lineas listas para copiar.
+{%- endcomment -%}
+
+{%- assign map_image  = include.image  | default: "/assets/img/map.jpg" -%}
+{%- assign map_height = include.height | default: "clamp(320px, 68vh, 700px)" -%}
+{%- assign map_pins   = site.pages | where_exp: "p", "p.map_x" | where_exp: "p", "p.map_y" | sort: "title" -%}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+<div class="campaign-map-wrap">
+  <div
+    id="campaign-map"
+    class="campaign-map"
+    style="height: {{ map_height }};"
+    data-image="{{ map_image | relative_url }}"
+    role="application"
+    aria-label="Mapa interactivo de Cyllene">
+  </div>
+  <p class="campaign-map-hint">
+    Arrastra para moverte, <kbd>+</kbd> / <kbd>&minus;</kbd> o doble click para acercar.
+    Clickea un punto para ir a su pagina.
+  </p>
+</div>
+
+<script id="campaign-map-data" type="application/json">
+[{% for p in map_pins %}{"x":{{ p.map_x }},"y":{{ p.map_y }},"title":{{ p.title | jsonify }},"url":{{ p.url | relative_url | jsonify }},"summary":{{ p.summary | default: "" | strip | jsonify }},"kind":{{ p.kind | default: "" | jsonify }}}{% unless forloop.last %},{% endunless %}{% endfor %}]
+</script>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function () {
+  var el = document.getElementById('campaign-map');
+  if (!el || typeof L === 'undefined') { return; }
+
+  var imageUrl = el.dataset.image;
+  var pins = [];
+  try {
+    pins = JSON.parse(document.getElementById('campaign-map-data').textContent);
+  } catch (e) {
+    pins = [];
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  // Las dimensiones se leen de la imagen, asi que se puede reemplazar el mapa
+  // por otra version sin tocar las coordenadas (son porcentajes).
+  var probe = new Image();
+  probe.onload = function () { build(probe.naturalWidth, probe.naturalHeight); };
+  probe.onerror = function () {
+    el.innerHTML = '<p class="campaign-map-error">No se pudo cargar el mapa (' +
+      esc(imageUrl) + ').</p>';
+  };
+  probe.src = imageUrl;
+
+  function build(W, H) {
+    var map = L.map(el, {
+      crs: L.CRS.Simple,
+      attributionControl: false,
+      zoomSnap: 0.25,
+      zoomDelta: 0.5,
+      scrollWheelZoom: false,   // se activa al clickear, para no robar el scroll
+      minZoom: -8,
+      maxZoom: 8
+    });
+
+    var bounds = L.latLngBounds([[0, 0], [H, W]]);
+    L.imageOverlay(imageUrl, bounds, { alt: 'Mapa de Cyllene' }).addTo(map);
+
+    // Encaja el mapa entero y usa ese zoom como piso.
+    // Hay que soltar minZoom antes de medir: si no, al achicar la ventana
+    // fitBounds queda limitado por el piso viejo y el mapa no entra.
+    function fit(setMin) {
+      if (setMin) { map.setMinZoom(-8); }
+      map.invalidateSize();
+      map.fitBounds(bounds, { animate: false });
+      if (setMin) {
+        var z = map.getZoom();
+        map.setMinZoom(z);
+        map.setMaxZoom(z + 3);
+      }
+    }
+    fit(true);
+    map.setMaxBounds(bounds.pad(0.08));
+
+    // pct desde arriba-izquierda -> coordenadas de Leaflet (y crece hacia arriba)
+    function toLatLng(xPct, yPct) {
+      return L.latLng(H - (yPct / 100) * H, (xPct / 100) * W);
+    }
+
+    pins.forEach(function (pin) {
+      var label = '<strong>' + esc(pin.title) + '</strong>' +
+        (pin.summary ? '<br><span class="campaign-map-sub">' + esc(pin.summary) + '</span>' : '');
+
+      L.marker(toLatLng(pin.x, pin.y), {
+        icon: L.divIcon({
+          className: 'campaign-map-pin',
+          // Un <a> de verdad: funciona con teclado, click medio y "abrir en pestaña nueva".
+          html: '<a href="' + esc(pin.url) + '" aria-label="' + esc(pin.title) +
+                '"><span class="campaign-map-dot" data-kind="' + esc(pin.kind) + '"></span></a>',
+          iconSize: [20, 20],
+          iconAnchor: [10, 10]
+        }),
+        alt: pin.title,
+        riseOnHover: true
+      })
+        .addTo(map)
+        .bindTooltip(label, { direction: 'top', offset: [0, -10], opacity: 1 });
+    });
+
+    // Rueda del mouse: solo despues de clickear el mapa, y se apaga al salir.
+    el.addEventListener('click', function () { map.scrollWheelZoom.enable(); });
+    el.addEventListener('mouseleave', function () { map.scrollWheelZoom.disable(); });
+
+    // Boton para volver a la vista completa.
+    var Reset = L.Control.extend({
+      options: { position: 'topleft' },
+      onAdd: function () {
+        var c = L.DomUtil.create('div', 'leaflet-bar campaign-map-reset');
+        var a = L.DomUtil.create('a', '', c);
+        a.href = '#';
+        a.title = 'Ver el mapa completo';
+        a.setAttribute('role', 'button');
+        a.innerHTML = '&#10066;';
+        L.DomEvent.on(a, 'click', L.DomEvent.stop).on(a, 'click', function () { fit(false); });
+        return c;
+      }
+    });
+    map.addControl(new Reset());
+
+    var refit = null;
+    window.addEventListener('resize', function () {
+      clearTimeout(refit);
+      refit = setTimeout(function () { fit(true); }, 200);
+    });
+
+    // ---- Modo ?pick: saca las coordenadas de un punto nuevo ----------------
+    if (new URLSearchParams(window.location.search).has('pick')) {
+      var out = L.DomUtil.create('div', 'campaign-map-pick', el.parentNode);
+      out.innerHTML = '<em>Modo coordenadas.</em> Clickea el mapa.';
+      map.on('click', function (ev) {
+        var xPct = (ev.latlng.lng / W) * 100;
+        var yPct = ((H - ev.latlng.lat) / H) * 100;
+        var yaml = 'map_x: ' + xPct.toFixed(1) + '\nmap_y: ' + yPct.toFixed(1);
+        out.innerHTML = '<pre>' + esc(yaml) + '</pre>';
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(yaml).then(function () {
+            out.insertAdjacentHTML('beforeend', '<small>Copiado al portapapeles.</small>');
+          }, function () {});
+        }
+      });
+    }
+  }
+})();
+</script>

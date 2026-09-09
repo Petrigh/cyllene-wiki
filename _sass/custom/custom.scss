@@ -14,3 +14,82 @@
 
 // Reference tables are scanned, not read.
 .main-content table { font-size: 0.85rem; }
+
+// ---- Mapa interactivo (_includes/campaign_map.html) ----------------------
+.campaign-map-wrap { margin: 1.2rem 0 1.6rem; }
+
+.campaign-map {
+  width: 100%;
+  background: #dbe3e6;              // el agua del mapa, para que no parpadee en blanco
+  border: 1px solid $border-color;
+  border-radius: 2px;
+  cursor: grab;
+  &:active { cursor: grabbing; }
+}
+
+// El tema pone img { max-width: 100% }, que deformaria el mapa al hacer zoom.
+.campaign-map img.leaflet-image-layer { max-width: none; height: auto; }
+
+.campaign-map-hint {
+  font-size: 0.75rem;
+  color: $search-result-preview-color;
+  margin: 0.4rem 0 0;
+  max-width: none;
+  kbd {
+    font-size: 0.72rem;
+    padding: 0 0.25rem;
+    border: 1px solid $border-color;
+    border-radius: 2px;
+    background: $code-background-color;
+  }
+}
+
+.campaign-map-error { color: #7d3232; padding: 1rem; }
+
+// Marcadores: un punto discreto sobre el nombre ya dibujado en el mapa.
+.campaign-map-pin a {
+  display: block;
+  width: 20px;
+  height: 20px;
+  background: none;
+}
+
+.campaign-map-dot {
+  display: block;
+  width: 10px;
+  height: 10px;
+  margin: 5px;
+  border-radius: 50%;
+  background: $link-color;
+  border: 2px solid rgba(233, 231, 224, 0.9);
+  box-shadow: 0 0 0 1px rgba(35, 43, 51, 0.35);
+  transition: transform 0.12s ease-out, background-color 0.12s ease-out;
+
+  &[data-kind="region"] { background: #7d6a32; }
+  &[data-kind="nature"] { background: #3f6b3a; }
+}
+
+.campaign-map-pin a:hover .campaign-map-dot,
+.campaign-map-pin a:focus .campaign-map-dot {
+  transform: scale(1.5);
+  background: #7d3232;
+}
+
+.campaign-map-pin a:focus-visible { outline: 2px solid $link-color; outline-offset: 2px; }
+
+.leaflet-tooltip .campaign-map-sub {
+  font-weight: normal;
+  color: $search-result-preview-color;
+}
+
+.campaign-map-reset a { font-size: 1rem; line-height: 1.55; text-align: center; }
+
+.campaign-map-pick {
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px dashed $border-color;
+  background: $table-background-color;
+  font-size: 0.8rem;
+  pre { margin: 0.25rem 0; }
+  small { color: $search-result-preview-color; }
+}

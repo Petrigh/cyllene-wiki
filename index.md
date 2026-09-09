@@ -7,6 +7,10 @@ nav_order: 1
 
 Work in progress, wiki sobre la campaign.
 
+## El continente
+
+{% include campaign_map.html %}
+
 ## Que hay?
 
 | Seccion | Contenido |

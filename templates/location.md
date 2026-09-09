@@ -18,6 +18,10 @@ Copy into the subfolder that matches the kind:
 `parent:` stays `Locations` whichever folder you use — `kind:` is what sorts the
 page into its section on the Locations index.
 
+To pin the place on the home-page map, add `map_x` / `map_y` (percent from the
+top-left corner of the image). Open the site with `?pick` on the URL, click the
+spot, and it hands you the two lines to paste.
+
 ---
 
 ```yaml

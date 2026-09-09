@@ -11,7 +11,9 @@ static site. Notion *imports* Markdown and CSV cleanly, and GitHub Pages
 ## What's here
 
 ```
-index.md            Wiki home
+index.md            Wiki home (embeds the interactive map)
+assets/img/map.jpg  The campaign map served to the site
+_includes/          campaign_map.html — the interactive map
 characters/         The party + NPCs
 locations/          Places, split by kind
   settlements/      Towns, cities, camps
@@ -94,6 +96,12 @@ GitHub *and* on the built site, because GitHub Pages rewrites them.
 
 ## Notes
 
+- The home-page map is `_includes/campaign_map.html` (Leaflet 1.9.4 from unpkg,
+  `CRS.Simple` over a plain image — no tiles). Markers come from any page with
+  `map_x` / `map_y` in its frontmatter, as percentages from the image's
+  top-left. To find coordinates for a new pin, load any page with the map and
+  add `?pick` to the URL, then click the spot. Coordinates are percentages, so
+  re-exporting the map at a different resolution does not break them.
 - Location pages need `kind:` — one of `settlement`, `building`, `nature`,
   `region`. It decides which section of `locations/index.md` the page is
   listed under; anything else lands in *Sin clasificar*. Keep `parent:
