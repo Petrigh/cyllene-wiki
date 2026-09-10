@@ -19,11 +19,36 @@ title: Marrow Quillane
 parent: Characters
 type: npc
 summary: Undertaker in Greyfen who knows which graves are empty
+race: Human
+role: Undertaker
 status: Alive
 faction: None
 location: Greyfen
+attitude: Wary
+facts:
+  - Buried the last magistrate, and will not say where
 ---
 ```
+
+## The side card
+
+Every page under `characters/` gets a card in the right-hand column, built
+from the frontmatter above — no include to add, it is automatic.
+
+- `race`, `role`, `status`, `faction`, `location`, `attitude` become the
+  bullets, in that order. Leave out whatever you do not know yet.
+- `faction` and `location` turn into links when the value matches another
+  page's `title` exactly (`Mushies`, `Safepoint`). Otherwise they stay plain
+  text, so a wrong value never breaks the build.
+- `facts:` is a list of free bullets for anything the fields above do not
+  cover. Keep them to one line each — the column is narrow.
+- The portrait comes from `assets/pjs/`, matched on the filename: a page at
+  `characters/NPCs/gareth.md` picks up `assets/pjs/Gareth.jpeg`. Case and
+  extension do not matter. To point somewhere else, set
+  `portrait: /assets/pjs/otro.jpeg`, and `portrait_alt:` for the alt text.
+- `summary` doubles as the caption under the portrait.
+
+A page with no portrait and none of these fields renders exactly as before.
 
 ## One breath
 

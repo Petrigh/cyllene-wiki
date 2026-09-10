@@ -2,6 +2,12 @@
 title: Marcia Rostova
 parent: Characters
 type: npc
+summary: Lidera a los Indeseables y quiere volver a Brolwund
+role: Lider
+status: Viva
+race: Humana
+faction: Indeseables de Brolwund
+location: HollowsCreek
 ---
 
 # Marcia Rostova

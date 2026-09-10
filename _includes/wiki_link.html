@@ -1,0 +1,8 @@
+{%- comment -%}
+  Enlaza un valor de front matter a su pagina, si es que existe una con ese
+  titulo exacto. Si no la encuentra, devuelve el texto pelado.
+
+  Uso:  {% include wiki_link.html text=page.faction %}
+{%- endcomment -%}
+{%- assign wl_target = site.pages | where: "title", include.text | first -%}
+{%- if wl_target -%}<a href="{{ wl_target.url | relative_url }}">{{ include.text }}</a>{%- else -%}{{ include.text }}{%- endif -%}

@@ -17,11 +17,18 @@ parent: The Party
 grand_parent: Characters
 type: pc
 summary: Tiefling warlock paying off a debt she did not sign
+race: Tiefling
 player: Ana
 class: Warlock 4 (Fiend)
 status: Alive
+location: Greyfen
 ---
 ```
+
+These fields also fill the card in the right-hand column, and a portrait
+dropped in `assets/pjs/` named after this file (`vess.md` ->
+`assets/pjs/Vess.jpeg`) shows up there on its own. See the
+[NPC template](npc.md) for the full list of fields the card reads.
 
 ## Who they are
 
