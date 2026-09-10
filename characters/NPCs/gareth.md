@@ -2,7 +2,7 @@
 title: Gareth
 parent: Characters
 type: npc
-summary: Druida de Safepoint que buscaba a su hermana
+summary: Ranger de Safepoint que buscaba a su hermana
 race: Humano
 status: Vivo
 faction: Mushies
