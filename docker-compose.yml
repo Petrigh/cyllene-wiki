@@ -1,0 +1,16 @@
+services:
+  wiki:
+    build: .
+    ports:
+      - "4000:4000"
+      - "35729:35729"
+    volumes:
+      # Live-edit the wiki from the host; the container rebuilds on save.
+      - .:/site
+      # Keep build output and caches inside the container, off the host.
+      - site-build:/site/_site
+      - jekyll-cache:/site/.jekyll-cache
+
+volumes:
+  site-build:
+  jekyll-cache:

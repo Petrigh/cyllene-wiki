@@ -72,7 +72,24 @@ You get a sidebar, breadcrumbs, and client-side search from the
 [just-the-docs](https://just-the-docs.github.io/just-the-docs/) theme, pulled in
 remotely — nothing to vendor.
 
-To preview locally:
+To preview locally with Docker (no Ruby on your machine):
+
+```bash
+docker compose up --build
+```
+
+Then open **<http://localhost:4000/cyllene-wiki/>** — the full path, *including
+the trailing slash*. The site is served under `baseurl`, and Jekyll's dev server
+does not redirect, so `localhost:4000` and `localhost:4000/cyllene-wiki` both
+404. (GitHub Pages does redirect, so this quirk is local-only.)
+
+The repo is mounted into the container, so editing any `.md` file rebuilds the
+page and the browser reloads itself. `Ctrl-C` to stop, `docker compose down` to
+remove the container.
+
+If you change the `Gemfile`, rerun with `--build`.
+
+Or, with a local Ruby toolchain:
 
 ```bash
 bundle install

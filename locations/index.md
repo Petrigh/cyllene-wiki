@@ -32,8 +32,6 @@ Aun no se han agregado.
 
 ## Buildings
 
-Edificaciones puntuales: capillas, posadas, torres, casinos.
-
 {% if buildings.size > 0 %}
 <ul>
 {% for kid in buildings %}
@@ -46,8 +44,6 @@ Aun no se han agregado.
 
 ## Natural Locations
 
-Bosques, cuevas, rios, montañas y todo lo que no construyo nadie.
-
 {% if nature.size > 0 %}
 <ul>
 {% for kid in nature %}
@@ -59,8 +55,6 @@ Aun no se han agregado.
 {% endif %}
 
 ## Regions
-
-Territorios grandes que contienen a los lugares de arriba.
 
 {% if regions.size > 0 %}
 <ul>
@@ -75,9 +69,8 @@ Aun no se han agregado.
 {% assign otros = 0 %}
 {% for kid in all %}{% unless known contains kid.kind %}{% assign otros = otros | plus: 1 %}{% endunless %}{% endfor %}
 {% if otros > 0 %}
-## Sin clasificar
 
-Les falta un `kind:` valido en el front matter.
+## Sin clasificar
 
 <ul>
 {% for kid in all %}{% unless known contains kid.kind %}
