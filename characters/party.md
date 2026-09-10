@@ -29,5 +29,5 @@ Frente: — · Medio: — · Detras: —
 
 Reglas que el grupo acordo a seguir.
 
-- No se acepta apsolutamente nada de las feys.
+- No se acepta absolutamente nada de las feys.
 - [Denzen](party/denzen.md) no puede saber donde esta la muñeca.

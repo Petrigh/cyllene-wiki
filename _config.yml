@@ -39,3 +39,6 @@ exclude:
   - Gemfile.lock
   - vendor/
   - templates
+  - Dockerfile
+  - docker-compose.yml
+  - .dockerignore

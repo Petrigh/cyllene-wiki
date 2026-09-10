@@ -1,0 +1,9 @@
+---
+title: Casa del Cartógrafo
+parent: Locations
+summary: La casa donde la party encontró EL mapa.
+kind: building
+---
+
+# Casa del Cartógrafo
+Al fondo de [HollowsCreek](../settlements/hollowscreek.md), infestada de arañas. Ahí la party encontró [EL mapa](../../items/mapa.md).

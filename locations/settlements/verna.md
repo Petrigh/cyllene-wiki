@@ -1,0 +1,13 @@
+---
+title: Verna
+parent: Locations
+summary: Ciudad de los Cinco Grandes; ahí viven las madres de Harold.
+kind: settlement
+map_x: 54.6
+map_y: 34.6
+---
+
+# Verna
+Fundada en honor a [Verna](../../characters/NPCs/verna.md), una de los [Cinco Grandes](../../factions/cinco_grandes.md).
+
+Ciudad a la que llegó la party en roadtrip. Ahí viven las [madres de Harold](../../characters/NPCs/madres_harold.md).
