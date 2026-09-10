@@ -17,6 +17,9 @@ No se sabe quien la produce, pero el [Kraken de un ojo](../factions/one_eyed_kra
 | Rojo | | | 
 | Amarillo | | | 
 
+## Efectos secundarios
+- El consumidor explota.
+
 ## Que sabe la party
 
 - [*Sesion 16*](../sessions/16.md) — La party en la [Capilla de Corazones](../locations/buildings/capilla_corazones.md), junto [Valentine](../characters/NPCs/valentine.md) abren un contenedor que tiene tallado en el fondo un [Kraken de un ojo](../factions/one_eyed_kraken.md) y 2 botellas de [RCaine](rcaine.md) (roja y amarilla).
