@@ -93,3 +93,91 @@
   pre { margin: 0.25rem 0; }
   small { color: $search-result-preview-color; }
 }
+
+// ---- Ficha de personaje (_layouts/character.html) ------------------------
+// Texto a la izquierda, retrato y datos rapidos en una columna a la derecha.
+.character-page {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.character-body {
+  flex: 1 1 0;
+  min-width: 0;                     // si no, un bloque de codigo ancho empuja la ficha afuera
+  > :first-child { margin-top: 0; }
+}
+
+.character-card {
+  flex: 0 0 15rem;
+  width: 15rem;
+  margin-top: 0.4rem;               // alinea con la primera linea del h1
+  padding: 0.75rem;
+  border: 1px solid $border-color;
+  background: $table-background-color;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.character-portrait {
+  margin: 0;
+  a { background-image: none; }     // el tema subraya los links; aca molesta
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid $border-color;
+  }
+  figcaption {
+    margin-top: 0.4rem;
+    color: $search-result-preview-color;
+    font-style: italic;
+  }
+}
+
+// Solo hay separador si arriba habia retrato.
+.character-portrait + .character-facts {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid $border-color;
+}
+
+.character-facts {
+  margin: 0;
+  padding-left: 1.1rem;
+  list-style: disc;
+
+  li {
+    max-width: none;                // .main-content li tiene max-width: 68ch
+    margin: 0 0 0.3rem;
+    &:last-child { margin-bottom: 0; }
+  }
+
+  b {
+    color: $body-heading-color;
+    font-weight: 600;
+    &::after { content: ":"; }
+  }
+}
+
+// Se apila cuando la columna de texto se quedaria sin lugar. La cuenta:
+// entre 50rem y 66.5rem el tema fija la barra lateral en 15.5rem y deja 4rem
+// de padding, asi que el ancho util es (viewport - 19.5rem). Restandole la
+// ficha (15rem + 1.5rem de gap) el texto no llega a 26rem hasta los 62rem.
+// La ficha sube arriba del texto; en el HTML va despues para que un lector
+// de pantalla lea primero la pagina.
+@media (max-width: 62rem) {
+  .character-page {
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .character-card {
+    order: -1;
+    flex-basis: auto;
+    width: auto;
+    max-width: 20rem;
+    align-self: center;
+    margin-top: 0;
+  }
+}

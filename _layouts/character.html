@@ -1,0 +1,24 @@
+---
+layout: default
+---
+{%- comment -%}
+  Paginas de personaje: el texto a la izquierda y la ficha
+  (_includes/character_card.html) en una columna a la derecha.
+
+  No se pone en el front matter de cada pagina: _config.yml se lo aplica a
+  todo lo que cuelga de characters/. Las paginas sin datos de ficha
+  (characters/index.md, party.md) salen exactamente igual que antes, porque
+  si la ficha queda vacia esto no envuelve nada.
+{%- endcomment -%}
+{%- capture character_card -%}{% include character_card.html %}{%- endcapture -%}
+{%- assign character_card = character_card | strip -%}
+{%- if character_card == "" -%}
+{{ content }}
+{%- else -%}
+<div class="character-page">
+  <div class="character-body">
+    {{ content }}
+  </div>
+  {{ character_card }}
+</div>
+{%- endif -%}

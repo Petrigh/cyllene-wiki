@@ -27,6 +27,12 @@ defaults:
       path: ""
     values:
       layout: default
+  # Las paginas de personaje llevan la ficha de la derecha (retrato + datos).
+  # Es un layout y no un include para no tener que tocar los ~45 .md sueltos.
+  - scope:
+      path: "characters"
+    values:
+      layout: character
 
 # Everything below is kept OUT of the published site.
 # dm/ holds spoilers. GitHub Pages sites are PUBLIC unless you pay for
