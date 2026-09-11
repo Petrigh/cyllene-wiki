@@ -7,4 +7,4 @@ region: Bosque Inescrutable
 ---
 
 # Safepoint
-Asentamiento de los [Mushies](../../factions/mushies.md) dentro del [Bosque Inescrutable](../nature/bosque_inescrutable.md). Mencionan otros asentamientos como [Greenkeep](greenkeep.md) y "Rootsomething".
+Asentamiento de los [Mushies](../../bestiary/mushy.md) dentro del [Bosque Inescrutable](../regions/bosque_inescrutable.md). Mencionan otros asentamientos como [Greenkeep](greenkeep.md) y "Rootsomething".

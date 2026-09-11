@@ -3,8 +3,8 @@ title: Medea
 parent: Locations
 summary: Isla al sur del continente.
 kind: nature
-map_x: 56.9
-map_y: 84.7
+map_x: 56.0
+map_y: 84.0
 ---
 
 # Medea

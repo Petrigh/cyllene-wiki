@@ -3,8 +3,8 @@ title: Glavok
 parent: Locations
 summary: Ciudad fundada en honor a Glavok, uno de los Cinco Grandes.
 kind: settlement
-map_x: 50.3
-map_y: 51.4
+map_x: 54.0
+map_y: 49.0
 ---
 
 # Glavok

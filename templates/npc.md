@@ -38,7 +38,7 @@ from the frontmatter above — no include to add, it is automatic.
 - `race`, `role`, `status`, `faction`, `location`, `attitude` become the
   bullets, in that order. Leave out whatever you do not know yet.
 - `faction` and `location` turn into links when the value matches another
-  page's `title` exactly (`Mushies`, `Safepoint`). Otherwise they stay plain
+  page's `title` exactly. Otherwise they stay plain
   text, so a wrong value never breaks the build.
 - `facts:` is a list of free bullets for anything the fields above do not
   cover. Keep them to one line each — the column is narrow.

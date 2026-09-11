@@ -4,7 +4,7 @@ parent: Locations
 summary: Isla al sur del continente.
 kind: nature
 map_x: 37.6
-map_y: 74.5
+map_y: 75.0
 ---
 
 # Pelias

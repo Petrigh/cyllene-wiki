@@ -10,6 +10,10 @@ services:
       # Keep build output and caches inside the container, off the host.
       - site-build:/site/_site
       - jekyll-cache:/site/.jekyll-cache
+      # NOTE: do not add --incremental to the Dockerfile CMD. It only regenerates
+      # files whose own source changed, so the section index.md pages (which list
+      # site.pages via Liquid) keep serving a stale list when a page is added,
+      # renamed or deleted.
 
 volumes:
   site-build:

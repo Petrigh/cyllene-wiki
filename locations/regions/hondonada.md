@@ -9,7 +9,7 @@ map_y: 43.0
 
 # Hondonada de los faros
 
-Región al sureste del [Bosque Inescrutable](../nature/bosque_inescrutable.md), donde arrancó la campaña.
+Región al sureste del [Bosque Inescrutable](../regions/bosque_inescrutable.md), donde arrancó la campaña.
 
 ## Asentamientos
 
