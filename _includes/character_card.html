@@ -18,6 +18,10 @@
       summary: Ranger de Safepoint que busca a su hermana
       portrait: /assets/pjs/Gareth.jpeg   # solo si no coincide con el nombre
       portrait_alt: Retrato de Gareth
+      aliases:                            # otros nombres; el que repite el
+        - Gary                            # titulo de la pagina se ignora
+        - name: Obeon                     # con link: la url de la pagina
+          link: /sessions/18.html         #   donde aparece ese nombre
       role: Explorador
       player: Ana                         # solo PCs
       class: Warlock 4 (Fiend)            # solo PCs
@@ -45,11 +49,26 @@
   {%- endfor -%}
 {%- endunless -%}
 
+{%- comment -%} Cada alias es un string, o un {name, link} si hay que enlazarlo. {%- endcomment -%}
+{%- capture cc_alias_items -%}
+  {%- for cc_alias in page.aliases -%}
+    {%- assign cc_alias_text = cc_alias -%}
+    {%- if cc_alias.name -%}{%- assign cc_alias_text = cc_alias.name -%}{%- endif -%}
+    {%- unless cc_alias_text == page.title -%}
+      {%- if cc_alias.link -%}<a href="{{ cc_alias.link | relative_url }}">{{ cc_alias_text }}</a>
+      {%- else -%}{{ cc_alias_text }}{%- endif -%}|
+    {%- endunless -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- assign cc_aliases = cc_alias_items | strip | split: "|" | join: ", " -%}
+
 {%- capture cc_facts -%}
+  {%- if cc_aliases != "" -%}<li><b>Alias</b> {{ cc_aliases }}</li>{%- endif -%}
   {%- if page.race -%}<li><b>Raza</b> {{ page.race }}</li>{%- endif -%}
   {%- if page.class -%}<li><b>Clase</b> {{ page.class }}</li>{%- endif -%}
   {%- if page.player -%}<li><b>Jugador</b> {{ page.player }}</li>{%- endif -%}
   {%- if page.role -%}<li><b>Rol</b> {{ page.role }}</li>{%- endif -%}
+  {%- if page.pantheon -%}<li><b>Panteón</b> {% include wiki_link.html text=page.pantheon %}</li>{%- endif -%}
   {%- if page.faction -%}<li><b>Faccion</b> {% include wiki_link.html text=page.faction %}</li>{%- endif -%}
   {%- if page.location -%}<li><b>Donde</b> {% include wiki_link.html text=page.location %}</li>{%- endif -%}
   {%- if page.status -%}<li><b>Estado</b> {{ page.status }}</li>{%- endif -%}
