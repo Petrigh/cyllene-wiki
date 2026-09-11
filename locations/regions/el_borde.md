@@ -8,4 +8,4 @@ map_y: 24.4
 ---
 
 # El Borde
-Cordillera que corre por el norte del continente, arriba del [Bosque Inescrutable](../nature/bosque_inescrutable.md). La party todavía no estuvo.
+Cordillera que corre por el norte del continente, arriba del [Bosque Inescrutable](../regions/bosque_inescrutable.md). La party todavía no estuvo.

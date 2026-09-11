@@ -8,7 +8,7 @@ region: Bosque Inescrutable
 
 # Templo del Jester
 
-También llamado **la Corte del Jester**. Es el mismo lugar: la corte fae adentro del [Bosque Inescrutable](../nature/bosque_inescrutable.md) a la que [Nox](../../characters/NPCs/nox.md) llevó a la party con una propuesta, y el templo al que después la guiaron él y [Axl](../../characters/NPCs/axl.md).
+También llamado **la Corte del Jester**. Es el mismo lugar: la corte fae adentro del [Bosque Inescrutable](../regions/bosque_inescrutable.md) a la que [Nox](../../characters/NPCs/nox.md) llevó a la party con una propuesta, y el templo al que después la guiaron él y [Axl](../../characters/NPCs/axl.md).
 
 Estatuas rotas, áreas comunales, altares y salas de meditación. Tiene tres pruebas — *Show your Strength*, *Heart* y *Mind* — y al final espera [The Jester](../../characters/NPCs/jester.md), que puede sacar gente del Bosque a cambio de una buena historia.
 

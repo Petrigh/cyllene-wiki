@@ -5,7 +5,7 @@ summary: Lo primero que salió a recibir a la party dentro del Bosque
 ---
 
 # The Hanging Tree
-Peleado apenas entrando al [Bosque Inescrutable](../locations/nature/bosque_inescrutable.md), junto con otros.
+Peleado apenas entrando al [Bosque Inescrutable](../locations/regions/bosque_inescrutable.md), junto con otros.
 
 ## Encontrado en
 

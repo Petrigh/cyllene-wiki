@@ -11,4 +11,4 @@ Se anuncia con un cartel al costado del camino y unas extrañas protuberancias e
 ## Que sabe la party
 
 - [*Sesion 3*](../../sessions/3.md) — La recorren por primera vez y se llevan items mágicos bonitos.
-- [*Sesion 10*](../../sessions/10.md) — La vuelven a encontrar dentro del [Bosque Inescrutable](../nature/bosque_inescrutable.md), pero parece algo abandonada.
+- [*Sesion 10*](../../sessions/10.md) — La vuelven a encontrar dentro del [Bosque Inescrutable](../regions/bosque_inescrutable.md), pero parece algo abandonada.

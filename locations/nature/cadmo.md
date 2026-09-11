@@ -3,8 +3,8 @@ title: Cadmo
 parent: Locations
 summary: Isla al sur del continente.
 kind: nature
-map_x: 53.5
-map_y: 61.0
+map_x: 54.3
+map_y: 62.0
 ---
 
 # Cadmo

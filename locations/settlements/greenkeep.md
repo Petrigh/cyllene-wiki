@@ -7,4 +7,4 @@ region: Bosque Inescrutable
 ---
 
 # Greenkeep
-Mencionado por los [Mushies](../../factions/mushies.md) como otro de sus asentamientos. La party todavía no lo visitó.
+Mencionado por los [Mushies](../../bestiary/mushy.md) como otro de sus asentamientos. La party todavía no lo visitó.

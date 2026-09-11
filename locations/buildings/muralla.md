@@ -6,4 +6,4 @@ kind: building
 ---
 
 # Muralla del Bosque
-Muro que rodea al [Bosque Inescrutable](../nature/bosque_inescrutable.md). [Ferr](../../characters/NPCs/ferr.md) y [Bronn](../../characters/NPCs/bronn.md) guiaron a la party hasta la cima.
+Muro que rodea al [Bosque Inescrutable](../regions/bosque_inescrutable.md). [Ferr](../../characters/NPCs/ferr.md) y [Bronn](../../characters/NPCs/bronn.md) guiaron a la party hasta la cima.
