@@ -5,4 +5,4 @@ type: npc
 ---
 
 # Viktor
-Les propuso el heist a la party en el [Templo de la Reina de Tréboles](../../locations/buildings/templo_queen_clubs.md). Los traicionó durante el escape.
+Les propuso el heist a la party en el [Templo de la Reina de Tréboles](../../locations/buildings/capilla_treboles.md). Los traicionó durante el escape.

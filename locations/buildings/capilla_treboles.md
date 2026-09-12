@@ -1,9 +1,10 @@
 ---
-title: Templo de la Reina de Tréboles
+title: Capilla de Treboles
 parent: Locations
 summary: Un shopping abandonado.
 kind: building
+settlement: Brolwund
 ---
 
-# Templo de la Reina de Tréboles
+# Capilla de Treboles
 *Queen of Clubs temple.* Un shopping abandonado. Ahí la party conoció a [Raiz](../../characters/NPCs/raiz.md) y [Viktor](../../characters/NPCs/viktor.md) les propuso el heist.

@@ -3,6 +3,7 @@ title: Muralla del Bosque
 parent: Locations
 summary: Muro que contiene al Bosque Inescrutable.
 kind: building
+region: Bosque Inescrutable
 ---
 
 # Muralla del Bosque

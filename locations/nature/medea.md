@@ -3,6 +3,7 @@ title: Medea
 parent: Locations
 summary: Isla al sur del continente.
 kind: nature
+continent: cyllene
 map_x: 56.0
 map_y: 84.0
 ---

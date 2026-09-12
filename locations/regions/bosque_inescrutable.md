@@ -3,6 +3,7 @@ title: Bosque Inescrutable
 parent: Locations
 summary: Bosque amurallado del que se escapan bestias y horrores.
 kind: region
+continent: cyllene
 map_x: 44.0
 map_y: 37.5
 ---

@@ -3,6 +3,7 @@ title: Capilla de Corazones
 parent: Locations
 summary: El templo de la Reina de Corazones, en Brolwund
 kind: building
+settlement: Brolwund
 ---
 
 # Capilla de Corazones

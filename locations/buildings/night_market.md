@@ -3,6 +3,7 @@ title: Night Market
 parent: Locations
 summary: Mercado nocturno de Brolwund.
 kind: building
+settlement: Brolwund
 ---
 
 # Night Market

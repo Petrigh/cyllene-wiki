@@ -3,6 +3,7 @@ title: Museo de Brolwund
 parent: Locations
 summary: 
 kind: building
+settlement: Brolwund
 ---
 
 # Museo de Brolwund

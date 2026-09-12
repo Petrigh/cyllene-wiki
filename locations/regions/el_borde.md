@@ -3,6 +3,7 @@ title: El Borde
 parent: Locations
 summary: Cordillera al norte del Bosque Inescrutable.
 kind: region
+continent: cyllene
 map_x: 42.6
 map_y: 24.4
 ---

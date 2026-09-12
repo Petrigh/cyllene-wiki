@@ -3,6 +3,7 @@ title: Casa del Cartógrafo
 parent: Locations
 summary: La casa donde la party encontró EL mapa.
 kind: building
+settlement: HollowsCreek
 ---
 
 # Casa del Cartógrafo
