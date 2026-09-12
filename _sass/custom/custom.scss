@@ -181,3 +181,60 @@
     margin-top: 0;
   }
 }
+
+// ---- Indice de la pagina (el bloque `{:toc}` de kramdown) ----------------
+// La caja al estilo Wikipedia: no ocupa el ancho completo, se encoge hasta
+// el titulo mas largo. La lista la genera kramdown a partir de los headings,
+// asi que no hay que mantenerla a mano.
+.wiki-toc {
+  display: table;                   // inline-block se estiraria con el float
+  margin: 1.2rem 0 1.6rem;
+  padding: 0.6rem 1.1rem 0.7rem 0.75rem;
+  border: 1px solid $border-color;
+  background: $table-background-color;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.wiki-toc-title {
+  margin: 0 0 0.35rem;
+  max-width: none;                  // .main-content p tiene max-width: 68ch
+  color: $body-heading-color;
+  font-weight: 600;
+  text-align: center;
+}
+
+.wiki-toc > ol {
+  margin: 0;
+  padding-left: 1.4rem;
+  counter-reset: wiki-toc;
+
+  ol {
+    margin: 0.15rem 0 0.15rem;
+    padding-left: 1.1rem;
+    counter-reset: wiki-toc-sub;
+  }
+
+  li {
+    max-width: none;
+    margin: 0 0 0.15rem;
+    list-style: none;
+    &:last-child { margin-bottom: 0; }
+  }
+
+  // Numeracion 1, 1.1, 1.2 ... como en Wikipedia.
+  > li {
+    counter-increment: wiki-toc;
+    > a::before { content: counter(wiki-toc) "\00a0\00a0"; }
+
+    > ol > li {
+      counter-increment: wiki-toc-sub;
+      > a::before { content: counter(wiki-toc) "." counter(wiki-toc-sub) "\00a0\00a0"; }
+    }
+  }
+
+  a {
+    background-image: none;         // el tema subraya los links; aca molesta
+    &::before { color: $body-text-color; }
+  }
+}
