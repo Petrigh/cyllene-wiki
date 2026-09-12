@@ -6,4 +6,4 @@ kind: settlement
 ---
 
 # Slumberhaven
-Último pueblo antes de la [Muralla del Bosque](../buildings/muralla.md). Muchos de sus habitantes se encontraban vacíos, sin alma. Una red de raíces conecta la costa con el [faro](../buildings/faro_slumberhaven.md).
+Último pueblo antes de la [Muralla del Bosque](../nature/muralla.md). Muchos de sus habitantes se encontraban vacíos, sin alma. Una red de raíces conecta la costa con el [faro](../buildings/faro_slumberhaven.md).
