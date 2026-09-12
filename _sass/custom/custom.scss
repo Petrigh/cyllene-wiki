@@ -246,21 +246,31 @@
 .loc-tree {
   margin-top: 0.6rem;
 
+  // Cada nivel se corre y arrastra una guia vertical: al desplegar una rama
+  // larga, la linea es la que dice donde termina lo que cuelga de ella.
   ul {
-    margin: 0.2rem 0 0.6rem;
-    padding-left: 1.1rem;
+    margin: 0.25rem 0 0.7rem 0.3rem;
+    padding-left: 1.5rem;
+    border-left: 1px solid $border-color;
   }
 
+  // Sin bullets: el triangulo alcanza como marca. Las hojas se corren para
+  // alinear su texto con el de los plegables, y el triangulo queda colgando
+  // en ese margen. Asi todo un nivel arranca en la misma columna.
   li {
     max-width: none;                // .main-content li tiene max-width: 68ch
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.25rem;
+    padding-left: 0.85rem;
+    list-style: none;
   }
+
+  summary { margin-left: -0.85rem; }
 }
 
 // Etiqueta de grupo (Regiones, Asentamientos...). Es un <p> y no un heading a
 // proposito: repetido en cada nodo, un <h4> ensuciaria el outline del documento.
 .loc-group {
-  margin: 0.5rem 0 0.1rem;
+  margin: 0.55rem 0 0.15rem 0.3rem;  // la sangria alinea con la guia del <ul>
   max-width: none;                  // .main-content p tiene max-width: 68ch
   color: $body-heading-color;
   font-size: 0.7rem;
@@ -269,10 +279,17 @@
   text-transform: uppercase;
 }
 
+// El resumen es contexto, no el dato principal: el que escanea el arbol busca
+// nombres. Va mas chico y mas apagado para que la columna de titulos resalte.
+.loc-sum {
+  color: $search-result-preview-color;
+  font-size: 0.78rem;
+}
+
 // Marca las paginas a las que todavia les falta escribir el summary.
 .loc-todo {
   color: $search-result-preview-color;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-style: italic;
 }
 
@@ -302,10 +319,6 @@
   details[open] > summary::before { transform: rotate(90deg); }
 
   summary:hover::before { border-left-color: $link-color; }
-
-  // El <li> ya trae su propio bullet; con la flechita al lado son dos marcas
-  // para lo mismo.
-  li:has(> details) { list-style: none; margin-left: -1.1rem; }
 
   summary:focus-visible { outline: 2px solid $link-color; outline-offset: 2px; }
 }

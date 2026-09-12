@@ -45,7 +45,7 @@
       {%- assign lc_pair = lc_g | split: "|" -%}
       {%- assign lc_set = lc_kids | where: "kind", lc_pair[0] | sort: "title" -%}
       {%- if lc_set.size > 0 -%}
-        <p class="loc-group">{{ lc_pair[1] }}</p>
+        <p class="loc-group"><b>{{ lc_pair[1] }}</b></p>
         <ul>
         {%- for lc_kid in lc_set -%}
           {% include location_item.html page=lc_kid depth=include.depth %}

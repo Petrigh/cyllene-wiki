@@ -25,7 +25,7 @@
   <details{% if include.depth < 2 %} open{% endif %}>
     <summary>
       <a href="{{ lc_i_p.url | relative_url }}">{{ lc_i_p.title }}</a>
-      {%- if lc_i_p.summary and lc_i_p.summary != "" %} — {{ lc_i_p.summary }}
+      {%- if lc_i_p.summary and lc_i_p.summary != "" %} <span class="loc-sum">— {{ lc_i_p.summary }}</span>
       {%- else %} <span class="loc-todo">(sin resumen)</span>
       {%- endif -%}
     </summary>
@@ -33,7 +33,7 @@
   </details>
 {%- else -%}
   <a href="{{ lc_i_p.url | relative_url }}">{{ lc_i_p.title }}</a>
-  {%- if lc_i_p.summary and lc_i_p.summary != "" %} — {{ lc_i_p.summary }}
+  {%- if lc_i_p.summary and lc_i_p.summary != "" %} <span class="loc-sum">— {{ lc_i_p.summary }}</span>
   {%- else %} <span class="loc-todo">(sin resumen)</span>
   {%- endif -%}
 {%- endif -%}
