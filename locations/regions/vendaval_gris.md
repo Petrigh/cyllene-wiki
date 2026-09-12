@@ -3,7 +3,7 @@ title: Vendaval Gris
 parent: Locations
 summary: Extremo este del continente.
 kind: region
-continent: cyllene
+continent: Cyllene
 map_x: 91.0
 map_y: 51.7
 ---

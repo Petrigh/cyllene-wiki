@@ -1,0 +1,40 @@
+{%- comment -%}
+  Un <li> del arbol de ubicaciones.
+
+  Uso:  {% include location_item.html page=una_pagina depth=0 %}
+
+  Si el lugar contiene otros, se dibuja como <details> plegable; si no tiene
+  hijos, queda como un item suelto (un <details> vacio seria una flechita que
+  no abre nada). Por eso hay que averiguar si tiene hijos ANTES de recursionar.
+
+  Vienen abiertos el mundo y el continente, asi la pagina arranca mostrando la
+  lista de regiones; de ahi para abajo se abre a mano.
+{%- endcomment -%}
+
+{%- assign lc_i_p = include.page -%}
+{%- assign lc_i_all = site.pages | where: "parent", "Locations" -%}
+{%- assign lc_i_w = lc_i_all | where: "world",      lc_i_p.title -%}
+{%- assign lc_i_c = lc_i_all | where: "continent",  lc_i_p.title -%}
+{%- assign lc_i_r = lc_i_all | where: "region",     lc_i_p.title -%}
+{%- assign lc_i_s = lc_i_all | where: "settlement", lc_i_p.title -%}
+{%- assign lc_i_kids = lc_i_w | concat: lc_i_c | concat: lc_i_r | concat: lc_i_s | uniq -%}
+{%- assign lc_i_next = include.depth | plus: 1 -%}
+
+<li>
+{%- if lc_i_kids.size > 0 and include.depth < 7 -%}
+  <details{% if include.depth < 2 %} open{% endif %}>
+    <summary>
+      <a href="{{ lc_i_p.url | relative_url }}">{{ lc_i_p.title }}</a>
+      {%- if lc_i_p.summary and lc_i_p.summary != "" %} — {{ lc_i_p.summary }}
+      {%- else %} <span class="loc-todo">(sin resumen)</span>
+      {%- endif -%}
+    </summary>
+    {% include location_children.html title=lc_i_p.title depth=lc_i_next %}
+  </details>
+{%- else -%}
+  <a href="{{ lc_i_p.url | relative_url }}">{{ lc_i_p.title }}</a>
+  {%- if lc_i_p.summary and lc_i_p.summary != "" %} — {{ lc_i_p.summary }}
+  {%- else %} <span class="loc-todo">(sin resumen)</span>
+  {%- endif -%}
+{%- endif -%}
+</li>

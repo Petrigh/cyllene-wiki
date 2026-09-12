@@ -3,6 +3,7 @@ title: Whiterun
 parent: Locations
 summary: Pueblo que estuvo tomado por los Indeseables de Brolwund.
 kind: settlement
+region: Hondonada de los faros
 ---
 
 # Whiterun

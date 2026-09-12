@@ -1,0 +1,84 @@
+{%- comment -%}
+  Renderiza, recursivamente, los hijos de una ubicacion.
+
+  Uso:  {% include location_children.html title=page.title depth=0 %}
+
+  Un hijo es CUALQUIER pagina de Locations que nombre a este titulo en su
+  world / continent / region / settlement — sin importar su kind. Por eso una
+  building colgada de un continente (Shady Elmer's), un settlement colgado del
+  mundo (Aira) o una nature colgada de una region (Muralla del Bosque) aparecen
+  donde corresponde en vez de perderse.
+
+  Cada hijo lo dibuja location_item.html, que decide si va plegable o suelto.
+
+  Las variables llevan prefijo lc_ a proposito: en Jekyll los assign de un
+  include escriben en el scope global, asi que el prefijo evita pisar las
+  variables de la pagina que nos incluye.
+
+  OJO con el scope al tocar este archivo: al bajar por la recursion, los assign
+  de los niveles de abajo pisan los de aca. Las variables de los for aguantan
+  (Liquid itera una copia de la lista), pero cualquier cosa que se lea DESPUES
+  de un include hay que recalcularla. De ahi que lc_kids se arme de nuevo en
+  cada vuelta: include.title si vuelve a su valor al salir del include anidado,
+  asi que recalcular desde ahi siempre da lo correcto.
+{%- endcomment -%}
+
+{%- if include.depth < 8 -%}
+
+  {%- assign lc_all = site.pages | where: "parent", "Locations" -%}
+  {%- assign lc_w = lc_all | where: "world",      include.title -%}
+  {%- assign lc_c = lc_all | where: "continent",  include.title -%}
+  {%- assign lc_r = lc_all | where: "region",     include.title -%}
+  {%- assign lc_s = lc_all | where: "settlement", include.title -%}
+  {%- assign lc_kids = lc_w | concat: lc_c | concat: lc_r | concat: lc_s | uniq -%}
+
+  {%- if lc_kids.size > 0 -%}
+
+    {%- assign lc_groups = "continent|Continentes,region|Regiones,nature|Naturaleza,settlement|Asentamientos,building|Edificaciones" | split: "," -%}
+    {%- for lc_g in lc_groups -%}
+      {%- assign lc_all = site.pages | where: "parent", "Locations" -%}
+      {%- assign lc_w = lc_all | where: "world",      include.title -%}
+      {%- assign lc_c = lc_all | where: "continent",  include.title -%}
+      {%- assign lc_r = lc_all | where: "region",     include.title -%}
+      {%- assign lc_s = lc_all | where: "settlement", include.title -%}
+      {%- assign lc_kids = lc_w | concat: lc_c | concat: lc_r | concat: lc_s | uniq -%}
+      {%- assign lc_pair = lc_g | split: "|" -%}
+      {%- assign lc_set = lc_kids | where: "kind", lc_pair[0] | sort: "title" -%}
+      {%- if lc_set.size > 0 -%}
+        <p class="loc-group">{{ lc_pair[1] }}</p>
+        <ul>
+        {%- for lc_kid in lc_set -%}
+          {% include location_item.html page=lc_kid depth=include.depth %}
+        {%- endfor %}
+        </ul>
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- comment -%}
+      Cualquier kind que no sea uno de los cinco de arriba — vacio, mal escrito
+      o nuevo — cae aca en vez de desaparecer del arbol. lc_kids se recalcula
+      por lo mismo que arriba: el for de los grupos ya recursiono.
+    {%- endcomment -%}
+    {%- assign lc_known = "continent,region,nature,settlement,building" | split: "," -%}
+    {%- assign lc_all = site.pages | where: "parent", "Locations" -%}
+    {%- assign lc_w = lc_all | where: "world",      include.title -%}
+    {%- assign lc_c = lc_all | where: "continent",  include.title -%}
+    {%- assign lc_r = lc_all | where: "region",     include.title -%}
+    {%- assign lc_s = lc_all | where: "settlement", include.title -%}
+    {%- assign lc_rest = lc_w | concat: lc_c | concat: lc_r | concat: lc_s | uniq | sort: "title" -%}
+    {%- capture lc_other -%}
+      {%- for lc_kid in lc_rest -%}
+        {%- unless lc_known contains lc_kid.kind -%}
+          {% include location_item.html page=lc_kid depth=include.depth %}
+        {%- endunless -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+    {%- assign lc_other_trimmed = lc_other | strip -%}
+    {%- if lc_other_trimmed != "" -%}
+      <p class="loc-group">Otros</p>
+      <ul>{{ lc_other }}</ul>
+    {%- endif -%}
+
+  {%- endif -%}
+
+{%- endif -%}

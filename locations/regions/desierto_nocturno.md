@@ -3,7 +3,7 @@ title: Desierto Nocturno
 parent: Locations
 summary: Desierto del noreste.
 kind: region
-continent: cyllene
+continent: Cyllene
 map_x: 81.1
 map_y: 30.0
 ---
