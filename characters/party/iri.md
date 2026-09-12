@@ -25,7 +25,8 @@ Indice
 </div>
 
 # Description
-> **Iranon** es uno de los miembros de [The Greater Five](../party.md), y  principe heredero al trono de [Aira](../../locations/settlements/aira.md).
+**Iranon** es uno de los miembros de [The Greater Five](../party.md), y  principe heredero al trono de [Aira](../../locations/settlements/aira.md).
+
 ## Personality
 
 ## Appearance
@@ -54,11 +55,11 @@ Iri es un [High Elf](https://5e.tools/races.html#elf%20(high)_phb)
 Iri tiene el background [Entertainer](https://5e.tools/backgrounds.html#entertainer_phb)
 
 ## Items
-  [Armadura de Glavok](../../items/armadura_glavok.md)
-  [Sir Laughs A' Lot](../../items/sir_laugh_alot.md)
-  [Ye Oldies but Goldies Songbook](../../items/oldies_songbook.md)
-  [Brazalete de Adulación](../../items/brazalete_adulacion.md)
-  [Arito de Bardo](../../items/arito_bardo.md)
+  - [Armadura de Glavok](../../items/armadura_glavok.md)
+  - [Sir Laughs A' Lot](../../items/sir_laugh_alot.md)
+  - [Ye Oldies but Goldies Songbook](../../items/oldies_songbook.md)
+  - [Brazalete de Adulación](../../items/brazalete_adulacion.md)
+  - [Arito de Bardo](../../items/arito_bardo.md)
 
 # History
 
