@@ -3,6 +3,7 @@ title: Pelias
 parent: Locations
 summary: Isla al sur del continente.
 kind: nature
+continent: Cyllene
 map_x: 37.6
 map_y: 75.0
 ---

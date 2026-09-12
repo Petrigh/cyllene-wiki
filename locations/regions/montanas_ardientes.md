@@ -3,6 +3,7 @@ title: Montañas Ardientes
 parent: Locations
 summary: Cadena montanosa del suroeste.
 kind: region
+continent: Cyllene
 map_x: 18.4
 map_y: 57.4
 ---

@@ -3,6 +3,7 @@ title: Evadne
 parent: Locations
 summary: Isla al sur del continente.
 kind: nature
+continent: Cyllene
 map_x: 54.0
 map_y: 66.3
 ---

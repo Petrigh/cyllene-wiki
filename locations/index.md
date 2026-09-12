@@ -9,72 +9,74 @@ has_toc: false
 
 Lugares que la party a visitado, o tiene informacion al respecto.
 
-{% assign all         = site.pages | where: "parent", page.title | sort: "title" %}
-{% assign settlements = all | where: "kind", "settlement" %}
-{% assign buildings   = all | where: "kind", "building" %}
-{% assign nature      = all | where: "kind", "nature" %}
-{% assign regions     = all | where: "kind", "region" %}
-{% assign known       = "settlement,building,nature,region" | split: "," %}
+{% assign all = site.pages | where: "parent", page.title %}
+{% assign worlds = all | where: "kind", "world" | sort: "title" %}
 
-## Settlements
-
-Pueblos, ciudades y campamentos.
-
-{% if settlements.size > 0 %}
-<ul>
-{% for kid in settlements %}
-  <li><a href="{{ kid.url | relative_url }}">{{ kid.title }}</a>{% if kid.summary %} — {{ kid.summary }}{% endif %}</li>
+{% if worlds.size > 0 %}
+<ul class="loc-tree">
+{% for w in worlds %}
+  {% include location_item.html page=w depth=0 %}
 {% endfor %}
 </ul>
+
+<script>
+// Los botones se inyectan desde JS: sin JS no sirven de nada, y una lista
+// plegable ya funciona sola (<details> es nativo).
+(function () {
+  var tree = document.querySelector('.loc-tree');
+  if (!tree) return;
+  var all = tree.querySelectorAll('details');
+  if (!all.length) return;
+
+  var bar = document.createElement('p');
+  bar.className = 'loc-controls';
+
+  [['Expandir todo', true], ['Contraer todo', false]].forEach(function (pair) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = pair[0];
+    b.addEventListener('click', function () {
+      tree.querySelectorAll('details').forEach(function (d) { d.open = pair[1]; });
+    });
+    bar.appendChild(b);
+  });
+
+  tree.parentNode.insertBefore(bar, tree);
+})();
+</script>
 {% else %}
 Aun no se han agregado.
 {% endif %}
 
-## Buildings
+{%- comment -%}
+  Red de seguridad: paginas que no cuelgan de ningun lugar existente. Hoy no hay
+  ninguna, asi que la seccion entera no se imprime — pero si algun dia se carga
+  una pagina sin clave de contenedor, o apuntando a un titulo mal escrito,
+  aparece aca en vez de desaparecer del arbol de arriba.
+{%- endcomment -%}
+{% assign titles = all | map: "title" %}
+{% capture loose %}
+{%- for p in all -%}
+  {%- unless p.kind == "world" -%}
+    {%- assign key = p.settlement | default: p.region | default: p.continent | default: p.world -%}
+    {%- if key == nil or key == "" %}
+      <li><a href="{{ p.url | relative_url }}">{{ p.title }}</a> — sin lugar asignado</li>
+    {%- else -%}
+      {%- unless titles contains key %}
+      <li><a href="{{ p.url | relative_url }}">{{ p.title }}</a> — apunta a <em>{{ key }}</em>, que no existe</li>
+      {%- endunless -%}
+    {%- endif -%}
+  {%- endunless -%}
+{%- endfor -%}
+{% endcapture %}
+{% assign loose_trimmed = loose | strip %}
 
-{% if buildings.size > 0 %}
-<ul>
-{% for kid in buildings %}
-  <li><a href="{{ kid.url | relative_url }}">{{ kid.title }}</a>{% if kid.summary %} — {{ kid.summary }}{% endif %}</li>
-{% endfor %}
-</ul>
-{% else %}
-Aun no se han agregado.
-{% endif %}
+{% if loose_trimmed != "" %}
+## Sin ubicar
 
-## Natural Locations
+Estas paginas no cuelgan de ningun lugar existente. Agregales un `world:`,
+`continent:`, `region:` o `settlement:` que coincida con el titulo exacto de
+otra pagina.
 
-{% if nature.size > 0 %}
-<ul>
-{% for kid in nature %}
-  <li><a href="{{ kid.url | relative_url }}">{{ kid.title }}</a>{% if kid.summary %} — {{ kid.summary }}{% endif %}</li>
-{% endfor %}
-</ul>
-{% else %}
-Aun no se han agregado.
-{% endif %}
-
-## Regions
-
-{% if regions.size > 0 %}
-<ul>
-{% for kid in regions %}
-  <li><a href="{{ kid.url | relative_url }}">{{ kid.title }}</a>{% if kid.summary %} — {{ kid.summary }}{% endif %}</li>
-{% endfor %}
-</ul>
-{% else %}
-Aun no se han agregado.
-{% endif %}
-
-{% assign otros = 0 %}
-{% for kid in all %}{% unless known contains kid.kind %}{% assign otros = otros | plus: 1 %}{% endunless %}{% endfor %}
-{% if otros > 0 %}
-
-## Sin clasificar
-
-<ul>
-{% for kid in all %}{% unless known contains kid.kind %}
-  <li><a href="{{ kid.url | relative_url }}">{{ kid.title }}</a>{% if kid.summary %} — {{ kid.summary }}{% endif %}</li>
-{% endunless %}{% endfor %}
-</ul>
+<ul>{{ loose }}</ul>
 {% endif %}

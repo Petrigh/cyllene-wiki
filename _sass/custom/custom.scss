@@ -238,3 +238,94 @@
     &::before { color: $body-text-color; }
   }
 }
+
+// ---- Arbol de ubicaciones (_includes/location_children.html) --------------
+// El arbol llega a 5 niveles (mundo > continente > region > asentamiento >
+// edificacion), asi que la sangria tiene que ser corta: con la del tema, la
+// quinta rama termina contra el margen derecho.
+.loc-tree {
+  margin-top: 0.6rem;
+
+  ul {
+    margin: 0.2rem 0 0.6rem;
+    padding-left: 1.1rem;
+  }
+
+  li {
+    max-width: none;                // .main-content li tiene max-width: 68ch
+    margin-bottom: 0.2rem;
+  }
+}
+
+// Etiqueta de grupo (Regiones, Asentamientos...). Es un <p> y no un heading a
+// proposito: repetido en cada nodo, un <h4> ensuciaria el outline del documento.
+.loc-group {
+  margin: 0.5rem 0 0.1rem;
+  max-width: none;                  // .main-content p tiene max-width: 68ch
+  color: $body-heading-color;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+// Marca las paginas a las que todavia les falta escribir el summary.
+.loc-todo {
+  color: $search-result-preview-color;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+// ---- Plegado del arbol ---------------------------------------------------
+// <details> nativo: el plegado funciona sin JS. Solo se cambia la flechita
+// por una propia, porque la del navegador cambia de forma segun el sistema.
+.loc-tree {
+  summary {
+    list-style: none;               // Firefox
+    cursor: pointer;
+    &::-webkit-details-marker { display: none; }
+  }
+
+  summary::before {
+    content: "";
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-right: 0.45rem;
+    border-left: 5px solid $search-result-preview-color;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    vertical-align: 0.05em;
+    transition: transform 0.12s ease-out;
+  }
+
+  details[open] > summary::before { transform: rotate(90deg); }
+
+  summary:hover::before { border-left-color: $link-color; }
+
+  // El <li> ya trae su propio bullet; con la flechita al lado son dos marcas
+  // para lo mismo.
+  li:has(> details) { list-style: none; margin-left: -1.1rem; }
+
+  summary:focus-visible { outline: 2px solid $link-color; outline-offset: 2px; }
+}
+
+.loc-controls {
+  margin: 0.8rem 0 0;
+  max-width: none;                  // .main-content p tiene max-width: 68ch
+
+  button {
+    margin-right: 0.4rem;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid $border-color;
+    border-radius: 2px;
+    background: $table-background-color;
+    color: $body-text-color;
+    font-size: 0.75rem;
+    font-family: inherit;
+    cursor: pointer;
+
+    &:hover { border-color: $link-color; color: $link-color; }
+    &:focus-visible { outline: 2px solid $link-color; outline-offset: 1px; }
+  }
+}

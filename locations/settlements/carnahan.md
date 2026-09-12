@@ -3,6 +3,7 @@ title: Carnahan
 parent: Locations
 summary: Ciudad fundada en honor a Carnahan, uno de los Cinco Grandes.
 kind: settlement
+region: Valle de los Cinco Grandes
 map_x: 70.0
 map_y: 46.3
 ---

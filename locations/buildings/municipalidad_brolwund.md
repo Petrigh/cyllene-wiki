@@ -3,6 +3,7 @@ title: Municipalidad de Brolwund
 parent: Locations
 summary: Trámites, formularios y noticias del consejo.
 kind: building
+settlement: Brolwund
 ---
 
 # Municipalidad de Brolwund

@@ -3,6 +3,7 @@ title: Verna
 parent: Locations
 summary: Ciudad de los Cinco Grandes; ahí viven las madres de Harold.
 kind: settlement
+region: Valle de los Cinco Grandes
 map_x: 55.0
 map_y: 38.5
 ---

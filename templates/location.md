@@ -14,9 +14,35 @@ Copy into the subfolder that matches the kind:
 | `building` | `locations/buildings/` | Chapels, inns, towers, a single structure |
 | `nature` | `locations/nature/` | Forests, caves, rivers, mountains |
 | `region` | `locations/regions/` | Large territories holding the above |
+| `continent` | `locations/continentes/` | Continents inside a world |
+| `world` | `locations/` | The world itself — the root of the tree |
 
 `parent:` stays `Locations` whichever folder you use — `kind:` is what sorts the
 page into its section on the Locations index.
+
+## Where the page hangs from
+
+Add **one** key naming the place that contains this one, matching its `title:`
+exactly:
+
+| Key | Names a page of kind |
+|---|---|
+| `settlement:` | `settlement` |
+| `region:` | `region` |
+| `continent:` | `continent` |
+| `world:` | `world` |
+
+A page may hang off **any** level above it, not just the one immediately above.
+That is deliberate, and the index handles it: a roaming dungeon can hang off the
+continent (`Shady Elmer's Fun Emporium` does), a distant kingdom off the world
+(`Aira`), a temple in the open off a region (`Templo de Gaia`). The index asks
+each place "which pages name me?" regardless of their `kind`, so the page shows
+up under whatever it points at.
+
+Only a `world` page carries no such key — it is the root.
+
+If the key is missing, or names a title that does not exist, the page is not
+lost: it shows up under **Sin ubicar** at the bottom of the Locations index.
 
 To pin the place on the home-page map, add `map_x` / `map_y` (percent from the
 top-left corner of the image). Open the site with `?pick` on the URL, click the

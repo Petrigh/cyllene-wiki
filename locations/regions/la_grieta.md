@@ -3,6 +3,7 @@ title: La Grieta
 parent: Locations
 summary: Al norte, entre El Borde y el Desierto Nocturno.
 kind: region
+continent: Cyllene
 map_x: 62.3
 map_y: 29.0
 ---

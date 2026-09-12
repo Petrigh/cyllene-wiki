@@ -2,7 +2,8 @@
 title: Cueva
 parent: Locations
 summary: Lugar donde Iri y Denzen despertaron
-kind: nature
+kind: building
+region: Hondonada de los faros
 ---
 
 # Cueva
