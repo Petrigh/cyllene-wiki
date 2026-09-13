@@ -17,14 +17,14 @@ Indice
 {:toc}
 </div>
 
-# Description
+# Descripcion
 
-First es un [ranger](https://dnd5e.wikidot.com/ranger-revised) [enano](https://5e.tools/races.html#dwarf%20(hill)_phb). Sin reputacion relevante, First se caracteriza por ser un aliado mas estrategico que poderoso, sus aportes a los combates no son de los agresivos ya que sus nuevos valores religiosos hacen que vea el valor en todas las vidas.
+First es un [ranger](https://dnd5e.wikidot.com/ranger-revised) [enano](https://5e.tools/races.html#dwarf%20(hill)_phb). Sin reputacion relevante, sus aportes a los combates no son de los agresivos ya que sus valores religiosos hacen que vea el valor en todas las vidas y el honor en las muertes.
 
-## Personality
+## Personalidad
 Reservado pero honorable, First intenta ayudar a los demas con acciones, sin notar que la comunicacion es tanto o mas util.
 
-## Appearance
+## Apariencia
 ### Hasta la Sesion 14
 First tiene cabello rojiso con tes ocre. Lleva una caperuza verde y armadura de cuero, cuenta con un porta flechas magico trabajado en cuero y un arco largo.
 ### Actualidad
@@ -32,14 +32,14 @@ Por un maleficio desconocido, First luce como un pequeño arbol en una maceta.
 
 # Build
 
-## Class
-
+## Clase
+Explorador nivel 7
 ## Feats
 
-## Species
-
+## Especie
+Hill dwarf
 ## Background
-
+Sailor
 ## Items
 
 # History
@@ -49,7 +49,7 @@ Entrando al continente de Cyllene, First amarra en la isla de [Pelias](../../loc
 
 Logrando llegar a la costa de la [Hondonada](../../locations/regions/hondonada.md), se encuentra con [Mary Anne](mary.md) y poco despues con el resto de la [party](../party.md)
 
-# Relationships
+# Relaciones
 
 ## Gaia
 Diosa de la vida la cual juro proteger, desde que la dejo descansando en [Pelias](../../locations/nature/pelias.md), le reza a diario e intenta no lastimar otras vidas.
