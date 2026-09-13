@@ -17,19 +17,19 @@ Indice
 {:toc}
 </div>
 
-# Description
+# Descripcion
 
-## Personality
+## Personalidad
 
-## Appearance
+## Apariencia
 
 # Build
 
-## Class
+## Clase
 
 ## Feats
 
-## Species
+## Especie
 
 ## Background
 
@@ -43,7 +43,7 @@ Indice
 
 - Recuperar las [Tierras Robadas](../../locations/regions/tierras_robadas.md).
 
-# Relationships
+# Relaciones
 
 ## Individuals
 

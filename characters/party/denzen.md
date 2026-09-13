@@ -17,19 +17,19 @@ Indice
 {:toc}
 </div>
 
-# Description
+# Descripcion
 
-## Personality
+## Personalidad
 
-## Appearance
+## Apariencia
 
 # Build
 
-## Class
+## Clase
 
 ## Feats
 
-## Species
+## Especie
 
 Tiefling.
 
@@ -41,7 +41,7 @@ Tiefling.
 
 ## Arcs
 
-# Relationships
+# Relaciones
 
 ## Individuals
 

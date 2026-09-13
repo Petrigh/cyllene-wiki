@@ -24,12 +24,12 @@ Indice
 {:toc}
 </div>
 
-# Description
+# Descripcion
 **Iranon** es uno de los miembros de [The Greater Five](../party.md), y  principe heredero al trono de [Aira](../../locations/settlements/aira.md).
 
-## Personality
+## Personalidad
 
-## Appearance
+## Apariencia
 Iri es un [high elf](https://5e.tools/races.html#elf%20(high)_phb) de pelo rubio platinado y ojos celestes.
 
 Iniciando la campaña vistió mayormente la ropa con la que se despertó en la cueva, telas finas provenientes de [Aira](../../locations/settlements/aira.md).
@@ -43,12 +43,12 @@ Actualmente viste la [Armadura de Glavok](../../items/armadura_glavok.md) debajo
 
 # Build
 
-## Class
+## Clase
  Iri es un [Bardo](https://5e.tools/classes.html#bard_phb) de nivel 7 del colegio de [Lore](https://5e.tools/classes.html#bard_phb,state:sub_lore_phb=b1)
 
 ## Feats
 
-## Species
+## Especie
 Iri es un [High Elf](https://5e.tools/races.html#elf%20(high)_phb)
 
 ## Background
@@ -87,7 +87,7 @@ Asesina a los de su especie en [Glavok](../../locations/settlements/glavok.md)
 ## La Costa brumosa
 Se reencuentra con su abuelo en la [Costa Brumosa](../../locations/regions/costa_brumosa.md)
 
-# Relationships
+# Relaciones
 
 ## Janice Goldenstag y Henry Creekwater
 ## Caribdis Idreius

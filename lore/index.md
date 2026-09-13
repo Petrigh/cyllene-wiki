@@ -1,6 +1,6 @@
 ---
 title: Lore
-nav_order: 9
+nav_order: 5
 has_children: false
 has_toc: false
 ---
@@ -19,5 +19,3 @@ El mundo detras de la aventura
 {% else %}
 Aun no se han agregado.
 {% endif %}
-
-New page? Copy [any template](../templates/).

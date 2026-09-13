@@ -17,19 +17,19 @@ Indice
 {:toc}
 </div>
 
-# Description
+# Descripcion
 
-## Personality
+## Personalidad
 
-## Appearance
+## Apariencia
 
 # Build
 
-## Class
+## Clase
 
 ## Feats
 
-## Species
+## Especie
 
 ## Background
 
@@ -39,7 +39,7 @@ Indice
 
 ## Arcs
 
-# Relationships
+# Relaciones
 
 ## Individuals
 
