@@ -17,36 +17,36 @@ Indice
 {:toc}
 </div>
 
-# Descripcion
+## Descripcion
 
-## Personalidad
+### Personalidad
 
-## Apariencia
+### Apariencia
 
-# Build
+## Build
 
-## Clase
+### Clase
 
-## Feats
+### Feats
 
-## Especie
+### Especie
 
-## Background
+### Background
 
-## Items
+### Items
 
-# History
+## History
 
-## Arcs
+### Arcs
 
-## Objetivos
+### Objetivos
 
 - Recuperar las [Tierras Robadas](../../locations/regions/tierras_robadas.md).
 
-# Relaciones
+## Relaciones
 
-## Individuals
+### Individuals
 
-## Groups
+### Groups
 
-# Trivia
+## Trivia

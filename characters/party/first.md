@@ -17,51 +17,51 @@ Indice
 {:toc}
 </div>
 
-# Descripcion
+## Descripcion
 
 First es un [ranger](https://dnd5e.wikidot.com/ranger-revised) [enano](https://5e.tools/races.html#dwarf%20(hill)_phb). Sin reputacion relevante, sus aportes a los combates no son de los agresivos ya que sus valores religiosos hacen que vea el valor en todas las vidas y el honor en las muertes.
 
-## Personalidad
+### Personalidad
 Reservado pero honorable, First intenta ayudar a los demas con acciones, sin notar que la comunicacion es tanto o mas util.
 
-## Apariencia
-### Hasta la Sesion 14
+### Apariencia
+#### Hasta la Sesion 14
 First tiene cabello rojiso con tes ocre. Lleva una caperuza verde y armadura de cuero, cuenta con un porta flechas magico trabajado en cuero y un arco largo.
-### Actualidad
+#### Actualidad
 Por un maleficio desconocido, First luce como un pequeño arbol en una maceta.
 
-# Build
+## Build
 
-## Clase
+### Clase
 Explorador nivel 7
-## Feats
+### Feats
 
-## Especie
+### Especie
 Hill dwarf
-## Background
+### Background
 Sailor
-## Items
+### Items
 
-# History
+## History
 Proveniente desde un monte de otro continente, la sobrepoblacion y falta de espacio en su lugar de origen forzo a First a embarcarse en busca de tierras libres, capaces de albergar mas gente para poder darle un respiro a su pueblo.
 
 Entrando al continente de Cyllene, First amarra en la isla de [Pelias](../../locations/nature/pelias.md), donde decide comenzar su campamento. Encuentra a [Gaia](../NPCs/gaia_diosa.md) lastimada y decide cuidarla de los monstruos que llegaban a la isla. Luego de un tiempo decide embarcarse al territorio continental para ponerle un fin a las oliadas de monstruos asi [Gaia](../NPCs/gaia_diosa.md) puede descansar en paz. Recibiendo una bendicion de la dioas para navegar seguro.
 
 Logrando llegar a la costa de la [Hondonada](../../locations/regions/hondonada.md), se encuentra con [Mary Anne](mary.md) y poco despues con el resto de la [party](../party.md)
 
-# Relaciones
+## Relaciones
 
-## Gaia
+### Gaia
 Diosa de la vida la cual juro proteger, desde que la dejo descansando en [Pelias](../../locations/nature/pelias.md), le reza a diario e intenta no lastimar otras vidas.
 
-## The Grater Five
+### The Grater Five
 Aliados en los que confia, lo han salvado en mas de una ocasion.
 
-## Marcia
+### Marcia
 Crush
 
-## Xenon
+### Xenon
 Dios del clima y el Caos, parte del [panteon del bosque](../../lore/panteon_bosque.md) al cual decide rezarle por lastima ya que esta sole sin sus hermanos.
 
-## Troy
+### Troy
 Lince del cual no quiere hacerse cargo.
