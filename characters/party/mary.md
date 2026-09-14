@@ -17,32 +17,32 @@ Indice
 {:toc}
 </div>
 
-# Descripcion
+## Descripcion
 
-## Personalidad
+### Personalidad
 
-## Apariencia
+### Apariencia
 
-# Build
+## Build
 
-## Clase
+### Clase
 
-## Feats
+### Feats
 
-## Especie
+### Especie
 
-## Background
+### Background
 
-## Items
+### Items
 
-# History
+## History
 
-## Arcs
+### Arcs
 
-# Relaciones
+## Relaciones
 
-## Individuals
+### Individuals
 
-## Groups
+### Groups
 
-# Trivia
+## Trivia
