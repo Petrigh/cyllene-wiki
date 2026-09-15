@@ -11,10 +11,14 @@ has_toc: false
 
 Roster, esto es mas para estar al tanto de que es capaz el equipo para tomar decisiones en el proximo combate.
 
+{% assign pcs = site.pages | where: "parent", page.title | sort: "title" %}
+
 | Character | Player | Class & level | Passive Perception | Languages |
-|---|---|---|---|---|---|---|
-| | | | | | | |
-| — | — | — | — | — | — | — |
+|---|---|---|---|---|
+{% for pc in pcs %}| [{{ pc.title }}]({{ pc.url | relative_url }}) | {{ pc.player | default: "—" }} | {{ pc.class | default: "—" }} | {{ pc.passive_perception | default: "—" }} | {{ pc.languages | default: "—" }} |
+{% endfor %}
+Las filas salen del front matter de cada PC (`player`, `class`,
+`passive_perception`, `languages`). Lo que falte aparece como —.
 
 ## Recursos
 

@@ -4,6 +4,8 @@ parent: The Party
 summary: Principe de Aira
 grand_parent: Characters
 type: pc
+race: High elf
+class: Bardo 7 (Lore)
 aliases:
   - Iri
   - Iranon Goldenstag

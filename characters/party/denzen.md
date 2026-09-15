@@ -4,6 +4,8 @@ parent: The Party
 summary: 6to miembro de los Cinco Grandes
 grand_parent: Characters
 type: pc
+race: Tiefling
+class: Warlock
 ---
 
 # Denzen Durgromoth

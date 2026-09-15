@@ -4,6 +4,7 @@ parent: The Party
 summary: Ex-Paladin de Carnahan
 grand_parent: Characters
 type: pc
+class: Paladin
 ---
 
 # Luthor Rivendale
