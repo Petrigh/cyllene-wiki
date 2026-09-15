@@ -4,6 +4,7 @@ parent: The Party
 summary: Se suma en Whiterun
 grand_parent: Characters
 type: pc
+class: Wizard
 ---
 
 # Mary Ann Bevan

@@ -4,6 +4,7 @@ parent: The Party
 summary: Monje de principios cuestionables 👹
 grand_parent: Characters
 type: pc
+class: Monje
 ---
 
 # Harold Fielt
