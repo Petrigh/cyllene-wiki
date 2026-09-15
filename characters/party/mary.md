@@ -41,6 +41,12 @@ Indice
 
 ### Arcs
 
+## Pesadillas
+
+| Sesion | Que pasó |
+| -- | -- |
+| [12](../../sessions/12.md) — segunda noche | [Pesadilla](../../lore/pesadillas.md) junto a [First](first.md) e [Iri](iri.md), camino al [templo del Jester](../../locations/buildings/templo_jester.md). |
+
 ## Relaciones
 
 ### Individuals

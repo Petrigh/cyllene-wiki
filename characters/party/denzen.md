@@ -44,6 +44,14 @@ Tiefling.
 
 ### Arcs
 
+## Pesadillas
+
+| Sesion | Que pasó |
+| -- | -- |
+| [3](../../sessions/3.md) | Primera [pesadilla](../../lore/pesadillas.md), junto a [Harold](harold.md) e [Iri](iri.md). |
+| [10](../../sessions/10.md) | Pesadilla junto a [Iri](iri.md). |
+| Sin sesion registrada | Desde el punto de vista de alguien adentro de una habitacion violeta —como el collar de [Obeon](../NPCs/obeon.md)—: se siente como te drenan el poder cuando alguien castea un spell. |
+
 ## Relaciones
 
 ### Individuals
