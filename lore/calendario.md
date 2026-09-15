@@ -6,10 +6,7 @@ summary: Tres formas de contar los años, y como pasar de una a otra
 
 # Calendario
 
-En Ta Phaestri conviven tres formas de contar los años. La mayoria de las
-fechas que anda dando vueltas estan en una u otra sin aclarar cual, y de ahi
-salen casi todas las contradicciones aparentes de la
-[linea de tiempo](linea_tiempo.md).
+En Ta Phaestri conviven tres formas de contar los años.
 
 ## Las tres cuentas
 
