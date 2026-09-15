@@ -6,6 +6,7 @@ grand_parent: Characters
 type: pc
 race: Tiefling
 class: Warlock
+player: Johnny
 ---
 
 # Denzen Durgromoth

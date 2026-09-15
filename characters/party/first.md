@@ -6,6 +6,7 @@ grand_parent: Characters
 type: pc
 race: Hill dwarf
 class: Ranger 7 (Revised)
+player: Petrigh
 ---
 
 # First'Righ
