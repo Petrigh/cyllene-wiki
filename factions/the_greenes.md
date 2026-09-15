@@ -1,7 +1,6 @@
 ---
 title: The Greenes
-parent: Characters
-type: npc
+parent: Factions
 ---
 
 # The Greenes

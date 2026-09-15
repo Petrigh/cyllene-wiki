@@ -352,3 +352,7 @@
     &:focus-visible { outline: 2px solid $link-color; outline-offset: 1px; }
   }
 }
+
+
+// La tabla de la linea de tiempo tiene columnas de años que no deben cortarse.
+.linea-tiempo td:nth-child(-n + 3) { white-space: nowrap; text-align: right; }
