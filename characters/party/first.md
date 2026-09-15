@@ -52,6 +52,13 @@ Entrando al continente de Cyllene, First amarra en la isla de [Pelias](../../loc
 
 Logrando llegar a la costa de la [Hondonada](../../locations/regions/hondonada.md), se encuentra con [Mary Anne](mary.md) y poco despues con el resto de la [party](../party.md)
 
+## Pesadillas
+
+| Sesion | Que pasó |
+| -- | -- |
+| [12](../../sessions/12.md) | [Pesadillas](../../lore/pesadillas.md) de [goose](../../bestiary/goose.md), junto a [Luthor](luthor.md) e [Iri](iri.md). |
+| [12](../../sessions/12.md) — segunda noche | Pesadilla junto a [Iri](iri.md) y [Mary](mary.md), camino al [templo del Jester](../../locations/buildings/templo_jester.md). |
+
 ## Relaciones
 
 ### Gaia

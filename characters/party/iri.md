@@ -90,6 +90,16 @@ Asesina a los de su especie en [Glavok](../../locations/settlements/glavok.md)
 ### La Costa brumosa
 Se reencuentra con su abuelo en la [Costa Brumosa](../../locations/regions/costa_brumosa.md)
 
+## Pesadillas
+
+| Sesion | Que pasó |
+| -- | -- |
+| [3](../../sessions/3.md) | Primera pesadilla, junto a [Harold](harold.md) y [Denzen](denzen.md). |
+| [10](../../sessions/10.md) | Pesadilla junto a [Denzen](denzen.md). |
+| [12](../../sessions/12.md) | Pesadillas de [goose](../../bestiary/goose.md), junto a [Luthor](luthor.md) y [First](first.md). |
+| [12](../../sessions/12.md) — segunda noche | Pesadilla junto a [First](first.md) y [Mary](mary.md), camino al [templo del Jester](../../locations/buildings/templo_jester.md). |
+| [15](../../sessions/15.md) | Pesadilla al llegar a [Brolwund](../../locations/settlements/brolwund.md). |
+
 ## Relaciones
 
 ### Janice Goldenstag y Henry Creekwater
