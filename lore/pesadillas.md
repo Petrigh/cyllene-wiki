@@ -20,3 +20,9 @@ Aparecen desde la [Sesion 3](../sessions/3.md) y no paran. No todes las tienen l
 | [15](../sessions/15.md) | [Iri](../characters/party/iri.md) |
 | [17](../sessions/17.md) | — |
 | [18](../sessions/18.md) | [Harold](../characters/party/harold.md) cuenta que decidió ceder a las pesadillas |
+
+
+# Board
+
+- Denzen: Desde el punto de vista de alguien adentro de una habitacion violeta —como el collar— se siente como te drenan el poder cuando alguien castea un spell.
+- Unknown: Iranon 1 se enoja con Aira porque Obeon es tiefling. Aira le pide ayuda a alguien para proteger a Obeon y lo guarda en un amuleto. Despues se rompe un vidrio, se escuchan dos voces —una es Iranon— y despues un grito desgarrador.
