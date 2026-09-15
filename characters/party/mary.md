@@ -5,6 +5,7 @@ summary: Se suma en Whiterun
 grand_parent: Characters
 type: pc
 class: Wizard
+player: Marian
 ---
 
 # Mary Ann Bevan

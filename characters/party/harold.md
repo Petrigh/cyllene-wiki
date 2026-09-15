@@ -5,6 +5,7 @@ summary: Monje de principios cuestionables 👹
 grand_parent: Characters
 type: pc
 class: Monje
+player: Judit
 ---
 
 # Harold Fielt

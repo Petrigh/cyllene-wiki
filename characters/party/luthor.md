@@ -5,6 +5,7 @@ summary: Ex-Paladin de Carnahan
 grand_parent: Characters
 type: pc
 class: Paladin
+player: Tom
 ---
 
 # Luthor Rivendale

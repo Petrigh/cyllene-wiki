@@ -13,6 +13,7 @@ aliases:
   - Iranon Goldenstag IV
   - name: Obeon
     link: /sessions/18.html
+player: Sharon
 ---
 
 # Iranon Goldenstag
