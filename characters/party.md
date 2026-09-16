@@ -32,4 +32,4 @@ Frente: — · Medio: — · Detras: —
 Reglas que el grupo acordo a seguir.
 
 - No se acepta absolutamente nada de las feys.
-- [Denzen](party/denzen.md) no puede saber donde esta la muñeca.
+- [Denzen](party/denzen.md) no puede saber donde esta la [muñeca](../items/muneca_ethel.md).
