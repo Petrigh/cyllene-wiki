@@ -3,7 +3,6 @@ title: First'Righ
 parent: The Party
 summary: Navegante con interes en los montes.
 grand_parent: Characters
-tag: Righ
 type: pc
 race: Hill dwarf
 class: Ranger 7 (Revised)
@@ -23,7 +22,7 @@ Indice
 
 ## Descripcion
 
-First es un [ranger](https://dnd5e.wikidot.com/ranger-revised) [enano](https://5e.tools/races.html#dwarf%20(hill)_phb). Sin reputacion relevante, sus aportes a los combates no son de los agresivos ya que sus valores religiosos hacen que vea el valor en todas las vidas y el honor en las muertes.
+First Righ es un [ranger](https://dnd5e.wikidot.com/ranger-revised) [enano](https://5e.tools/races.html#dwarf%20(hill)_phb). Sin reputacion relevante, sus aportes a los combates no son de los agresivos ya que sus valores religiosos hacen que vea el valor en todas las vidas y el honor en las muertes.
 
 ### Personalidad
 Reservado pero honorable, First intenta ayudar a los demas con acciones, sin notar que la comunicacion es tanto o mas util.
