@@ -8,7 +8,7 @@
 // con la misma especificidad gana esta regla.
 .side-bar {
   @include mq(lg) {
-    width: 20.0%;
+    width: 17.0%;
   }
 }
 .side-bar + .main {
@@ -31,7 +31,7 @@
 
 // Long prose reads better narrower than the theme default.
 .main-content p,
-.main-content li { max-width: 68ch; }
+.main-content li { max-width: 90%; }
 
 // Reference tables are scanned, not read.
 .main-content table { font-size: 0.85rem; }
@@ -126,7 +126,15 @@
 }
 
 // ---- Ficha de personaje (_layouts/character.html) ------------------------
-// Texto a la izquierda, retrato y datos rapidos en una columna a la derecha.
+// Ancho unico de la ficha: lo usan el flex de .character-page y la columna
+// derecha del grid de .character-sheet, asi que los dos layouts la dibujan
+// igual. Estaba declarado dos veces y en desacuerdo (`flex: 0 0 20rem` con
+// `width: 15rem`); como en flex manda el flex-basis, lo que se veia eran las
+// 20rem y el `width` no hacia nada.
+$character-card-width: 20rem;
+
+// Paginas cortas (NPCs): texto a la izquierda, ficha en una columna a la
+// derecha. Las largas usan .character-sheet, mas abajo.
 .character-page {
   display: flex;
   align-items: flex-start;
@@ -140,8 +148,7 @@
 }
 
 .character-card {
-  flex: 0 0 20rem;
-  width: 15rem;
+  flex: 0 0 $character-card-width;
   margin-top: 0.4rem;               // alinea con la primera linea del h1
   padding: 0.75rem;
   border: 1px solid $border-color;
@@ -203,13 +210,79 @@
     gap: 1.2rem;
   }
 
-  .character-card {
+  .character-page > .character-card {
     order: -1;
     flex-basis: auto;
     width: auto;
-    max-width: 20rem;
+    max-width: $character-card-width;
     align-self: center;
     margin-top: 0;
+  }
+}
+
+// ---- Paginas largas: indice y ficha en una fila --------------------------
+// Con el flex de arriba la ficha se comia una columna de punta a punta y el
+// texto quedaba encajonado en la mitad izquierda hasta el final de la pagina.
+// Aca la ficha comparte fila con el indice --que es chico y dejaba ese hueco
+// al lado libre-- y el cuerpo pasa abajo, a todo el ancho.
+//
+// El grid se arma con las cuatro piezas que separa _layouts/character.html y
+// cada una se ubica a mano. Las piezas siguen siendo bloques normales, asi que
+// adentro del cuerpo los margenes colapsan como siempre; si en vez de esto se
+// disolviera el wrapper con `display: contents`, cada parrafo pasaria a ser un
+// item del grid y al no colapsar mas se duplicaria el aire entre parrafos (el
+// tema le da `margin: 1em 0` a los <p> contando con que colapsen).
+//
+// La ficha va ultima en el HTML aunque se dibuje en la fila 2: un lector de
+// pantalla lee primero la pagina y los datos rapidos al final.
+.character-sheet {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) $character-card-width;
+  gap: 0 1.5rem;                    // sin row-gap: el espacio vertical ya lo ponen los margenes
+  align-items: start;
+
+  > .character-intro { grid-area: 1 / 1 / 2 / -1; }
+  > .wiki-toc        { grid-area: 2 / 1 / 3 / 2; }
+  > .character-card  { grid-area: 2 / 2 / 3 / 3; }
+  > .character-body  { grid-area: 3 / 1 / 4 / -1; }
+
+  // .wiki-toc es display: table para encogerse hasta el titulo mas largo; como
+  // item del grid el stretch por defecto lo estiraria a toda la columna.
+  > .wiki-toc { justify-self: start; }
+
+  // Igual que en .character-body: el h1 no arrastra el margin-top que el tema
+  // le da a los titulos, porque aca es lo primero de la pagina.
+  > .character-intro > :first-child { margin-top: 0; }
+
+  // El indice arranca con margin-top: 1.2rem; la ficha lo copia para que las
+  // dos cajas de la fila empiecen a la misma altura.
+  > .character-card { margin-top: 1.2rem; }
+
+  // .character-body ya le saca el margen a su primer hijo, asi que la
+  // separacion con la fila de arriba la pone el wrapper.
+  > .character-body { margin-top: 1.5rem; }
+}
+
+// Mismo corte que .character-page: abajo de 62rem no entran las dos columnas.
+// Queda titulo / ficha / indice / cuerpo, con la ficha arriba del texto.
+@media (max-width: 62rem) {
+  .character-sheet {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.2rem 0;
+
+    > .character-intro { grid-area: 1 / 1 / 2 / -1; }
+    > .character-card  { grid-area: 2 / 1 / 3 / -1; }
+    > .wiki-toc        { grid-area: 3 / 1 / 4 / -1; }
+    > .character-body  { grid-area: 4 / 1 / 5 / -1; }
+
+    > .character-card {
+      justify-self: center;         // en grid el eje horizontal es justify-*
+      width: $character-card-width;
+      max-width: 100%;
+      margin-top: 0;
+    }
+
+    > .character-body { margin-top: 0; }
   }
 }
 
@@ -377,3 +450,27 @@
 
 // La tabla de la linea de tiempo tiene columnas de años que no deben cortarse.
 .linea-tiempo td:nth-child(-n + 3) { white-space: nowrap; text-align: right; }
+
+
+// ---- Peso de los titulos --------------------------------------------------
+// El tema pone `font-weight: 500` en h1..h6 (base.scss) sobre la pila
+// `system-ui, -apple-system, ..., "Segoe UI"`. En Windows 11 Chrome resuelve
+// system-ui a Segoe UI Variable, una fuente variable con eje de peso continuo:
+// el 500 se interpola y el titulo se ve semi-negrita. Firefox resuelve
+// system-ui a la Segoe UI estatica, que trae 300/350/400/600/700 pero no 500;
+// segun el font matching de CSS, para 500 se prueba primero el 400, asi que
+// cae en Regular y el titulo se ve sin peso. Pidiendo 600 -- que existe como
+// Segoe UI Semibold -- los dos navegadores muestran lo mismo.
+// El h1 lo separa el tema en typography.scss con `font-weight: 300`: ese peso
+// si existe en las dos familias (Segoe UI Light), asi que no es el bug del 500,
+// pero un `#` de markdown se veia fino al lado de un `##` ya corregido. Va
+// tambien a 600 para que la jerarquia se lea por tamaño y no por peso.
+// h4 queda en 400: es una versalita con letter-spacing, no un titulo pesado.
+h1,
+h2,
+h3,
+h5,
+h6,
+#toctitle {
+  font-weight: 600;
+}
