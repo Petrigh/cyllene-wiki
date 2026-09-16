@@ -138,7 +138,7 @@ Una vez llegados a la [Costa Brumosa](../../locations/regions/costa_brumosa.md),
 
 Al llegar a [Creekwater ranch](../../locations/buildings/creekwater_ranch.md) Iri se encontró con su abuelo, ya muy avejentado pero aun presente, que inicialmente no confió en que quien se le presentaba era el verdadero Iri, disparandole en el hombro, pero luego de notar una antigua cicatriz en su nuca lo reconoció y abrazó.
 
-El abuelo logró contarles parte de lo que pasó en las semanas próximas a la llegada de Iri al rancho en el año 270 [D.f.](../../lore/calendario.md), pero no parecía tener recuerdo alguno sobre los padres de Iri, ni de la existencia de un reino llamado Aira, un casteo de [Identify](https://5e.tools/spells/identify-phb.html) logró confirmar que su falta de memoria estaba causada por los efectos de un [Wish]https://5e.tools/spells/wish-phb.html spell.
+El abuelo logró contarles parte de lo que pasó en las semanas próximas a la llegada de Iri al rancho en el año 270 [D.f.](../../lore/calendario.md), pero no parecía tener recuerdo alguno sobre los padres de Iri, ni de la existencia de un reino llamado Aira, un casteo de [Identify](https://5e.tools/spells/identify-phb.html) logró confirmar que su falta de memoria estaba causada por los efectos de un [Wish](https://5e.tools/spells/wish-phb.html) spell.
 
 
 ## Pesadillas
