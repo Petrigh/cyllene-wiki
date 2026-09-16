@@ -133,7 +133,8 @@ Sin embargo esto consiguió que Iri sea invitado a desayunar en el palco del emp
 La party acabó ganando el torneo, pero Iri no pudo tomar los premios de su apuesta ya que los instrumentos se encontraban inutilizables.
 
 ### La Costa brumosa
-Una vez llegados a la [Costa Brumosa](../../locations/regions/costa_brumosa.md), iri logró recordar en qué dirección ir para llegar al [rancho](../../locations/buildings/creekwater_ranch.md) de su [abuelo](../NPCs/jebediah_creekwater.md), guiando desde el asiento del acompañante de la [van](../../items/van.md) se dirigieron por un camino de tierra, al cabo de un tiempo empezaron a encontrar antiguos carteles con la imagen de Iri y la leyenda “Missing: Iranon Goldenstag II, if you have any information please contact  his grandfather Jebediah Creekwater at Creekwater Ranch”.
+Una vez llegados a la [Costa Brumosa](../../locations/regions/costa_brumosa.md), iri logró recordar en qué dirección ir para llegar al [rancho](../../locations/buildings/creekwater_ranch.md) de su [abuelo](../NPCs/jebediah_creekwater.md), guiando desde el asiento del acompañante de la [van](../../items/van.md) se dirigieron por un camino de tierra, al cabo de un tiempo empezaron a encontrar antiguos carteles con la imagen de Iri y la leyenda
+>“Missing: Iranon Goldenstag II, if you have any information please contact  his grandfather Jebediah Creekwater at Creekwater Ranch”.
 
 Al llegar a [Creekwater ranch](../../locations/buildings/creekwater_ranch.md) Iri se encontró con su abuelo, ya muy avejentado pero aun presente, que inicialmente no confió en que quien se le presentaba era el verdadero Iri, disparandole en el hombro, pero luego de notar una antigua cicatriz en su nuca lo reconoció y abrazó.
 
