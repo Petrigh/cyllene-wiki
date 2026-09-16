@@ -8,7 +8,7 @@
 // con la misma especificidad gana esta regla.
 .side-bar {
   @include mq(lg) {
-    width: 20.0rem;
+    width: 20.0%;
   }
 }
 .side-bar + .main {
