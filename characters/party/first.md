@@ -3,6 +3,7 @@ title: First'Righ
 parent: The Party
 summary: Navegante con interes en los montes.
 grand_parent: Characters
+tag: Righ
 type: pc
 race: Hill dwarf
 class: Ranger 7 (Revised)
