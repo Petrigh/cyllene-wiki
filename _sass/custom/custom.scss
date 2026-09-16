@@ -1,3 +1,24 @@
+// ---- Barra lateral pegada a la izquierda ---------------------------------
+// A partir de `lg` el tema ensancha .side-bar con
+// calc((100% - #{$nav-width + $content-width}) / 2 + #{$nav-width}), o sea que
+// la barra se come el margen izquierdo entero para que .main quede centrado.
+// En una pantalla ancha eso empuja la navegacion hacia el medio. Fijandola en
+// $nav-width la barra se queda contra el borde; .main sigue centrado porque su
+// margin-left no se toca. custom.scss se importa despues de modules, asi que
+// con la misma especificidad gana esta regla.
+.side-bar {
+  @include mq(lg) {
+    width: 20.0rem;
+  }
+}
+.side-bar + .main {
+  @include mq(lg) { 
+    margin-left: 22%; 
+    max-width: 55%;
+  }
+}
+
+
 // Spoiler callout: quiet border, no shouting.
 .spoiler {
   border-left: 3px solid #7d3232;
@@ -30,7 +51,7 @@
 
 .campaign-map {
   width: 100%;
-  background: #dbe3e6;              // el agua del mapa, para que no parpadee en blanco
+  background: #b5bfc2;              // el agua del mapa, para que no parpadee en blanco
   border: 1px solid $border-color;
   border-radius: 2px;
   cursor: grab;
@@ -119,7 +140,7 @@
 }
 
 .character-card {
-  flex: 0 0 15rem;
+  flex: 0 0 20rem;
   width: 15rem;
   margin-top: 0.4rem;               // alinea con la primera linea del h1
   padding: 0.75rem;
