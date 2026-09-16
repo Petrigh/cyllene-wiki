@@ -51,6 +51,12 @@
 
 .campaign-map {
   width: 100%;
+  // El alto sale del ancho y de la proporcion real de la imagen, que el JS
+  // escribe en --campaign-map-ratio al cargarla. Con un alto fijo la vista
+  // completa dejaba franjas muertas arriba y abajo: Leaflet encaja la imagen
+  // dentro de la caja, y lo que sobraba de caja quedaba vacio.
+  aspect-ratio: var(--campaign-map-ratio, 3 / 2);
+  max-height: var(--campaign-map-max-height, clamp(320px, 68vh, 700px));
   background: #b5bfc2;              // el agua del mapa, para que no parpadee en blanco
   border: 1px solid $border-color;
   border-radius: 2px;

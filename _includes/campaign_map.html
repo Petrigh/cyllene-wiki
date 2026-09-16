@@ -4,6 +4,10 @@
   Uso:  {% include campaign_map.html %}
         {% include campaign_map.html image="/assets/img/otro-mapa.jpg" height="500px" %}
 
+  El alto no se fija: sale del ancho disponible y de la proporcion real de la
+  imagen, asi el mapa entero entra sin franjas vacias arriba y abajo. El
+  parametro height es solo el tope, por si la imagen es muy alta.
+
   Los marcadores salen del front matter de cada pagina. Para poner una
   ubicacion en el mapa, agregale map_x y map_y (porcentaje desde la esquina
   superior izquierda, 0-100):
@@ -22,7 +26,7 @@
 {%- endcomment -%}
 
 {%- assign map_image  = include.image  | default: "/assets/img/map.jpg" -%}
-{%- assign map_height = include.height | default: "clamp(320px, 68vh, 700px)" -%}
+{%- assign map_max_height = include.height | default: "clamp(320px, 68vh, 700px)" -%}
 {%- assign map_pins   = site.pages | where_exp: "p", "p.map_x" | where_exp: "p", "p.map_y" | sort: "title" -%}
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -31,7 +35,7 @@
   <div
     id="campaign-map"
     class="campaign-map"
-    style="height: {{ map_height }};"
+    style="--campaign-map-max-height: {{ map_max_height }};"
     data-image="{{ map_image | relative_url }}"
     role="application"
     aria-label="Mapa interactivo de Cyllene">
@@ -80,10 +84,16 @@
   probe.src = imageUrl;
 
   function build(W, H) {
+    // El contenedor toma la proporcion de la imagen: sin esto la vista
+    // completa deja franjas muertas arriba y abajo (o a los costados).
+    el.style.setProperty('--campaign-map-ratio', W + ' / ' + H);
+
     var map = L.map(el, {
       crs: L.CRS.Simple,
       attributionControl: false,
-      zoomSnap: 0.25,
+      // Sin snap: fitBounds encaja la imagen justa. Con escalones de 0.25 el
+      // zoom de entrada se redondeaba para abajo y sobraba borde alrededor.
+      zoomSnap: 0,
       zoomDelta: 0.5,
       scrollWheelZoom: false,   // se activa al clickear, para no robar el scroll
       minZoom: -8,
