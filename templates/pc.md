@@ -27,8 +27,8 @@ location: Greyfen
 
 These fields also fill the card in the right-hand column, and a portrait
 dropped in `assets/pjs/` named after this file (`vess.md` ->
-`assets/pjs/Vess.jpeg`) shows up there on its own. See the
-[NPC template](npc.md) for the full list of fields the card reads.
+`assets/pjs/Vess.jpeg`) shows up there on its own. See
+[the side card reference](card.md) for the full list of fields it reads.
 
 ## Who they are
 

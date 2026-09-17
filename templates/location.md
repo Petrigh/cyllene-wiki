@@ -57,8 +57,25 @@ parent: Locations
 summary: Fen-side town of two thousand, built on a drained lake
 kind: settlement
 region: The Sallowmarch
+status: Tomada por los paladines
+facts:
+  - El unico puente cruza por la muralla
 ---
 ```
+
+## The side card
+
+Every page under `locations/` gets a card in the right-hand column, built from
+the frontmatter above — no include to add, it is automatic.
+
+- `kind` shows up as **Tipo**, translated; whichever of `settlement`, `region`,
+  `continent` or `world` the page hangs from becomes a link back to it.
+- `status`, `facts:` and an image named after the file (`whiterun.md` ->
+  `assets/img/Whiterun.jpg`) round it out.
+- `summary` doubles as the caption under the image.
+
+Same card on characters, factions and items — the full field list is in
+[the side card reference](card.md).
 
 ## In a line
 

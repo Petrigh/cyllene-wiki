@@ -1,0 +1,147 @@
+{%- comment -%}
+  Ficha: la columna de la derecha con la imagen y los datos rapidos. La inyecta
+  _layouts/wiki.html en todo lo que _config.yml le asigne ese layout
+  (characters/, locations/, factions/, items/), asi que no hace falta llamarla
+  a mano desde la pagina.
+
+  La imagen sale sola: si en la carpeta de imagenes de la seccion hay un
+  archivo que se llama igual que el .md se usa ese. Por ejemplo
+  characters/NPCs/gareth.md toma assets/pjs/Gareth.jpeg y
+  factions/warlock_motors.md toma "assets/img/Warlock Motors.jpg". No importan
+  las mayusculas, la extension, ni si el archivo separa las palabras con
+  espacios, guiones o guiones bajos. Para usar otra, ponele `image:` en el
+  front matter.
+
+  Que carpeta mira lo decide `card_images`, que _config.yml fija por seccion.
+
+  Los campos salen de wc_fields, mas abajo: una lista de `clave|Etiqueta|link`.
+  Cada uno se dibuja solo si la pagina tiene esa clave, asi que la lista es la
+  union de todas las secciones y cada pagina muestra lo suyo. Agregar un campo
+  nuevo es agregar un item a esa lista. El tercer campo, `link`, enlaza el
+  valor a la pagina que se llame igual (ver wiki_link.html).
+
+  Front matter que lee, todo opcional. Si no hay ninguno y tampoco hay imagen,
+  no dibuja nada.
+
+      ---
+      title: Gareth
+      parent: Characters
+      summary: Ranger de Safepoint que busca a su hermana
+      image: /assets/pjs/otro.jpeg    # solo si no coincide con el nombre
+      image_alt: Retrato de Gareth
+      aliases:                        # otros nombres; el que repite el
+        - Gary                        # titulo de la pagina se ignora
+        - name: Obeon                 # con link: la url de la pagina
+          link: /sessions/18.html     #   donde aparece ese nombre
+      role: Explorador
+      status: Vivo
+      faction: -                      # se enlaza si hay pagina con ese titulo
+      location: Safepoint             # idem
+      facts:                          # bullets libres, para lo que no entra arriba
+        - Hermano de Gaia
+      ---
+
+  Las variables llevan prefijo wc_ a proposito: en Jekyll los assign de un
+  include escriben en el scope global, asi que el prefijo evita pisar las de
+  quien nos incluye (location_children.html usa lc_).
+{%- endcomment -%}
+
+{%- assign wc_dir = page.card_images | default: "/assets/img/" -%}
+{%- assign wc_slug = page.path | split: "/" | last | split: "." | first | downcase | replace: " ", "_" | replace: "-", "_" -%}
+
+{%- assign wc_img = page.image | default: page.portrait -%}
+{%- unless wc_img -%}
+  {%- for wc_file in site.static_files -%}
+    {%- unless wc_file.path contains wc_dir -%}{%- continue -%}{%- endunless -%}
+    {%- comment -%} "Warlock Motors.jpg" tiene que matchear warlock_motors.md {%- endcomment -%}
+    {%- assign wc_name = wc_file.basename | downcase | replace: " ", "_" | replace: "-", "_" -%}
+    {%- if wc_name == wc_slug -%}
+      {%- assign wc_img = wc_file.path -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endunless -%}
+{%- comment -%}
+  uri_escape por los nombres con espacios: sin el, el href sale cortado.
+{%- endcomment -%}
+{%- assign wc_img_url = wc_img | relative_url | uri_escape -%}
+
+{%- comment -%} Cada alias es un string, o un {name, link} si hay que enlazarlo. {%- endcomment -%}
+{%- capture wc_alias_items -%}
+  {%- for wc_alias in page.aliases -%}
+    {%- assign wc_alias_text = wc_alias -%}
+    {%- if wc_alias.name -%}{%- assign wc_alias_text = wc_alias.name -%}{%- endif -%}
+    {%- unless wc_alias_text == page.title -%}
+      {%- if wc_alias.link -%}<a href="{{ wc_alias.link | relative_url }}">{{ wc_alias_text }}</a>
+      {%- else -%}{{ wc_alias_text }}{%- endif -%}|
+    {%- endunless -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- assign wc_aliases = wc_alias_items | strip | split: "|" | join: ", " -%}
+
+{%- comment -%}
+  `kind` se guarda en ingles porque con eso agrupa el arbol de ubicaciones
+  (location_children.html); en la ficha se muestra traducido.
+{%- endcomment -%}
+{%- assign wc_kinds = "world|Mundo,continent|Continente,region|Region,settlement|Asentamiento,building|Edificacion,nature|Naturaleza" | split: "," -%}
+{%- assign wc_kind = page.kind -%}
+{%- for wc_k in wc_kinds -%}
+  {%- assign wc_pair = wc_k | split: "|" -%}
+  {%- if wc_pair[0] == page.kind -%}{%- assign wc_kind = wc_pair[1] -%}{%- break -%}{%- endif -%}
+{%- endfor -%}
+
+{%- assign wc_fields = "race|Raza,class|Clase,player|Jugador,role|Rol,rarity|Rareza,attunement|Sintonizacion,holder|Portador|link,leader|Lider|link,seat|Sede|link,members|Miembros,pantheon|Panteon|link,faction|Faccion|link,settlement|En|link,region|Region|link,continent|Continente|link,world|Mundo|link,location|Donde|link,status|Estado,standing|Con la party,attitude|Con la party" | split: "," -%}
+
+{%- capture wc_facts -%}
+  {%- if wc_aliases != "" -%}<li><b>Alias</b> {{ wc_aliases }}</li>{%- endif -%}
+  {%- if wc_kind -%}<li><b>Tipo</b> {{ wc_kind }}</li>{%- endif -%}
+  {%- for wc_f in wc_fields -%}
+    {%- assign wc_pair = wc_f | split: "|" -%}
+    {%- comment -%}
+      La clave va a una variable suelta a proposito: Liquid no resuelve un
+      lookup anidado como page[wc_pair[0]] --no falla, devuelve nil-- y toda
+      la lista de campos se dibujaba vacia.
+    {%- endcomment -%}
+    {%- assign wc_key = wc_pair[0] -%}
+    {%- assign wc_value = page[wc_key] -%}
+    {%- comment -%}
+      Sacandole los guiones tiene que quedar algo: asi se saltean de una el
+      valor que falta (nil, "") y el `--` que varios items usan de placeholder,
+      que en la ficha seria una linea que no dice nada. Un true/false --
+      attunement-- sobrevive el filtro y se dibuja abajo.
+    {%- endcomment -%}
+    {%- assign wc_plain = wc_value | replace: "-", "" | strip -%}
+    {%- unless wc_plain == "" -%}
+      {%- capture wc_out -%}
+        {%- if wc_pair[2] == "link" -%}{% include wiki_link.html text=wc_value %}
+        {%- elsif wc_value == true -%}Si
+        {%- elsif wc_value == false -%}No
+        {%- else -%}{{ wc_value }}{%- endif -%}
+      {%- endcapture -%}
+      <li><b>{{ wc_pair[1] }}</b> {{ wc_out | strip }}</li>
+    {%- endunless -%}
+  {%- endfor -%}
+  {%- for wc_fact in page.facts -%}<li>{{ wc_fact }}</li>{%- endfor -%}
+{%- endcapture -%}
+{%- assign wc_facts = wc_facts | strip -%}
+
+{%- if wc_img or wc_facts != "" -%}
+<aside class="wiki-card" aria-label="Ficha de {{ page.title }}">
+  {%- if wc_img %}
+  <figure class="wiki-portrait">
+    <a href="{{ wc_img_url }}">
+      <img src="{{ wc_img_url }}"
+           alt="{{ page.image_alt | default: page.portrait_alt | default: page.title }}"
+           loading="lazy">
+    </a>
+    {%- if page.summary %}
+    <figcaption>{{ page.summary }}</figcaption>
+    {%- endif %}
+  </figure>
+  {%- endif -%}
+
+  {%- if wc_facts != "" %}
+  <ul class="wiki-facts">{{ wc_facts }}</ul>
+  {%- endif %}
+</aside>
+{%- endif -%}

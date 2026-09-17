@@ -1,0 +1,60 @@
+---
+layout: default
+---
+{%- comment -%}
+  Paginas con ficha al costado: la ficha (_includes/wiki_card.html) se arma
+  sola a partir del front matter y este layout decide donde ponerla.
+
+  Hay dos formas segun lo larga que sea la pagina:
+
+  - Las que llevan indice (`<div class="wiki-toc">`, las de la party) salen en
+    .wiki-sheet: titulo arriba, despues una fila de dos columnas con el indice
+    a la izquierda y la ficha a la derecha, y el cuerpo entero abajo a todo el
+    ancho. Para eso hay que partir `content` en tres, porque markdown lo
+    entrega como un solo bloque.
+  - Las que no lo llevan (los NPCs, las ubicaciones, cuatro lineas cada una)
+    salen en .wiki-page, con la ficha en una columna al costado del texto: ahi
+    el texto es tan corto que no gana nada con el ancho completo.
+
+  No se pone en el front matter de cada pagina: _config.yml se lo aplica a
+  characters/, locations/, factions/ e items/, junto con `card_images`, que es
+  la carpeta donde la ficha busca la imagen de cada seccion.
+
+  Las paginas sin datos de ficha (los index.md de cada seccion, party.md)
+  salen exactamente igual que sin layout, porque si la ficha queda vacia esto
+  no envuelve nada.
+{%- endcomment -%}
+{%- capture wiki_card -%}{% include wiki_card.html %}{%- endcapture -%}
+{%- assign wiki_card = wiki_card | strip -%}
+{%- assign wc_toc_open = '<div class="wiki-toc"' -%}
+
+{%- if wiki_card == "" -%}
+{{ content }}
+
+{%- elsif content contains wc_toc_open -%}
+{%- comment -%}
+  El corte: `split` tira el separador, asi que en vez de reconstruir a mano se
+  va sacando de adelante con remove_first y lo que queda es intacto. Importa
+  para el resto del cuerpo, que puede tener sus propios <div> (.spoiler) y con
+  un `split: '</div>'` se quedaria sin los cierres. El indice no anida divs
+  -- es un <p> y una <ol> --, asi que su primer '</div>' es el suyo.
+{%- endcomment -%}
+{%- assign wc_intro = content | split: wc_toc_open | first -%}
+{%- assign wc_after_open = content | remove_first: wc_intro | remove_first: wc_toc_open -%}
+{%- assign wc_toc_inner = wc_after_open | split: '</div>' | first -%}
+{%- assign wc_rest = wc_after_open | remove_first: wc_toc_inner | remove_first: '</div>' -%}
+<div class="wiki-sheet">
+  <div class="wiki-intro">{{ wc_intro }}</div>
+  {{ wc_toc_open }}{{ wc_toc_inner }}</div>
+  <div class="wiki-body">{{ wc_rest }}</div>
+  {{ wiki_card }}
+</div>
+
+{%- else -%}
+<div class="wiki-page">
+  <div class="wiki-body">
+    {{ content }}
+  </div>
+  {{ wiki_card }}
+</div>
+{%- endif -%}

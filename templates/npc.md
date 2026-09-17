@@ -35,20 +35,16 @@ facts:
 Every page under `characters/` gets a card in the right-hand column, built
 from the frontmatter above — no include to add, it is automatic.
 
-- `race`, `role`, `status`, `faction`, `location`, `attitude` become the
-  bullets, in that order. Leave out whatever you do not know yet.
-- `faction` and `location` turn into links when the value matches another
-  page's `title` exactly. Otherwise they stay plain
-  text, so a wrong value never breaks the build.
-- `facts:` is a list of free bullets for anything the fields above do not
-  cover. Keep them to one line each — the column is narrow.
+- `race`, `class`, `player`, `role`, `pantheon`, `faction`, `location`,
+  `status`, `attitude`, `aliases` and `facts` are the fields it reads here.
+  Leave out whatever you do not know yet.
 - The portrait comes from `assets/pjs/`, matched on the filename: a page at
-  `characters/NPCs/gareth.md` picks up `assets/pjs/Gareth.jpeg`. Case and
-  extension do not matter. To point somewhere else, set
-  `portrait: /assets/pjs/otro.jpeg`, and `portrait_alt:` for the alt text.
+  `characters/NPCs/gareth.md` picks up `assets/pjs/Gareth.jpeg`.
 - `summary` doubles as the caption under the portrait.
 
-A page with no portrait and none of these fields renders exactly as before.
+Same card on locations, factions and items — the full field list, the link
+rules and how the image is matched are in
+[the side card reference](card.md).
 
 ## One breath
 

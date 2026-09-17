@@ -27,12 +27,30 @@ defaults:
       path: ""
     values:
       layout: default
-  # Las paginas de personaje llevan la ficha de la derecha (retrato + datos).
-  # Es un layout y no un include para no tener que tocar los ~45 .md sueltos.
+  # Estas secciones llevan la ficha de la derecha (imagen + datos rapidos).
+  # Es un layout y no un include para no tener que tocar los ~130 .md sueltos.
+  # `card_images` es la carpeta donde la ficha busca la imagen de la pagina,
+  # matcheando por nombre de archivo (ver _includes/wiki_card.html).
   - scope:
       path: "characters"
     values:
-      layout: character
+      layout: wiki
+      card_images: /assets/pjs/
+  - scope:
+      path: "locations"
+    values:
+      layout: wiki
+      card_images: /assets/img/
+  - scope:
+      path: "factions"
+    values:
+      layout: wiki
+      card_images: /assets/img/
+  - scope:
+      path: "items"
+    values:
+      layout: wiki
+      card_images: /assets/img/
 
 # Everything below is kept OUT of the published site.
 # dm/ holds spoilers. GitHub Pages sites are PUBLIC unless you pay for
