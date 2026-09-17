@@ -2,6 +2,7 @@
 title: Warlock Motors
 parent: Factions
 summary: Conocidos en el roadtrip.
+image: /assets/img/Warlock Motors.jpg
 ---
 
 # Warlock Motors

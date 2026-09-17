@@ -16,8 +16,29 @@ title: The Ashen Compact
 parent: Factions
 summary: Salvagers with a monopoly on anything pulled from the burn scar
 standing: Wary
+leader: Marrow Quillane
+seat: Greyfen
+members: Unos cuarenta, mas los que compran
+status: Activa
 ---
 ```
+
+## The side card
+
+Every page under `factions/` gets a card in the right-hand column, built from
+the frontmatter above — no include to add, it is automatic.
+
+- `leader` and `seat` turn into links when they match another page's `title:`
+  exactly, so the faction points at its boss and its base.
+- `members` is one line, not a list — the column is narrow.
+- `standing` is the same value the table below explains, shown as
+  **Con la party**.
+- The image comes from `assets/img/`, matched on the filename:
+  `warlock_motors.md` picks up `assets/img/Warlock Motors.jpg`. Spaces,
+  hyphens and case do not matter. Anything else needs `image:` spelled out.
+
+Same card on characters, locations and items — the full field list is in
+[the side card reference](card.md).
 
 ## Standing with the party
 

@@ -22,6 +22,21 @@ holder: Vess
 ---
 ```
 
+## The side card
+
+Every page under `items/` gets a card in the right-hand column, built from the
+frontmatter above — no include to add, it is automatic.
+
+- `rarity`, `attunement` (`true` / `false`, shown as Si / No) and `holder`
+  are the fields it reads here. `holder` links to the character's page when it
+  matches their `title:` exactly.
+- `rarity: --` is treated as empty, so the placeholder does not take up a line.
+- An image named after the file (`van.md` -> `assets/img/Van.png`) shows up on
+  its own; `summary` doubles as its caption.
+
+Same card on characters, locations and factions — the full field list is in
+[the side card reference](card.md).
+
 ## What it looks like
 
 Describable before it is identified. Weight, material, wear, smell.
