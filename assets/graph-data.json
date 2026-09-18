@@ -1,0 +1,141 @@
+---
+layout: null
+sitemap: false
+backlinks: false
+search_exclude: true
+nav_exclude: true
+---
+{%- comment -%}
+  Datos del grafo de relaciones: un nodo por pagina, y por nodo la lista de
+  paginas que enlaza desde el cuerpo. Lo consumen las dos vistas:
+  _includes/graph_canvas.html (grafo global) y _includes/page_graph.html
+  (mini grafo al pie de cada pagina).
+
+  ---- Por que un .json aparte y no los datos incrustados en cada pagina ----
+
+  El mini grafo va en las ~196 paginas. Si los datos salieran inline, el
+  contenido de CADA pagina pasaria a contener la URL de TODAS las demas, y
+  backlinks.html (que busca `q.content contains page.url`) veria una mencion
+  universal: el bloque "Mencionado en" quedaria con las 196 paginas en todas.
+  Un fetch a este archivo mantiene el contenido limpio.
+
+  Este archivo es a su vez una pagina mas para Jekyll, pero su URL no contiene
+  ".html", asi que backlinks.html lo descarta como mencionante en su filtro de
+  la linea 232 -- el mismo motivo por el que no molesta el search-data.json del
+  tema. Tampoco esta en gr_sections, con lo cual queda doblemente afuera.
+
+  `layout: null` es obligatorio: el `defaults:` de _config.yml aplica
+  `layout: wiki_base` al scope path "" (todo el sitio), y sin anularlo esto
+  saldria envuelto en el HTML del tema en vez de JSON.
+
+  ---- Costo de build ----
+
+  El barrido es LINEAL: una pasada por pagina, y dentro un split del cuerpo.
+  No cruza todas contra todas. Es a proposito: backlinks.html ya paga ~40s con
+  un barrido cuadratico, y un segundo cuadratico haria el build inusable.
+
+  Por eso las aristas salen como URL de destino y no como indice del array: un
+  indice obligaria a buscar cada destino dentro de una tabla en Liquid (que no
+  tiene hash lookup, solo `contains` sobre un string largo), y eso si volveria
+  a ser cuadratico. Resolver URL -> indice es instantaneo en JS.
+
+  ---- Cuidado con el baseurl ----
+
+  `page.url` viene SIN baseurl (/characters/x.html) pero los links que deja
+  jekyll-relative-links en el cuerpo vienen CON baseurl
+  (/cyllene-wiki/characters/x.html). Por eso cada destino pasa por
+  `remove_first: site.baseurl` antes de guardarse: si no, ningun destino
+  matchearia con ningun nodo y el grafo saldria sin una sola arista.
+
+  backlinks.html no necesita esta normalizacion porque compara con `contains`,
+  y "/cyllene-wiki/characters/x.html" contiene "/characters/x.html". Aca la
+  comparacion es por igualdad (la hace el JS armando un Map), asi que hay que
+  dejar las dos puntas en la misma forma.
+
+  Todo queda entonces sin baseurl. Para navegar, el JS se lo antepone con el
+  que recibe por data-attribute.
+{%- endcomment -%}
+{%- assign gr_sections = "/characters/,/locations/,/factions/,/items/,/quests/,/sessions/,/bestiary/,/lore/,/rules/" | split: "," -%}
+
+{%- comment -%}
+  El MISMO predicado que hs_scan en _meta/index.md. No inventar otra lista.
+
+  - `url contains ".html"` deja afuera los diez index.md (su URL termina en
+    barra). No es solo que serian hubs falsos: arman sus listas con un `for` de
+    Liquid, asi que su `content` NO tiene links cuando todavia no se renderizo y
+    tiene media seccion cuando ya se renderizo. Deja afuera tambien este mismo
+    archivo y el search-data.json del tema.
+  - `backlinks != false` deja afuera characters/party.md, que tiene exactamente
+    el mismo problema (su tabla de PCs tambien sale de un `for`).
+
+  Las dos juntas son "paginas cuyo content no depende del orden de render", que
+  es la unica condicion bajo la cual este archivo sale igual en dos builds
+  seguidos. El `sort: "url"` es por lo mismo: site.pages viene en el orden de
+  Dir.entries, o sea del filesystem, y cambia de maquina en maquina.
+{%- endcomment -%}
+{%- assign gr_scan = site.pages | where_exp: "gr_q", "gr_q.url contains '.html'" | where_exp: "gr_q", "gr_q.backlinks != false" | sort: "url" -%}
+{"nodes":[
+{%- assign gr_first = true -%}
+{%- for gr_p in gr_scan -%}
+  {%- unless gr_p.title -%}{%- continue -%}{%- endunless -%}
+  {%- assign gr_sec = "" -%}
+  {%- for gr_s in gr_sections -%}
+    {%- if gr_p.url contains gr_s -%}
+      {%- assign gr_sec = gr_s | remove: "/" -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- if gr_sec == "" -%}{%- continue -%}{%- endif -%}
+
+  {%- comment -%} Subtipo: `type` en characters (pc/npc), `kind` en locations. {%- endcomment -%}
+  {%- assign gr_kind = gr_p.type | default: gr_p.kind | default: "" -%}
+
+  {%- unless gr_first -%},{%- endunless -%}{%- assign gr_first = false -%}
+{"u":{{ gr_p.url | jsonify }},"t":{{ gr_p.title | jsonify }},"s":{{ gr_sec | jsonify }},"k":{{ gr_kind | jsonify }},"d":{{ gr_p.summary | default: "" | strip | jsonify }},"o":[
+  {%- assign gr_lfirst = true -%}
+  {%- assign gr_seen = "|" -%}
+
+  {%- comment -%}
+    Forma markdown: ](/destino.html). Es la que queda cuando el cuerpo todavia
+    no se renderizo a HTML.
+
+    El filtro NO puede ser solo "termina en .html": characters/party/iri.md
+    tiene diez links a 5e.tools que tambien terminan en .html. Por eso ademas se
+    exige que arranque con "/", que deja afuera todo lo externo. Los destinos
+    que no son nodos (imagenes, index.md) los descarta despues el JS al no
+    encontrarlos en el mapa.
+  {%- endcomment -%}
+  {%- assign gr_chunks = gr_p.content | split: "](" -%}
+  {%- for gr_c in gr_chunks offset: 1 -%}
+    {%- assign gr_t = gr_c | split: ")" | first | split: "#" | first | split: " " | first | remove_first: site.baseurl -%}
+    {%- unless gr_t contains ".html" -%}{%- continue -%}{%- endunless -%}
+    {%- assign gr_h = gr_t | slice: 0, 1 -%}
+    {%- unless gr_h == "/" -%}{%- continue -%}{%- endunless -%}
+    {%- if gr_t == gr_p.url -%}{%- continue -%}{%- endif -%}
+    {%- assign gr_key = "|" | append: gr_t | append: "|" -%}
+    {%- if gr_seen contains gr_key -%}{%- continue -%}{%- endif -%}
+    {%- assign gr_seen = gr_seen | append: gr_t | append: "|" -%}
+    {%- unless gr_lfirst -%},{%- endunless -%}{%- assign gr_lfirst = false -%}
+    {{- gr_t | jsonify -}}
+  {%- endfor -%}
+
+  {%- comment -%} Forma renderizada: href="/destino.html". Segun el orden en que
+    Jekyll renderiza, `content` de otra pagina puede venir ya en HTML -- y las
+    tablas, que concentran muchas aristas, suelen llegar asi. backlinks.html y
+    _meta/index.md miran las dos formas por el mismo motivo. {%- endcomment -%}
+  {%- assign gr_chunks = gr_p.content | split: 'href="' -%}
+  {%- for gr_c in gr_chunks offset: 1 -%}
+    {%- assign gr_t = gr_c | split: '"' | first | split: "#" | first | remove_first: site.baseurl -%}
+    {%- unless gr_t contains ".html" -%}{%- continue -%}{%- endunless -%}
+    {%- assign gr_h = gr_t | slice: 0, 1 -%}
+    {%- unless gr_h == "/" -%}{%- continue -%}{%- endunless -%}
+    {%- if gr_t == gr_p.url -%}{%- continue -%}{%- endif -%}
+    {%- assign gr_key = "|" | append: gr_t | append: "|" -%}
+    {%- if gr_seen contains gr_key -%}{%- continue -%}{%- endif -%}
+    {%- assign gr_seen = gr_seen | append: gr_t | append: "|" -%}
+    {%- unless gr_lfirst -%},{%- endunless -%}{%- assign gr_lfirst = false -%}
+    {{- gr_t | jsonify -}}
+  {%- endfor -%}
+]}
+{%- endfor -%}
+]}

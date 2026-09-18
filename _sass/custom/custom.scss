@@ -50,7 +50,7 @@
 }
 
 .campaign-map {
-  width: 100%;
+  width: 70%;
   // El alto sale del ancho y de la proporcion real de la imagen, que el JS
   // escribe en --campaign-map-ratio al cargarla. Con un alto fijo la vista
   // completa dejaba franjas muertas arriba y abajo: Leaflet encaja la imagen
@@ -482,4 +482,302 @@ h5,
 h6,
 #toctitle {
   font-weight: 600;
+}
+
+// ---- Mencionado en (_includes/backlinks.html) ----------------------------
+// Quien habla de esta pagina y todavia no esta enlazado desde ella. Lo cuelga
+// _layouts/wiki_base.html al pie de todo, o sea despues del grid de
+// .wiki-sheet o del flex de .wiki-page: es un bloque normal, a todo el ancho.
+//
+// Tiene que leerse como una nota al pie y no como una seccion mas de la pagina.
+// Por eso no hay heading -- ensuciaria el outline del documento y el indice que
+// arma {:toc} en las paginas de la party, igual que pasa con .loc-group --
+// sino un rotulo en negrita adentro del mismo parrafo, y el unico corte visual
+// es la linea de arriba.
+.backlinks {
+  margin-top: 2rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid $border-color;
+
+  p {
+    margin: 0;
+    max-width: none;          // .main-content p le pone max-width: 90%
+    color: $search-result-preview-color;
+    font-size: 0.8rem;
+    line-height: 1.7;         // la lista envuelve; sin aire se apelmaza
+  }
+
+  // Mismo tratamiento que los rotulos de la ficha (.wiki-facts b).
+  b {
+    color: $body-heading-color;
+    font-weight: 600;
+    &::after { content: ":"; }
+  }
+}
+
+// Solo sale en los cinco titulos repetidos (Verna, Brolwund, Carnahan, Glavok y
+// Naivara son NPC y asentamiento a la vez): sin esto la lista mostraria dos
+// entradas identicas que van a paginas distintas.
+.backlinks-sec {
+  font-size: 0.72rem;
+  font-style: italic;
+}
+
+
+// ---- Grafo de relaciones -------------------------------------------------
+// Dos vistas que comparten paleta: el grafo global (_includes/graph_canvas.html,
+// canvas) y el mini grafo al pie de cada pagina (_includes/page_graph.html, SVG).
+//
+// Los colores salen como custom properties y no como variables Sass a secas
+// porque el canvas los necesita EN RUNTIME: las variables del tema son Sass, o
+// sea que se evaporan al compilar y getComputedStyle no ve nada. Definidas asi,
+// la paleta sigue viviendo en un solo lugar y el JS la lee con getPropertyValue.
+//
+// Son nueve categorias, mas de las que el ojo separa por color solo. El color
+// aca ordena y agrupa; quien identifica es la etiqueta, el tooltip y los
+// filtros. Todos los tonos son oscuros sobre el papel #e9e7e0 del tema.
+.wiki-graph-wrap,
+.page-graph {
+  --g-pc:        #2f6f60;   // el propio $link-color: los PJs son el centro
+  --g-npc:       #4a7f72;
+  --g-locations: #7d6a32;   // el mismo ocre que los puntos de region del mapa
+  --g-factions:  #7d3232;   // oxblood, como los spoilers
+  --g-items:     #6b5a7d;
+  --g-sessions:  #5a6673;
+  --g-quests:    #8a5a2b;
+  --g-bestiary:  #3f6b3a;   // el verde de los puntos de naturaleza del mapa
+  --g-lore:      #2b5a7d;
+  --g-rules:     #5a6673;
+
+  --g-ink:   #{$body-text-color};
+  --g-line:  #{$border-color};
+  --g-paper: #{$body-background-color};
+}
+
+// Mismo problema de z-index que el mapa: el tema deja la caja de resultados de
+// busqueda en z-index 2, y sin un stacking context propio el grafo la tapa.
+.wiki-graph-wrap {
+  margin: 1.2rem 0 1.6rem;
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+  max-width: none;
+
+  // .side-bar + .main esta capado en 55% (arriba en este archivo), que para un
+  // grafo de ~194 nodos es una ventana muy angosta.
+  //
+  // Se ensancha SOLO este bloque y no .main entero: el grafo comparte pagina
+  // con los parrafos de la home, y estirar la columna estiraria tambien el
+  // texto, que esta angosto a proposito.
+  //
+  // Crece unicamente hacia la derecha. Un margen negativo a la izquierda lo
+  // centraria, pero .main arranca en el 22% y la barra lateral ocupa hasta el
+  // 17%, asi que se le meteria encima. A la derecha hay 23% libre: 55% * 1.38
+  // = 76% del viewport, que termina antes del borde.
+  //
+  // Va dentro del mismo mq(lg) que el cap: abajo de ese breakpoint .main ya no
+  // esta capado y un 138% se saldria de la pantalla.
+  @include mq(lg) {
+    width: 138%;
+  }
+}
+
+.wiki-graph-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+  margin-bottom: 0.6rem;
+}
+
+.wiki-graph-search {
+  padding: 0.2rem 0.5rem;
+  border: 1px solid $border-color;
+  border-radius: 2px;
+  background: $table-background-color;
+  color: $body-text-color;
+  font-family: inherit;
+  font-size: 0.78rem;
+  min-width: 11rem;
+
+  &:focus-visible { outline: 2px solid $link-color; outline-offset: 1px; }
+}
+
+.wiki-graph-filters { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+
+// Los chips repiten el lenguaje de .loc-controls button, con el color de la
+// seccion en el punto de la izquierda. Apagado se ve hundido, no escondido: hay
+// que poder ver de un vistazo que hay mas material del que se esta mostrando.
+.wiki-graph-chip,
+.wiki-graph-reset {
+  padding: 0.15rem 0.5rem;
+  border: 1px solid $border-color;
+  border-radius: 2px;
+  background: $table-background-color;
+  color: $body-text-color;
+  font-size: 0.75rem;
+  font-family: inherit;
+  cursor: pointer;
+
+  &:hover { border-color: $link-color; color: $link-color; }
+  &:focus-visible { outline: 2px solid $link-color; outline-offset: 1px; }
+}
+
+.wiki-graph-chip {
+  &::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 0.35rem;
+    border-radius: 50%;
+    background: var(--chip, #{$link-color});
+    vertical-align: baseline;
+  }
+
+  &[aria-pressed="false"] {
+    opacity: 0.45;
+    &::before { background: transparent; box-shadow: inset 0 0 0 1px var(--chip, #{$link-color}); }
+  }
+}
+
+.wiki-graph-reset { margin-left: auto; }
+
+.wiki-graph-stage {
+  position: relative;
+  height: clamp(380px, 70vh, 760px);
+  border: 1px solid $border-color;
+  border-radius: 2px;
+  background: $body-background-color;
+  overflow: hidden;
+}
+
+.wiki-graph-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  &:active { cursor: grabbing; }
+}
+
+.wiki-graph-tip {
+  position: absolute;
+  z-index: 1;
+  max-width: 17rem;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid $border-color;
+  border-radius: 2px;
+  background: $table-background-color;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  pointer-events: none;      // si no, el tooltip se mete entre el mouse y el nodo
+
+  strong { display: block; }
+  span   { display: block; color: $search-result-preview-color; }
+  em     { display: block; font-size: 0.7rem; color: $search-result-preview-color; }
+}
+
+.wiki-graph-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  color: $search-result-preview-color;
+  font-size: 0.85rem;
+}
+.wiki-graph-empty[hidden] {
+  display: none !important;
+}
+
+.wiki-graph-hint {
+  margin: 0.4rem 0 0;
+  max-width: none;                  // .main-content p tiene max-width: 90%
+  font-size: 0.75rem;
+  color: $search-result-preview-color;
+}
+
+
+// ---- Mini grafo de cada pagina -------------------------------------------
+// Va arriba de "Mencionado en" a proposito: primero el dibujo, que se lee de un
+// vistazo, y despues la lista, que es la version exacta y navegable.
+.page-graph {
+  margin: 1.6rem 0 0;
+  padding-top: 0.8rem;
+  border-top: 1px solid $border-color;
+}
+
+.page-graph-title {
+  margin: 0 0 0.2rem;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: $search-result-preview-color;
+}
+
+.page-graph-svg {
+  display: block;
+  width: 100%;
+  max-width: 34rem;
+  height: auto;
+  overflow: visible;                // las etiquetas del anillo se salen del viewBox
+}
+
+.page-graph-edge {
+  stroke: $border-color;
+  stroke-width: 1;
+}
+
+.page-graph-dot {
+  fill: var(--g-npc);
+  transition: r 0.1s ease;
+
+  &[data-cat="pc"]        { fill: var(--g-pc); }
+  &[data-cat="npc"]       { fill: var(--g-npc); }
+  &[data-cat="locations"] { fill: var(--g-locations); }
+  &[data-cat="factions"]  { fill: var(--g-factions); }
+  &[data-cat="items"]     { fill: var(--g-items); }
+  &[data-cat="sessions"]  { fill: var(--g-sessions); }
+  &[data-cat="quests"]    { fill: var(--g-quests); }
+  &[data-cat="bestiary"]  { fill: var(--g-bestiary); }
+  &[data-cat="lore"]      { fill: var(--g-lore); }
+  &[data-cat="rules"]     { fill: var(--g-rules); }
+}
+
+.page-graph-label {
+  fill: $body-text-color;
+  font-size: 10px;
+  text-anchor: middle;
+}
+
+// El nodo central es esta misma pagina: no es un link, y se marca con un anillo
+// en vez de con color para no gastar una categoria de la paleta en el.
+.page-graph-node.is-self {
+  .page-graph-dot  { stroke: $body-background-color; stroke-width: 3; }
+  .page-graph-label { font-weight: 600; }
+}
+
+a.page-graph-node {
+  cursor: pointer;
+  text-decoration: none;
+
+  &:hover, &:focus-visible {
+    .page-graph-dot   { r: 8; }
+    .page-graph-label { fill: $link-color; text-decoration: underline; }
+  }
+  &:focus-visible { outline: 2px solid $link-color; outline-offset: 2px; }
+}
+
+.page-graph-more {
+  margin: 0.2rem 0 0;
+  max-width: none;
+  font-size: 0.72rem;
+  font-style: italic;
+  color: $search-result-preview-color;
+}
+
+@media (max-width: 62rem) {
+  .wiki-graph-stage { height: clamp(320px, 60vh, 520px); }
+  .wiki-graph-reset { margin-left: 0; }
 }

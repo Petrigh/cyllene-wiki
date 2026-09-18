@@ -4,6 +4,20 @@ services:
     ports:
       - "4000:4000"
       - "35729:35729"
+    # Mirrors the Dockerfile CMD plus --config, which is the only difference
+    # between the local preview and what GitHub Pages builds: _config_local.yml
+    # adds the _meta/ collection (the wiki health page) and the "Salud del wiki"
+    # aux link. It lives HERE and not in the Dockerfile CMD on purpose, so that
+    #     docker compose run --rm wiki bundle exec jekyll build -d /tmp/prod
+    # -- an explicit command, which overrides this one -- really is the
+    # production build. Keep this list in sync with the Dockerfile CMD.
+    # Note: --config does NOT auto-load _config.yml, both have to be listed.
+    command: ["bundle", "exec", "jekyll", "serve",
+              "--host", "0.0.0.0",
+              "--port", "4000",
+              "--livereload", "--livereload-port", "35729",
+              "--force_polling",
+              "--config", "_config.yml,_config_local.yml"]
     volumes:
       # Live-edit the wiki from the host; the container rebuilds on save.
       - .:/site
@@ -14,6 +28,9 @@ services:
       # files whose own source changed, so the section index.md pages (which list
       # site.pages via Liquid) keep serving a stale list when a page is added,
       # renamed or deleted.
+      # Since the backlinks block (_includes/backlinks.html) this is worse than
+      # stale indexes: editing page A changes the rendered output of every page A
+      # mentions, and none of those get rebuilt.
 
 volumes:
   site-build:

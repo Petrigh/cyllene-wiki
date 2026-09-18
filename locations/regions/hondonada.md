@@ -12,12 +12,6 @@ map_y: 43.0
 
 Región al sureste del [Bosque Inescrutable](../regions/bosque_inescrutable.md), donde arrancó la campaña.
 
-## Asentamientos
-
-- [Garnier](../settlements/garnier.md)
-- [Fywick](../settlements/fywick.md)
-- [Fadefair](../settlements/fadefair.md)
-
 ## Que sabe la party
 
 - [*Sesion 17*](../../sessions/17.md) — Por un *sending* a [Marcia](../../characters/NPCs/marcia.md) se enteran de que hay una revolución en la Hondonada y que los [paladines](../../factions/paladines_carnahan.md) los están atacando. Pasa a ser su primera prioridad.

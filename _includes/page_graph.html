@@ -1,0 +1,161 @@
+{%- comment -%}
+  Mini grafo de la pagina actual: sus vecinos inmediatos, en un anillo.
+
+  Cuelga de _layouts/wiki_base.html, o sea que corre en las ~194 paginas. Por
+  eso NO toca site.pages ni hace ningun cruce en Liquid: lo unico que se
+  interpola es la URL de esta pagina y la del JSON. Todo el filtrado pasa en el
+  browser contra assets/graph-data.json, que ya viene cacheado de la pagina
+  anterior. Cualquier `for` sobre site.pages aca seria rehacer backlinks.html y
+  sus ~40s de build, multiplicados.
+
+  Sin fuerzas y sin libreria: un vecindario son unos pocos nodos, asi que van en
+  un anillo calculado a mano. Ademas de ser instantaneo, deja dibujar <a> de
+  verdad en vez de un canvas -- funciona con teclado, con click del medio y con
+  "abrir en pestaña nueva", la misma decision que tomo el mapa con sus divIcon.
+
+  Interruptores, igual que backlinks: `graph: false` en _config.yml lo apaga en
+  todo el sitio, `graph: false` en una pagina la apaga solo a ella.
+{%- endcomment -%}
+
+{%- assign pg_on = true -%}
+{%- if site.graph == false -%}{%- assign pg_on = false -%}{%- endif -%}
+{%- if page.graph == false -%}{%- assign pg_on = false -%}{%- endif -%}
+{%- unless page.url contains ".html" -%}{%- assign pg_on = false -%}{%- endunless -%}
+{%- unless page.title -%}{%- assign pg_on = false -%}{%- endunless -%}
+
+{%- if pg_on -%}
+<div class="page-graph" hidden
+     data-src="{{ '/assets/graph-data.json' | relative_url }}"
+     data-base="{{ site.baseurl }}"
+     data-url="{{ page.url }}">
+  <h2 class="page-graph-title">Conexiones</h2>
+  <div class="page-graph-body"></div>
+</div>
+
+<script>
+(function () {
+  var box = document.querySelector('.page-graph');
+  if (!box) { return; }
+
+  var NS   = 'http://www.w3.org/2000/svg';
+  var base = box.dataset.base || '';
+  var self = box.dataset.url;
+  var MAX  = 12;
+
+  fetch(box.dataset.src)
+    .then(function (r) { return r.json(); })
+    .then(render)
+    .catch(function (e) {
+      console.warn('page_graph: no se pudieron leer los datos.', e);
+    });
+
+  function render(data) {
+    var byUrl = new Map();
+    data.nodes.forEach(function (n) { byUrl.set(n.u, n); });
+
+    var me = byUrl.get(self);
+    if (!me) { return; }
+
+    // Vecinos en las dos direcciones: los que esta pagina enlaza y los que la
+    // enlazan a ella. Para el grafo la flecha no importa, importa que se tocan.
+    var seen = new Set(), nb = [];
+    function add(n) {
+      if (!n || n === me || seen.has(n.u)) { return; }
+      seen.add(n.u);
+      nb.push(n);
+    }
+    (me.o || []).forEach(function (t) { add(byUrl.get(t)); });
+    data.nodes.forEach(function (n) {
+      if ((n.o || []).indexOf(self) !== -1) { add(n); }
+    });
+
+    if (!nb.length) { return; }
+
+    // Los mas conectados primero, para que el recorte deje lo importante.
+    var deg = new Map();
+    data.nodes.forEach(function (n) {
+      deg.set(n.u, (deg.get(n.u) || 0) + (n.o || []).length);
+      (n.o || []).forEach(function (t) { deg.set(t, (deg.get(t) || 0) + 1); });
+    });
+    nb.sort(function (a, b) { return (deg.get(b.u) || 0) - (deg.get(a.u) || 0); });
+
+    var extra = nb.length - MAX;
+    var show = nb.slice(0, MAX);
+
+    var W = 480, H = 320, cx = W / 2, cy = H / 2;
+    var rx = W * 0.36, ry = H * 0.34;
+
+    var svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    svg.setAttribute('class', 'page-graph-svg');
+    svg.setAttribute('role', 'group');
+    svg.setAttribute('aria-label', 'Paginas conectadas con ' + me.t);
+
+    var pts = show.map(function (n, i) {
+      // Se arranca arriba y se gira: asi el primero (el mas conectado) queda
+      // en la punta y no escondido abajo.
+      var a = (i / show.length) * Math.PI * 2 - Math.PI / 2;
+      return { n: n, x: cx + Math.cos(a) * rx, y: cy + Math.sin(a) * ry };
+    });
+
+    pts.forEach(function (p) {
+      var ln = document.createElementNS(NS, 'line');
+      ln.setAttribute('x1', cx); ln.setAttribute('y1', cy);
+      ln.setAttribute('x2', p.x); ln.setAttribute('y2', p.y);
+      ln.setAttribute('class', 'page-graph-edge');
+      svg.appendChild(ln);
+    });
+
+    svg.appendChild(node(cx, cy, me, true));
+    pts.forEach(function (p) { svg.appendChild(node(p.x, p.y, p.n, false)); });
+
+    var body = box.querySelector('.page-graph-body');
+    body.appendChild(svg);
+
+    if (extra > 0) {
+      var more = document.createElement('p');
+      more.className = 'page-graph-more';
+      more.textContent = '+' + extra + ' mas';
+      body.appendChild(more);
+    }
+
+    box.hidden = false;
+  }
+
+  function cat(n) {
+    return n.s === 'characters' ? (n.k === 'pc' ? 'pc' : 'npc') : n.s;
+  }
+
+  function node(x, y, n, isSelf) {
+    // Un <a> de verdad, no un <circle> con onclick: teclado, click del medio y
+    // "abrir en pestaña nueva" salen gratis.
+    var g = document.createElementNS(NS, isSelf ? 'g' : 'a');
+    g.setAttribute('class', 'page-graph-node' + (isSelf ? ' is-self' : ''));
+    if (!isSelf) {
+      g.setAttributeNS(null, 'href', base + n.u);
+      g.setAttribute('aria-label', n.t + (n.d ? '. ' + n.d : ''));
+    }
+
+    var c = document.createElementNS(NS, 'circle');
+    c.setAttribute('cx', x); c.setAttribute('cy', y);
+    c.setAttribute('r', isSelf ? 9 : 6);
+    c.setAttribute('class', 'page-graph-dot');
+    c.setAttribute('data-cat', cat(n));
+    g.appendChild(c);
+
+    var t = document.createElementNS(NS, 'text');
+    t.setAttribute('x', x);
+    t.setAttribute('y', y + (isSelf ? 24 : 19));
+    t.setAttribute('class', 'page-graph-label');
+    t.textContent = n.t;
+    g.appendChild(t);
+
+    var title = document.createElementNS(NS, 'title');
+    title.textContent = n.d ? n.t + ' — ' + n.d : n.t;
+    g.appendChild(title);
+
+    return g;
+  }
+})();
+</script>
+{%- endif -%}

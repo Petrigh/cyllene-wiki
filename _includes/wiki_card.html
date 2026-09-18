@@ -14,11 +14,13 @@
 
   Que carpeta mira lo decide `card_images`, que _config.yml fija por seccion.
 
-  Los campos salen de wc_fields, mas abajo: una lista de `clave|Etiqueta|link`.
-  Cada uno se dibuja solo si la pagina tiene esa clave, asi que la lista es la
-  union de todas las secciones y cada pagina muestra lo suyo. Agregar un campo
-  nuevo es agregar un item a esa lista. El tercer campo, `link`, enlaza el
-  valor a la pagina que se llame igual (ver wiki_link.html).
+  Los campos salen de wc_fields, mas abajo: una lista de
+  `clave|Etiqueta|link|/seccion/`. Cada uno se dibuja solo si la pagina tiene esa
+  clave, asi que la lista es la union de todas las secciones y cada pagina
+  muestra lo suyo. Agregar un campo nuevo es agregar un item a esa lista. El
+  tercer campo, `link`, enlaza el valor a la pagina que se llame igual (ver
+  wiki_link.html); el cuarto, opcional, le dice en que seccion buscarla cuando
+  hay dos paginas con el mismo titulo.
 
   Front matter que lee, todo opcional. Si no hay ninguno y tampoco hay imagen,
   no dibuja nada.
@@ -90,7 +92,14 @@
   {%- if wc_pair[0] == page.kind -%}{%- assign wc_kind = wc_pair[1] -%}{%- break -%}{%- endif -%}
 {%- endfor -%}
 
-{%- assign wc_fields = "race|Raza,class|Clase,player|Jugador,role|Rol,rarity|Rareza,attunement|Sintonizacion,holder|Portador|link,leader|Lider|link,seat|Sede|link,members|Miembros,pantheon|Panteon|link,faction|Faccion|link,settlement|En|link,region|Region|link,continent|Continente|link,world|Mundo|link,location|Donde|link,status|Estado,standing|Con la party,attitude|Con la party" | split: "," -%}
+{%- comment -%}
+  El cuarto campo, opcional, es la seccion donde tiene que buscar el link. Hace
+  falta porque cinco titulos existen dos veces (Verna, Brolwund, Carnahan,
+  Glavok y Naivara son NPC y asentamiento a la vez): sin el, `location: Verna`
+  enlazaba a la NPC en vez de a la ciudad. Es el mismo mapa de campo -> seccion
+  que usa backlinks.html para contar menciones, y los dos tienen que coincidir.
+{%- endcomment -%}
+{%- assign wc_fields = "race|Raza,class|Clase,player|Jugador,role|Rol,rarity|Rareza,attunement|Sintonizacion,holder|Portador|link|/characters/,leader|Lider|link|/characters/,seat|Sede|link|/locations/,members|Miembros,pantheon|Panteon|link|/lore/,faction|Faccion|link|/factions/,settlement|En|link|/locations/,region|Region|link|/locations/,continent|Continente|link|/locations/,world|Mundo|link|/locations/,location|Donde|link|/locations/,status|Estado,standing|Con la party,attitude|Con la party" | split: "," -%}
 
 {%- capture wc_facts -%}
   {%- if wc_aliases != "" -%}<li><b>Alias</b> {{ wc_aliases }}</li>{%- endif -%}
@@ -112,8 +121,13 @@
     {%- endcomment -%}
     {%- assign wc_plain = wc_value | replace: "-", "" | strip -%}
     {%- unless wc_plain == "" -%}
+      {%- comment -%}
+        La seccion va a una variable suelta por lo mismo que wc_key: un lookup
+        indexado como parametro de include no siempre resuelve.
+      {%- endcomment -%}
+      {%- assign wc_sec = wc_pair[3] -%}
       {%- capture wc_out -%}
-        {%- if wc_pair[2] == "link" -%}{% include wiki_link.html text=wc_value %}
+        {%- if wc_pair[2] == "link" -%}{% include wiki_link.html text=wc_value section=wc_sec %}
         {%- elsif wc_value == true -%}Si
         {%- elsif wc_value == false -%}No
         {%- else -%}{{ wc_value }}{%- endif -%}

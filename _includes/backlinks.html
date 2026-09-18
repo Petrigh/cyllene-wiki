@@ -1,0 +1,286 @@
+{%- comment -%}
+  "Mencionado en": las paginas que hablan de esta y que esta pagina todavia no
+  enlaza de vuelta.
+
+      mostrar(X) = { P que menciona a X } - { P que X ya enlaza }
+
+  La resta es el punto. Si dos paginas ya se cruzan, el bloque no dice nada: el
+  lector ya tiene el link dos parrafos mas arriba y repetirlo abajo es ruido.
+  Se ve solo donde falta algo, que es donde sirve. Simon, que esta vacio,
+  muestra a Thiala; Thiala, que ya lo enlaza en su texto, no muestra nada de el.
+
+  Lo cuelga _layouts/wiki_base.html, que _config.yml aplica a todo el sitio, asi
+  que no hay que agregarlo a ninguno de los ~206 .md sueltos.
+
+  ---- Como se detecta una mencion ----------------------------------------
+
+  Por la URL del destino. No por el texto del link ni por el nombre del archivo,
+  que son los dos caminos que parecen obvios y no funcionan aca:
+
+  - Solo el 48% de los 706 links internos usa como texto el `title:` de la
+    pagina a la que apunta. Estan [Mary Ann] / [Mary] / [Mary Anne] para
+    "Mary Ann Bevan", [Iri] / [Iranon] para "Iranon Goldenstag", [goose] para
+    "The Loose Goose", [Nightmares] y [pesadilla] para "Las Pesadillas",
+    [*Sesion 12*] con el enfasis adentro del corchete, un [18] pelado y hasta un
+    [abuelo] para "Jebediah Creekwater".
+  - Nueve nombres de archivo chocan: verna.md, brolwund.md, carnahan.md,
+    glavok.md y naivara.md existen a la vez en characters/NPCs/ y en
+    locations/settlements/, y las dos versiones se enlazan de verdad.
+
+  Queda la URL, que es unica. jekyll-relative-links -- que entra por el gem
+  github-pages, no por el `plugins:` de _config.yml -- reescribe esos links .md
+  a la URL final durante la fase de generate, o sea ANTES de que se renderice
+  nada. Asi que para cualquier pagina P, P.content contiene la URL del destino,
+  este P todavia en markdown (...](/cyllene-wiki/.../verna.html)) o ya
+  convertido a HTML (<a href="/cyllene-wiki/.../verna.html">). El orden de
+  render, que Jekyll no garantiza, deja de importar.
+
+  Se busca `page.url` pelado (/locations/settlements/verna.html), que es
+  substring de la forma con baseurl que el plugin realmente escribe: asi anda
+  con baseurl y sin el, y sigue andando si algun dia se cambia.
+
+  OJO: esto ve LINKS, no nombres. Una pagina puede hablar de otra en prosa
+  durante diez lineas y no aparecer aca. Es a proposito -- con el 48% de arriba,
+  matchear por nombre seria adivinar -- asi que no "arreglar" esto agregando
+  busqueda por titulo.
+
+  ---- Por que solo las paginas con .html en la URL -----------------------
+
+  Los index.md tienen URL terminada en barra: el raiz es "/" y los de seccion
+  son "/characters/", "/locations/". "/" es substring de TODAS las URLs del
+  sitio y "/characters/" lo es de las 70 de esa seccion, asi que sin filtro el
+  index raiz saldria mencionado en las 206 paginas. Entre las URLs .html, en
+  cambio, no hay ni un caso de una contenida en otra: para que pasara, el path
+  de un archivo tendria que ser la cola del de otro, y el unico .md en la raiz
+  es el index.
+
+  De paso deja afuera el assets/js/search-data.json del tema, que para Jekyll es
+  una pagina mas y contiene la URL de cada pagina del sitio: sin el filtro
+  figuraria como "mencion" en las 206. Y deja afuera los index como pagina
+  actual, que es lo que se quiere: son listados, no temas.
+
+  ---- Menciones por front matter -----------------------------------------
+
+  Un NPC con `location: Safepoint` esta hablando de Safepoint aunque su cuerpo
+  no lo enlace: ese link lo dibuja la ficha (wiki_card.html), que vive en el
+  layout y por lo tanto nunca esta en P.content. Por eso los campos se leen
+  aparte.
+
+  Van con guarda de seccion, porque los cinco titulos repetidos rompen el
+  match a secas: como catedral_verna.md dice `settlement: Verna`, la Verna NPC
+  se llenaria de edificios de la ciudad Verna. Cada campo solo matchea contra un
+  destino de la seccion que le corresponde:
+
+      world/continent/region/settlement/location/seat -> /locations/
+      faction                                         -> /factions/
+      pantheon                                        -> /lore/
+      holder/leader                                   -> /characters/
+
+  Es el mismo mapa que wiki_card.html le pasa a wiki_link.html, para que la
+  ficha y este bloque no se contradigan.
+
+  ---- Lugar que nombra a lugar -------------------------------------------
+
+  Si la pagina actual es una ubicacion, se descartan TODAS las menciones que
+  vengan de otra ubicacion, por front matter o por cuerpo. La geografia encadena
+  para arriba y lo hace por los dos lados a la vez: biblioteca_brolwund.md dice
+  `settlement: Brolwund` en la ficha Y "En [Brolwund](...)" en la primera linea.
+  Filtrar solo el front matter no alcanzaba -- Brolwund seguia listando sus seis
+  edificios -- y son justo las menciones que menos dicen: que algo esta adentro
+  de otra cosa ya lo cuenta el arbol de locations/index.md.
+
+  Lo que si queda en una pagina de lugar es todo lo demas: quien estuvo ahi, que
+  faccion lo ocupa, que quest pasa por ahi y en que sesiones aparecio.
+
+  ---- PC que aparece en una sesion ---------------------------------------
+
+  Misma idea, otro caso: en las paginas de la party no se listan las sesiones.
+  Los PCs son los protagonistas, asi que tarde o temprano van a estar enlazados
+  desde las 32 sesiones y el bloque seria una lista de todas -- que no dice
+  nada, porque la respuesta es siempre "en todas". La party se identifica por la
+  URL, /characters/party/, igual que el resto de los filtros de aca.
+
+  Al reves si vale: una sesion sigue pudiendo mostrar al PC que la nombra, que
+  ahi si es informacion (ese PC escribio algo sobre esa noche).
+
+  ---- Lo que cuesta ------------------------------------------------------
+
+  Unos 40 segundos de build sobre las 206 paginas de hoy, y crece al cuadrado.
+  El grueso no es buscar en el texto sino dar las vueltas: medido, 27 de esos
+  40 segundos se van igual aunque se compare contra una string de dos letras.
+  Es el piso de hacer un cruce de todos contra todos en Liquid; para bajarlo
+  habria que armar el indice una sola vez desde un plugin en Ruby, y GitHub
+  Pages no corre plugins propios.
+
+  Por eso hay un interruptor global en _config.yml:
+
+      backlinks: false
+
+  Apaga el bloque en todo el sitio. Sirve para las tandas largas de escritura,
+  donde `jekyll serve` rehace todo en cada guardado: se apaga mientras se
+  carga texto y se prende antes de commitear.
+
+  ---- Opt-out por pagina -------------------------------------------------
+
+      backlinks: false
+
+  En el front matter de una pagina la saca del sistema entero: ni muestra
+  bloque ni aporta menciones.
+  Va en characters/party.md, cuya tabla de PCs se arma con un for de Liquid:
+  esos links recien existen en P.content si party.md ya se renderizo, y como el
+  orden de render no esta garantizado el bloque de cada PC cambiaria de build en
+  build. party.md y los diez index.md son las unicas paginas con Liquid en el
+  cuerpo, y los index ya quedan afuera por la URL.
+
+  Las variables llevan prefijo bl_ a proposito: en Jekyll los assign de un
+  include escriben en el scope global, asi que el prefijo evita pisar las de
+  quien nos incluye (wiki_card.html usa wc_, location_children.html usa lc_).
+{%- endcomment -%}
+
+{%- comment -%} Secciones que participan. Para sumar una nueva, se agrega aca. {%- endcomment -%}
+{%- assign bl_sections = "/characters/,/locations/,/factions/,/items/,/quests/,/sessions/,/bestiary/,/lore/,/rules/" | split: "," -%}
+
+{%- comment -%}
+  Sirve esta pagina de destino? Hace falta titulo: mas abajo se filtra
+  site.pages por `where: "campo", page.title`, y con page.title nulo eso no
+  devuelve nada -- devuelve todas las paginas que NO tienen ese campo.
+{%- endcomment -%}
+{%- assign bl_on = true -%}
+{%- if site.backlinks == false -%}{%- assign bl_on = false -%}{%- endif -%}
+{%- if page.backlinks == false -%}{%- assign bl_on = false -%}{%- endif -%}
+{%- unless page.url contains ".html" -%}{%- assign bl_on = false -%}{%- endunless -%}
+{%- unless page.title -%}{%- assign bl_on = false -%}{%- endunless -%}
+{%- if bl_on -%}
+  {%- assign bl_on = false -%}
+  {%- for bl_s in bl_sections -%}
+    {%- if page.url contains bl_s -%}{%- assign bl_on = true -%}{%- break -%}{%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
+{%- comment -%}
+  Las menciones por front matter. Cada `where` devuelve las paginas cuyo campo
+  coincide con este titulo; se van apilando y mas abajo se juntan con las que
+  nos nombran por el cuerpo.
+{%- endcomment -%}
+{%- assign bl_geo = false -%}
+{%- assign bl_pc = false -%}
+{%- if page.url contains "/characters/party/" -%}{%- assign bl_pc = true -%}{%- endif -%}
+{%- if bl_on -%}
+  {%- assign bl_hits = "" | split: "," -%}
+  {%- if page.url contains "/locations/" -%}
+    {%- assign bl_geo = true -%}
+    {%- assign bl_x = site.pages | where: "world",      page.title -%}{%- assign bl_hits = bl_hits | concat: bl_x -%}
+    {%- assign bl_x = site.pages | where: "continent",  page.title -%}{%- assign bl_hits = bl_hits | concat: bl_x -%}
+    {%- assign bl_x = site.pages | where: "region",     page.title -%}{%- assign bl_hits = bl_hits | concat: bl_x -%}
+    {%- assign bl_x = site.pages | where: "settlement", page.title -%}{%- assign bl_hits = bl_hits | concat: bl_x -%}
+    {%- assign bl_x = site.pages | where: "location",   page.title -%}{%- assign bl_hits = bl_hits | concat: bl_x -%}
+    {%- assign bl_x = site.pages | where: "seat",       page.title -%}{%- assign bl_hits = bl_hits | concat: bl_x -%}
+  {%- elsif page.url contains "/factions/" -%}
+    {%- assign bl_x = site.pages | where: "faction",    page.title -%}{%- assign bl_hits = bl_hits | concat: bl_x -%}
+  {%- elsif page.url contains "/lore/" -%}
+    {%- assign bl_x = site.pages | where: "pantheon",   page.title -%}{%- assign bl_hits = bl_hits | concat: bl_x -%}
+  {%- elsif page.url contains "/characters/" -%}
+    {%- assign bl_x = site.pages | where: "holder",     page.title -%}{%- assign bl_hits = bl_hits | concat: bl_x -%}
+    {%- assign bl_x = site.pages | where: "leader",     page.title -%}{%- assign bl_hits = bl_hits | concat: bl_x -%}
+  {%- endif -%}
+  {%- comment -%}
+    No hace falta filtrar aca los hits que son ubicaciones: el barrido de abajo
+    ya descarta esas paginas enteras cuando bl_geo, por los dos canales juntos.
+  {%- endcomment -%}
+{%- endif -%}
+
+{%- comment -%}
+  El barrido por el cuerpo va en un where_exp y no en un for, y la diferencia no
+  es cosmetica: son 206 paginas x 206 candidatas, y hecho a mano cada una de las
+  ~44k vueltas paga el interprete de Liquid entero (un if, un assign, un
+  continue). Medido sobre este sitio eran 60 segundos de build. where_exp parsea
+  la condicion una sola vez y despues itera del lado de Ruby, asi que el mismo
+  trabajo se paga una vez. Lo que queda para el for de abajo es un puñado de
+  candidatas por pagina en vez de las 206.
+
+  bl_needle existe porque la expresion de where_exp se evalua en este contexto:
+  adentro del string no se puede escribir page.url sin que se lo coma el parser.
+{%- endcomment -%}
+{%- assign bl_needle = page.url -%}
+{%- assign bl_cands = "" | split: "," -%}
+{%- if bl_on -%}
+  {%- assign bl_body = site.pages | where_exp: "bl_q", "bl_q.content contains bl_needle" -%}
+  {%- comment -%}
+    Las dos vias -- cuerpo y ficha -- en una sola lista, ordenada por titulo para
+    que el bloque salga igual en cada build. Las sesiones tienen el numero con
+    cero adelante ("Sesion 01" ... "Sesion 32"), asi que alfabetico es tambien
+    cronologico y no hace falta un caso aparte.
+  {%- endcomment -%}
+  {%- assign bl_cands = bl_hits | concat: bl_body | sort: "title" -%}
+{%- endif -%}
+
+{%- capture bl_items -%}
+  {%- if bl_on -%}
+    {%- assign bl_seen = "" -%}
+    {%- for bl_p in bl_cands -%}
+
+      {%- comment -%}
+        Una pagina puede entrar por las dos vias. No se usa `uniq`: compara por
+        identidad y cada lectura de site.pages devuelve objetos nuevos, asi que
+        no sacaria nada. Por URL, que es unica, si.
+      {%- endcomment -%}
+      {%- if bl_seen contains bl_p.url -%}{%- continue -%}{%- endif -%}
+      {%- assign bl_seen = bl_seen | append: bl_p.url -%}
+
+      {%- if bl_p.url == page.url -%}{%- continue -%}{%- endif -%}
+      {%- if bl_p.backlinks == false -%}{%- continue -%}{%- endif -%}
+      {%- unless bl_p.url contains ".html" -%}{%- continue -%}{%- endunless -%}
+      {%- assign bl_in = false -%}
+      {%- for bl_s in bl_sections -%}
+        {%- if bl_p.url contains bl_s -%}{%- assign bl_in = true -%}{%- break -%}{%- endif -%}
+      {%- endfor -%}
+      {%- unless bl_in -%}{%- continue -%}{%- endunless -%}
+
+      {%- comment -%}
+        Lugar que nombra a lugar: la cadena geografica no cuenta. Ver arriba.
+      {%- endcomment -%}
+      {%- if bl_geo and bl_p.url contains "/locations/" -%}{%- continue -%}{%- endif -%}
+
+      {%- comment -%}
+        PC que aparece en una sesion: es la regla, no una noticia. Ver arriba.
+      {%- endcomment -%}
+      {%- if bl_pc and bl_p.url contains "/sessions/" -%}{%- continue -%}{%- endif -%}
+
+      {%- comment -%}
+        El filtro reciproco, que es el motivo de todo esto. Se mira `content` y
+        no `page.content`: a esta altura de la cadena de layouts `content` ya
+        trae la ficha renderizada, asi que un `location:` o un `faction:` que la
+        ficha ya enlaza tambien tapa el backlink, sin codigo extra. Con
+        page.content -- que es solo el cuerpo convertido -- se perderia.
+      {%- endcomment -%}
+      {%- if content contains bl_p.url -%}{%- continue -%}{%- endif -%}
+
+      {%- comment -%}
+        Cinco titulos existen dos veces: Verna, Brolwund, Carnahan, Glavok y
+        Naivara son NPC y asentamiento a la vez. En una lista de solo titulos
+        quedarian dos entradas identicas apuntando a paginas distintas, asi que
+        a esas -- y solo a esas -- se les aclara la seccion.
+      {%- endcomment -%}
+      {%- assign bl_same = site.pages | where: "title", bl_p.title -%}
+      {%- capture bl_one -%}
+        <a href="{{ bl_p.url | relative_url }}">{{ bl_p.title }}</a>
+        {%- if bl_same.size > 1 %} <span class="backlinks-sec">({{ bl_p.parent }})</span>{% endif -%}
+      {%- endcapture -%}
+      {{- bl_one | strip -}}|
+    {%- endfor -%}
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- comment -%}
+  Mismo truco que los alias de wiki_card.html: se acumula con separador y recien
+  al final se arma la lista, asi el interpunto queda solo ENTRE items (split
+  descarta el campo vacio que deja el separador del final). Si no quedo nada no
+  se dibuja nada -- ni rotulo ni linea --, que es el caso normal en una pagina
+  bien escrita.
+{%- endcomment -%}
+{%- assign bl_list = bl_items | strip | split: "|" | join: " &middot; " -%}
+{%- if bl_list != "" %}
+<nav class="backlinks" aria-label="Paginas que mencionan a {{ page.title }}">
+  <p><b>Mencionado en</b> {{ bl_list }}</p>
+</nav>
+{%- endif -%}

@@ -20,6 +20,9 @@ RUN bundle install
 # 4000 = site, 35729 = livereload
 EXPOSE 4000 35729
 
+# docker-compose.yml overrides this with a `command:` that repeats it verbatim
+# and adds --config _config.yml,_config_local.yml. If this line changes, that
+# one has to change too.
 CMD ["bundle", "exec", "jekyll", "serve", \
      "--host", "0.0.0.0", \
      "--port", "4000", \
