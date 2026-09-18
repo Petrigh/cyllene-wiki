@@ -5,6 +5,10 @@ nav_order: 1
 has_children: false
 summary: Quien se sienta en la mesa
 has_toc: false
+# La tabla de PCs de abajo se arma con un for de Liquid, asi que esos links
+# recien existen cuando esta pagina ya se renderizo -- y Jekyll no da un orden.
+# Sin esto, el bloque "Mencionado en" de cada PC cambiaria de build en build.
+backlinks: false
 ---
 
 # The Party

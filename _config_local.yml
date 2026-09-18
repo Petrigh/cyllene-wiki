@@ -1,0 +1,38 @@
+# ---- Configuracion SOLO local -------------------------------------------
+# GitHub Pages construye el sitio leyendo _config.yml y nada mas: no hay
+# workflow en .github/ (solo CODEOWNERS), asi que este archivo jamas se lee en
+# produccion. Se carga a mano, encadenado al principal:
+#
+#     jekyll serve --config _config.yml,_config_local.yml
+#
+# que es exactamente lo que hace el `command:` de docker-compose.yml. Ojo: con
+# --config NO se auto-carga _config.yml, por eso van los dos en la lista.
+#
+# Esta committeado a proposito y no va en .gitignore: --config apuntando a un
+# archivo que no existe es un error fatal, asi que si falta no arranca nadie.
+#
+# ---- Regla de oro para agregar cosas aca --------------------------------
+# Jekyll hace merge PROFUNDO de los Hash pero REEMPLAZA los Array enteros.
+# Un `exclude:`, `plugins:` o `defaults:` escrito aca pisa silenciosamente el
+# de _config.yml: se perderia `layout: wiki_base` en todo el sitio, o los cuatro
+# scopes de `card_images`, o peor, se publicaria dm/. `collections:` y
+# `aux_links:` son Hash, asi que se fusionan sin romper nada.
+
+# La pagina de salud del wiki (_meta/index.md). Sin esta declaracion la carpeta
+# _meta/ no existe para Jekyll: EntryFilter#special? descarta toda entrada que
+# empiece con "_" antes de recorrerla, y lo unico que saltea ese filtro es
+# Collection#read, que solo se ejecuta para las colecciones declaradas.
+collections:
+  meta:
+    output: true
+
+# Lista de paginas que nadie enlaza. Apagado por defecto; ver §3.4 de la pagina.
+# Jekyll vigila todos los archivos pasados por --config y reinicia solo al
+# cambiarlos, asi que tocar esto no pide reiniciar el contenedor.
+health_orphans: false
+
+# aux_links es un Hash: este item se suma al "Edit on GitHub" de _config.yml en
+# vez de reemplazarlo. El href no pasa por relative_url, asi que lleva el
+# baseurl escrito a mano.
+aux_links:
+  "Salud del wiki": "/cyllene-wiki/meta/"

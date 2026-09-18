@@ -3,6 +3,31 @@
   titulo exacto. Si no la encuentra, devuelve el texto pelado.
 
   Uso:  {% include wiki_link.html text=page.faction %}
+        {% include wiki_link.html text=page.location section="/locations/" %}
+
+  `section` desempata. Hay cinco titulos que existen dos veces -- Verna,
+  Brolwund, Carnahan, Glavok y Naivara son NPC y asentamiento a la vez -- y sin
+  esto el `where: "title" | first` se queda con el que Jekyll haya ordenado
+  primero, que por orden de directorio es el NPC: cachito.md, que dice
+  `location: Verna`, terminaba enlazando a la NPC en vez de a la ciudad.
+
+  Con `section` gana el candidato cuya URL cuelga de esa seccion. Si ninguno lo
+  hace se cae al comportamiento de siempre (el primero), asi que un valor sin
+  pagina sigue saliendo como texto pelado y nada de lo que ya andaba cambia.
+
+  Que seccion le toca a cada campo lo decide wc_fields en wiki_card.html, que es
+  el mismo mapa que usa backlinks.html para contar menciones. Los dos tienen que
+  coincidir: si la ficha enlaza a la Verna equivocada, el filtro reciproco de
+  backlinks tapa el backlink equivocado.
 {%- endcomment -%}
-{%- assign wl_target = site.pages | where: "title", include.text | first -%}
+{%- assign wl_cands = site.pages | where: "title", include.text -%}
+{%- assign wl_target = wl_cands | first -%}
+{%- if include.section -%}
+  {%- for wl_c in wl_cands -%}
+    {%- if wl_c.url contains include.section -%}
+      {%- assign wl_target = wl_c -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
 {%- if wl_target -%}<a href="{{ wl_target.url | relative_url }}">{{ include.text }}</a>{%- else -%}{{ include.text }}{%- endif -%}

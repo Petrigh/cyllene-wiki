@@ -1,0 +1,29 @@
+---
+layout: default
+---
+{%- comment -%}
+  Capa fina entre cada pagina y el layout del tema. Existe por una sola razon:
+  colgar el bloque de backlinks al pie de TODAS las paginas sin tocar los ~206
+  .md sueltos y sin tener que pisar el `default`, que viene del remote theme y
+  no esta en el repo.
+
+  La cadena queda asi:
+
+      wiki -> wiki_base -> default    characters, locations, factions, items
+              wiki_base -> default    sessions, quests, lore, bestiary, rules
+
+  Va DESPUES de wiki y no antes, a proposito: cuando corre este layout,
+  `content` ya trae la ficha renderizada, asi que los links de front matter que
+  dibuja wiki_card.html (location, faction, region...) cuentan como "esta pagina
+  ya lo enlaza" y el filtro reciproco de backlinks.html los aprovecha gratis.
+
+  El bloque sale como hermano DESPUES del <div> que cierra .wiki-page (flex) o
+  .wiki-sheet (grid), asi que es un bloque normal a todo el ancho y no se mete
+  en ninguno de los dos layouts de ficha.
+
+  No se llama page.html porque just-the-docs trae su propio _layouts/page.html y
+  un archivo local con ese nombre lo pisaria sin que se note.
+{%- endcomment -%}
+{{ content }}
+{% include page_graph.html %}
+{% include backlinks.html %}

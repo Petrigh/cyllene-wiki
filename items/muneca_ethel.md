@@ -3,7 +3,7 @@ title: Muñeca de la Tía Ethel
 parent: Items
 summary: Contiene el alma de la tía Ethel, y busca un nuevo vessel
 rarity: --
-holder: escondida entre las cosas de Harold
+holder: Anti-Denzen
 ---
 
 # Muñeca de la Tía Ethel

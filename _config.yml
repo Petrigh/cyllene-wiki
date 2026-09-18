@@ -11,6 +11,18 @@ remote_theme: just-the-docs/just-the-docs@v0.10.1
 plugins:
   - jekyll-remote-theme
 
+# Bloque "Mencionado en" al pie de cada pagina (_includes/backlinks.html).
+# Cruza todas las paginas contra todas, asi que cuesta ~40s de build. En false
+# se apaga en todo el sitio: conviene para las tandas largas de escritura, donde
+# `jekyll serve` rehace todo en cada guardado. Acordarse de volverlo a true.
+backlinks: true
+
+# Mini grafo de conexiones al pie de cada pagina (_includes/page_graph.html).
+# A diferencia de backlinks, este no cuesta build: se dibuja en el browser a
+# partir de assets/graph-data.json. En false se apaga en todo el sitio; en una
+# pagina suelta, `graph: false` en su front matter.
+graph: true
+
 search_enabled: true
 search:
   heading_level: 1
@@ -23,10 +35,14 @@ aux_links:
 
 # ---- Behaviour ---------------------------------------------------------
 defaults:
+  # wiki_base es una capa fina sobre el `default` del tema: lo unico que agrega
+  # es el bloque de backlinks al pie (ver _layouts/wiki_base.html). Se pone acá,
+  # en el scope de todo el sitio, para que lo reciban tambien las secciones sin
+  # ficha -- sessions, quests, lore, bestiary, rules.
   - scope:
       path: ""
     values:
-      layout: default
+      layout: wiki_base
   # Estas secciones llevan la ficha de la derecha (imagen + datos rapidos).
   # Es un layout y no un include para no tener que tocar los ~130 .md sueltos.
   # `card_images` es la carpeta donde la ficha busca la imagen de la pagina,
@@ -51,6 +67,22 @@ defaults:
     values:
       layout: wiki
       card_images: /assets/img/
+
+# ---- TRIPWIRE ----------------------------------------------------------
+# Este archivo es el UNICO que lee GitHub Pages. La pagina de salud del wiki
+# vive en _meta/ y es local: no se publica porque Jekyll ignora toda carpeta
+# que empiece con "_" salvo que una coleccion la nombre, y esa declaracion esta
+# solo en _config_local.yml.
+#
+# Por eso aca NO puede aparecer nunca `collections:` ni `include:`: son las dos
+# unicas claves capaces de sacar _meta/ del filtro y subirlo a produccion.
+#
+#     grep -nE "^(collections|include):" _config.yml   # tiene que dar vacio
+#
+# Tampoco hace falta agregar _meta/ al `exclude:` de abajo "por las dudas":
+# funcionaria, pero para desactivarlo localmente habria que repetir el array
+# exclude entero en _config_local.yml (Jekyll reemplaza arrays, no los fusiona)
+# y ahi si se romperia algo de verdad.
 
 # Everything below is kept OUT of the published site.
 # dm/ holds spoilers. GitHub Pages sites are PUBLIC unless you pay for
