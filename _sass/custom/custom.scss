@@ -50,7 +50,7 @@
 }
 
 .campaign-map {
-  width: 70%;
+  width: 100%;
   // El alto sale del ancho y de la proporcion real de la imagen, que el JS
   // escribe en --campaign-map-ratio al cargarla. Con un alto fijo la vista
   // completa dejaba franjas muertas arriba y abajo: Leaflet encaja la imagen

@@ -4,8 +4,8 @@ parent: The Party
 summary: 6to miembro de los Cinco Grandes
 grand_parent: Characters
 type: pc
-race: Tiefling
-class: Warlock
+race: Tiefling de Levistus
+class: Hexblade Warlock
 player: Johnny
 ---
 
@@ -23,26 +23,48 @@ Indice
 ## Descripcion
 
 ### Personalidad
+- Inquisitivo
+- Minucioso (le gusta ver el más mínimo detalle)
+- Imprudente
+- Carismático
+- Autónomo
 
 ### Apariencia
+- Ropas: En su día a día utiliza ropas prácticas y cómodas para sus expediciones, que requieren mucho tiempo al aire libre en terrenos difíciles.
 
 ## Build
 
 ### Clase
-
+Hexblade Warlock level 7.
 ### Feats
-
+War Caster.
 ### Especie
-
-Tiefling.
-
+Tiefling de Levistus.
 ### Background
-
+Arqueólogo
 ### Items
+- [Pearl of Power](../../items/pearl_power.md)
+- [Bolsa de caramelo media hora](../../items/caramelos_mediahora.md)
+- [Post-it de comunicación saludable](../../items/postit.md)
+- [Pacto de sangre](../../items/pacto_sangre.md)
 
-## History
+## Historia
 
-### Arcs
+### Antes de los Cinco Grandes
+Nacido en la ciudad de [Salacia](../../locations/settlements/salacia.md) en el año [249](../../lore/calendario.md) hijo de una famlia de tieflings el desde muy joven se interesó en la demonología y en cuáles fueron los orígenes que le dieron su apariencia demoníaca. Esto hizo que pasara mucho tiempo estudiando sus orígenes y buscando desde cuándo había iniciado todo, lo que lo llevó a dedicarse a la arqueología para poder recorrer el camino de sus orígenes.
+En el 262 a sus 17 años, esta curiosidad lo llevó al [desierto nocturno](../../locations/regions/desierto_nocturno.md), donde, durante una excavación, ingresó a una cámara oculta sin que el resto del equipo se enterara. Allí encontró una tumba que tenía inscrita: «Hasta que nos volvamos a ver, tú y yo, por siempre, amor mío», escrito en lengua infernal. Al abrir la tumba, se encontró con un esqueleto femenino; además, había un [collar](../../items/collar_obeon.md) con una gema que parecía ser un ojo. Con sus dos neuronas haciendo sinapsis instantáneas, tuvo la mejor idea de ponérselo.
+En ese momento, un [ente](../NPCs/obeon.md) contenido en la gema se hizo presente en su mente y le propuso formar un pacto: el ente vería el mundo a través de los ojos de Denzen y, a cambio, lo ayudaría en sus expediciones arqueológicas.
+Así fue como después decidió trabajar como arqueólogo independiente y salir a explorar por su cuenta. Esto lo llevó a tener problemas con un grupo de [paladines de Lucerna](../../factions/paladines_lucerna.md), haciendo que fuera habitual que terminara en cana y que su familia tuviera que sacarlo.
+Después de un tiempo, un grupo llamado [La Sociedad de los Vientos Arcanos](../../factions/sociedad_vientos_arcanos.md) se contactó con él para resolver el problema de la [grieta](../../locations/regions/la_grieta.md) al norte del [continente](../../locations/continentes/cyllene.md), donde había una gran cantidad de demonios que salían y generaban problemas. A partir de esto conoció a quienes serían sus compañeros: [Brolwund](../NPCs/brolwund.md), [Carnahan], [Glavok](../NPCs/glavok.md), [Naivara](../NPCs/naivara.md) y [Verna](../NPCs/verna.md), con quienes formó el equipo conocido como [Los ~~Cinco~~ Seis Grandes](../../factions/cinco_grandes.md).
+
+### Durante los Cinco Grandes
+Cada integrante aportaba una función primordial; la de Denzen era el apoyo táctico en su conocimiento sobre demonología y la habilidad de poder rastrear reliquias que ayuden en el trabajo de los cinco grandes en poder cerrar la grieta.
+Con el grupo pasaron por unos años buscando cómo combatir la invasión de demonios en [Cyllene](../../locations/continentes/cyllene.md), pero Denzen descubrió que esto era un problema mucho más grande de lo que imaginaron ([270](../../lore/calendario.md)).
+
+### Post los Cinco Grandes
+Sin tener recuerdos recientes el se despierta en una [cueva](../../locations/buildings/cueva.md) en lo que parece ser un escondite suyo. Al rededor encuentra varios papeles los cuales no logra entender porque los escribio, ademas de un [anillo](../../items/los_anillos.md) con una gema violeta y que no recuerda cual es su funcion. Pero ademas dentro de la cueva habia otra persona, [Iranon Goldenstag](iri.md)  quien no reconoce en un principio, pero que es el unico quien le puede ayudar a salir de la cueva.
+
+Al salir no reconoce en donde esta y peor aun en que tiemopo esta...
 
 ## Pesadillas
 
@@ -54,8 +76,26 @@ Tiefling.
 
 ## Relaciones
 
-### Individuals
+### Obeon
+- Su aliado que lo acompaña en todas sus misiones, su relacion se fue estrechando con el paso del tiempo.
+- Denzen desde que lo conocio busca saber quien es [Obeon](../NPCs/obeon.md), de donde viene, y como poder traerlo el mundo fisico
 
-### Groups
+### Los 5 Grandes
+- Carnahan
+- Verna
+- Brolwund
+- Glavok
+- Naivara
 
-## Trivia
+### Los 5 más grandes
+- [First'Righ](first.md)
+- [Harold Fielt](harold.md)
+- [Iranon Goldenstag](iri.md)
+- [Luthor Rivendale](luthor.md)
+- [Mary Ann Bevan](mary.md)
+
+### Familiares
+- [Amiris](../NPCs/amiris.md) (Padre)
+- [Anya](../NPCs/anya.md) (Madre)
+- [Gelem](../NPCs/gelem.md) (Hermana)
+- [Arten](../NPCs/arten.md) (Hermano)
