@@ -132,7 +132,8 @@ Durante el desarrollo del torneo surgió el rumor de que Iri era el príncipe de
 Sin embargo esto consiguió que Iri sea invitado a desayunar en el palco del emperador de Glavok, [Sifo Glavok II](../NPCs/sipho_glavok.md), quien al notar lo dañado de su armadura y la falta de una corona le regaló una corona ornamental y la [Armadura de Glavok](../../items/armadura_glavok.md), una armadura ligera de cuero tachonado +1.
 La party acabó ganando el torneo, pero Iri no pudo tomar los premios de su apuesta ya que los instrumentos se encontraban inutilizables.
 
-### La Costa brumosa
+### The Plot Thickens
+#### La Costa brumosa
 Una vez llegados a la [Costa Brumosa](../../locations/regions/costa_brumosa.md), iri logró recordar en qué dirección ir para llegar al [rancho](../../locations/buildings/creekwater_ranch.md) de su [abuelo](../NPCs/jebediah_creekwater.md), guiando desde el asiento del acompañante de la [van](../../items/van.md) se dirigieron por un camino de tierra, al cabo de un tiempo empezaron a encontrar antiguos carteles con la imagen de Iri y la leyenda
 >“Missing: Iranon Goldenstag II, if you have any information please contact  his grandfather Jebediah Creekwater at Creekwater Ranch”.
 
