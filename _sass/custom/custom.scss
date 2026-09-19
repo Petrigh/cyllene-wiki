@@ -547,7 +547,6 @@ h6,
   --g-quests:    #8a5a2b;
   --g-bestiary:  #3f6b3a;   // el verde de los puntos de naturaleza del mapa
   --g-lore:      #2b5a7d;
-  --g-rules:     #5a6673;
 
   --g-ink:   #{$body-text-color};
   --g-line:  #{$border-color};
@@ -729,6 +728,14 @@ h6,
   stroke-width: 1;
 }
 
+// La cuerda del segundo nivel: un link entre dos vecinos, no un link de esta
+// pagina. Se puntea y se aclara justamente para que se lea como otra cosa que
+// los rayos del centro; si fuera igual, la estrella dejaria de distinguirse.
+.page-graph-edge.is-peer {
+  stroke-dasharray: 3 3;
+  stroke-opacity: 0.6;
+}
+
 .page-graph-dot {
   fill: var(--g-npc);
   transition: r 0.1s ease;
@@ -742,7 +749,6 @@ h6,
   &[data-cat="quests"]    { fill: var(--g-quests); }
   &[data-cat="bestiary"]  { fill: var(--g-bestiary); }
   &[data-cat="lore"]      { fill: var(--g-lore); }
-  &[data-cat="rules"]     { fill: var(--g-rules); }
 }
 
 .page-graph-label {
@@ -769,15 +775,65 @@ a.page-graph-node {
   &:focus-visible { outline: 2px solid $link-color; outline-offset: 2px; }
 }
 
-.page-graph-more {
-  margin: 0.2rem 0 0;
-  max-width: none;
-  font-size: 0.72rem;
-  font-style: italic;
-  color: $search-result-preview-color;
-}
-
 @media (max-width: 62rem) {
   .wiki-graph-stage { height: clamp(320px, 60vh, 520px); }
   .wiki-graph-reset { margin-left: 0; }
+}
+
+
+// ---- Anterior / siguiente de sesiones (_includes/session_nav.html) --------
+// Ultimo bloque de la pagina, debajo del grafo y de "Mencionado en". Usa la
+// misma linea de arriba que esos dos para leerse como pie y no como seccion.
+//
+// El "siguiente" se manda a la derecha con margin-left: auto y no con
+// space-between en el contenedor: en la sesion 01 no hay "anterior" y en la 32
+// no hay "siguiente", y con space-between el unico boton que queda se pegaria
+// siempre a la izquierda.
+.session-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1.6rem;
+  padding-top: 0.8rem;
+  max-width: none;                  // .main-content le pone max-width: 90%
+  border-top: 1px solid $border-color;
+
+  // Mismo chrome que los botones de .loc-controls, pero en <a> de verdad para
+  // que anden el teclado y el click del medio (igual que el mini grafo).
+  a {
+    padding: 0.15rem 0.5rem;
+    border: 1px solid $border-color;
+    border-radius: 2px;
+    background: $table-background-color;
+    background-image: none;         // el tema subraya los links con un gradiente
+    color: $body-text-color;
+    font-size: 0.75rem;
+
+    &:hover { border-color: $link-color; color: $link-color; }
+    &:focus-visible { outline: 2px solid $link-color; outline-offset: 1px; }
+  }
+}
+
+.session-nav-next { margin-left: auto; }
+
+
+// ---- Verso transcripto (lore/aira/) --------------------------------------
+// Las cinco baladas de "Leyendas de Aira" se transcriben linea por linea, y
+// en verso el corte de linea es parte del texto: no se puede dejar que el
+// navegador junte las lineas en un parrafo corrido.
+//
+// Kramdown ya deja los saltos del fuente adentro del <p> como \n literales
+// -- los junta el HTML, no el parser -- asi que alcanza con pedir que se
+// respeten. La alternativa habitual, dos espacios al final de cada linea para
+// forzar <br>, queda descartada: es invisible al leer el .md y cualquier
+// editor que limpie trailing whitespace al guardar rompe las cinco paginas de
+// una sin que se note hasta mirar el sitio.
+//
+// Se aplica con una IAL de kramdown debajo del blockquote:
+//
+//     > Aira was the glowing sun
+//     > On Iranon's eternal day
+//     {: .verse}
+blockquote.verse p {
+  white-space: pre-line;
 }

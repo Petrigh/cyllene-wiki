@@ -7,4 +7,4 @@ region: Hondonada de los faros
 ---
 
 # Whiterun
-Pueblo donde la party conoció a [Mary Ann Bevan](../../characters/party/mary.md) y a [First'Righ](../../characters/party/first.md). Estaba tomado por los [Indeseables de Brolwund](../../factions/indeseables_brolwund.md), que retenían a los niños del pueblo como seguro.
+Pueblo ubicado en [Hondonada de los faros](../regions/hondonada.md) donde la party conoció a [Mary Ann Bevan](../../characters/party/mary.md) y a [First'Righ](../../characters/party/first.md). Estaba tomado por los [Indeseables de Brolwund](../../factions/indeseables_brolwund.md), que retenían a los niños del pueblo como seguro.

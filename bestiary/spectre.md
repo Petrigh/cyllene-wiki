@@ -5,7 +5,7 @@ summary: Parece un soldado airano
 ---
 
 # Spectre
-Apareció después de la pelea con los [junkies](junkies.md). Tiene pinta de soldado de [Aira](../locations/settlements/aira.md).
+Tiene pinta de soldado de [Aira](../locations/settlements/aira.md).
 
 ## Encontrado en
 

@@ -73,10 +73,20 @@ date: 2026-09-18
   en las dos formas, o esta pagina cambiaria de build en build.
 
   El conjunto de paginas cuyo contenido no es invariante al orden ya esta
-  identificado y marcado desde backlinks.html: son los diez index.md (que arman
-  sus listas con Liquid) mas characters/party.md. Se reconocen con el mismo
-  predicado que usa aquel: url con ".html" y `backlinks` distinto de false. Eso
-  es hs_scan, aca abajo. No inventar otra lista.
+  identificado y marcado desde backlinks.html: son los diez index.md, que arman
+  sus listas con Liquid. Se reconocen con el mismo predicado que usa aquel: url
+  con ".html" y `backlinks` distinto de false. Eso es hs_scan, aca abajo. No
+  inventar otra lista.
+
+  factions/party.md estuvo en ese conjunto mientras su roster salia de un for.
+  Desde que los links a los PC se escriben a mano y Liquid solo completa las
+  celdas de datos, el cuerpo dejo de depender del orden y la pagina entro aca.
+
+  Ojo con la otra punta: lore/calendario.md y rules/table-rulings.md llevan
+  `backlinks: false` sin tener una linea de Liquid en el cuerpo. Lo usan para
+  apagar el bloque de menciones, y como el predicado es compartido eso las saca
+  tambien de hs_scan y del grafo. No es un problema de orden de render: es el
+  precio de tener un solo flag para tres sistemas.
 
   Las variables llevan prefijo hs_ a proposito: en Jekyll los assign de un
   include escriben en el scope global (bl_ backlinks, wc_ ficha, lc_ arbol de
@@ -122,7 +132,7 @@ date: 2026-09-18
   tienen y los diez index.md no, asi que filtrar por parent los deja afuera solo,
   sin lista de excepciones.
 {%- endcomment -%}
-{%- assign hs_secs = "Characters,The Party,Locations,Sessions,Items,Quests,Factions,Lore,Bestiary,House Rules" | split: "," -%}
+{%- assign hs_secs = "Characters,The Party,Locations,Sessions,Items,Quests,Factions,Lore,Bestiary,House Rules,Leyendas de Aira" | split: "," -%}
 
 
 {%- comment -%}

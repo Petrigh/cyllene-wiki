@@ -9,4 +9,4 @@ map_y: 75.0
 ---
 
 # Pelias
-Una de las islas al sur de Cyllene. La party todavía no estuvo.
+Una de las islas al sur de [Cyllene](../continentes/cyllene.md). La party todavía no estuvo.

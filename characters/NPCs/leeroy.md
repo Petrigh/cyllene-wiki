@@ -10,4 +10,4 @@ race: Dwarf
 
 # Leeroy
 Encontrado en el [Bosque Inescrutable](../../locations/regions/bosque_inescrutable.md), cerca del Teleportation Circle deteriorado.
-Se encuentra viviendo en la [Costa Brumosa](../../locations/regions/costa_brumosa.md) con el abuelo de [Iri](../party/iri.md)
+Se encuentra viviendo con el [abuelo de Iri](jebediah_creekwater.md)

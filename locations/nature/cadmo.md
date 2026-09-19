@@ -9,4 +9,4 @@ map_y: 62.0
 ---
 
 # Cadmo
-Una de las islas al sur de Cyllene. La party todavía no estuvo.
+Una de las islas al sur de [Cyllene](../continentes/cyllene.md). La party todavía no estuvo.

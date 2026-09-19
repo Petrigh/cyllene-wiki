@@ -21,9 +21,16 @@ layout: default
   .wiki-sheet (grid), asi que es un bloque normal a todo el ancho y no se mete
   en ninguno de los dos layouts de ficha.
 
+  Despues de backlinks va el anterior/siguiente de las sesiones. Se cuelga aca
+  y no de un _layouts/session.html propio justamente por el orden: lo que
+  devuelve un layout envolvente entra como `content`, o sea ARRIBA del grafo y
+  de los backlinks, y la barra tiene que quedar al fondo de todo. El include se
+  auto-filtra por `page.parent == "Sessions"`.
+
   No se llama page.html porque just-the-docs trae su propio _layouts/page.html y
   un archivo local con ese nombre lo pisaria sin que se note.
 {%- endcomment -%}
 {{ content }}
 {% include page_graph.html %}
 {% include backlinks.html %}
+{% include session_nav.html %}

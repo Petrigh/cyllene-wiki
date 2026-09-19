@@ -9,4 +9,4 @@ map_y: 51.7
 ---
 
 # Vendaval Gris
-En el extremo este de Cyllene. La party todavía no estuvo.
+En el extremo nor-este de [Cyllene](../continentes/cyllene.md). La party todavía no estuvo.

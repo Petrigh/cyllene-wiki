@@ -3,6 +3,7 @@ title: House Rules
 nav_order: 10
 has_children: false
 has_toc: false
+backlinks: false
 ---
 
 # House Rules

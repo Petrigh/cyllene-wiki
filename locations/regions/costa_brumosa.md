@@ -1,7 +1,7 @@
 ---
 title: Costa Brumosa
 parent: Locations
-summary: Region del noroeste del continente.
+summary: Region sur del continente.
 kind: region
 continent: Cyllene
 map_x: 17.8
@@ -9,4 +9,4 @@ map_y: 21.0
 ---
 
 # Costa Brumosa
-Región del noroeste de Cyllene. La party todavía no estuvo.
+Región del sur de [Cyllene](../continentes/cyllene.md). La costa queda separada del resto de la region por las [Montanas ardientes](montanas_ardientes.md).

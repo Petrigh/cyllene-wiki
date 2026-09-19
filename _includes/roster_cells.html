@@ -1,0 +1,81 @@
+{%- comment -%}
+  Las celdas de datos de una fila del roster de factions/party.md: busca el PC
+  por titulo y devuelve, en UNA sola linea,
+
+      " Jugador | Clase | Raza | Resumen |"
+
+  Se llama pegado al pipe, en la misma linea de la fila, pasandole el titulo
+  exacto del PC. Ver la tabla de factions/party.md.
+
+  OJO: aca abajo no va ni una llave de Liquid. El tag comment igual parsea lo
+  que tiene adentro, asi que un for o un if de ejemplo abre un bloque de verdad
+  y rompe el build. Es la misma regla que sigue _meta/index.md.
+
+  ---- Por que la fila no se arma con un for ------------------------------
+
+  Antes toda la tabla salia de un solo for que emitia tambien el link al
+  personaje. El problema no eran los datos sino el LINK: lo que Liquid
+  imprime recien existe en `page.content` cuando la pagina ya se renderizo, y
+  Jekyll no garantiza el orden. El "Mencionado en" de cada PC aparecia o no
+  segun que se hubiera renderizado primero, y por eso party.md cargaba
+  `backlinks: false` -- que ademas la dejaba afuera del grafo de relaciones y de
+  la salud del wiki, porque los tres usan el mismo predicado.
+
+  Ahora los seis links estan escritos a mano en el cuerpo. jekyll-relative-links
+  los reescribe a la URL final en la fase `generate`, o sea ANTES de que se
+  renderice nada, asi que estan en `content` en las dos formas posibles y la
+  pagina es invariante al orden. Este include solo completa texto plano: ni un
+  destino .html sale de aca, que es la condicion para que eso siga siendo cierto.
+  Si alguna vez se le agrega una celda que enlace, hay que volver a poner
+  `backlinks: false`.
+
+  ---- El salto de linea del final ---------------------------------------
+
+  El archivo TIENE que terminar en un tag de salida con guion de los dos lados,
+  o sea que recorte el espacio que le sigue. Un
+  include se llama en medio de la fila, y el salto de linea final del archivo
+  se colaria dentro de la tabla: kramdown ve una linea en blanco, cierra la
+  tabla ahi y el resto de las filas salen como texto con pipes. wiki_link.html
+  termina en un endif recortado por exactamente lo mismo.
+
+  Las variables llevan prefijo rc_ a proposito: en Jekyll los assign de un
+  include escriben en el scope global (bl_ backlinks, wc_ ficha, lc_ arbol de
+  ubicaciones, wl_ wiki_link).
+{%- endcomment -%}
+
+{%- comment -%}
+  Mismo desempate por seccion que wiki_link.html. Hoy ningun PC comparte titulo
+  con otra pagina, pero el repo tiene cinco titulos duplicados y el `| first`
+  se queda con el que haya quedado primero por orden de directorio.
+{%- endcomment -%}
+{%- assign rc_cands = site.pages | where: "title", include.title -%}
+{%- assign rc_pc = rc_cands | first -%}
+{%- for rc_c in rc_cands -%}
+  {%- if rc_c.url contains "/characters/party/" -%}
+    {%- assign rc_pc = rc_c -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- comment -%}
+  Los campos, en el orden de las columnas. El separador "|" no puede ir crudo:
+  parte la celda en dos. Va escapado para kramdown.
+
+  La guarda es la misma de wiki_card.html (`replace: "-", "" | strip` y comparar
+  con vacio): descarta de una el nil, el string vacio y el placeholder "--".
+  Hace falta sobre todo en `race`, que harold, luthor y mary no declaran.
+{%- endcomment -%}
+{%- assign rc_fields = "player,class,race,summary" | split: "," -%}
+{%- assign rc_out = "" -%}
+{%- for rc_f in rc_fields -%}
+  {%- assign rc_key = rc_f -%}
+  {%- assign rc_val = rc_pc[rc_key] -%}
+  {%- assign rc_plain = rc_val | replace: "-", "" | strip -%}
+  {%- if rc_plain == "" -%}
+    {%- assign rc_cell = "—" -%}
+  {%- else -%}
+    {%- assign rc_cell = rc_val | replace: "|", "\|" | strip -%}
+  {%- endif -%}
+  {%- assign rc_out = rc_out | append: " " | append: rc_cell | append: " |" -%}
+{%- endfor -%}
+{{- rc_out -}}

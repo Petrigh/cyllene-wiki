@@ -2,7 +2,7 @@
 title: Iranon Goldenstag
 parent: The Party
 summary: Principe de Aira
-grand_parent: Characters
+grand_parent: Factions
 type: pc
 race: High elf
 class: Bardo 7 (Lore)
@@ -28,7 +28,7 @@ Indice
 </div>
 
 ## Descripcion
-**Iranon** es uno de los miembros de [The Greater Five](../party.md), y  principe heredero al trono de [Aira](../../locations/settlements/aira.md).
+**Iranon** es uno de los miembros de [The Greater Five](../../factions/party.md), y  principe heredero al trono de [Aira](../../locations/settlements/aira.md).
 
 ### Personalidad
 
@@ -40,7 +40,7 @@ Iniciando la campaña vistió mayormente la ropa con la que se despertó en la c
 Habiendo llegado a [Brolwund](../../locations/settlements/brolwund.md) Iri y [Denzen](denzen.md) notaron que tal vez usar ropa de 500 años de antiguedad atraeria demaciada atencion, optando por cambiar a un set de camizas y pantalones actuales, y una campera de jean por arriba de la armadura ligera.
 
 Dicha armadura fue luego dañada durante un encuentro con un [ooze](https://5e.tools/bestiary/gray-ooze-xmm.html) debajo de la [Catedral de Verna](../../locations/buildings/catedral_verna.md).
-Compitiendo en el Coliseo, [Sifo Glavok II](../NPCs/sifo_glavok.md) notó estos daños a la armadura y le regaló una armadura tachonada +1, ornamentada en marron, rojo y dorado, junto con una corona simbolica.
+Compitiendo en el Coliseo, [Sipho Glavok II](../NPCs/sipho_glavok.md) notó estos daños a la armadura y le regaló una armadura tachonada +1, ornamentada en marron, rojo y dorado, junto con una corona simbolica.
 
 Actualmente viste la [Armadura de Glavok](../../items/armadura_glavok.md) debajo de sus ropas tradicionales Aureas que recuperó en [Creekwater ranch](../../locations/buildings/creekwater_ranch.md), Con la corona colgada a un costado del cinturón.
 
@@ -96,7 +96,7 @@ Al parecer había algo pasando que involucraba tanto a Iri como a [Denzen](denze
 Despierta en la [cueva](../../locations/buildings/cueva.md) al costado de una montaña ubicada en la region de la [Hondonada de los Faros](../../locations/regions/hondonada.md) en el año 503 [D.c.](../../lore/calendario.md), en lo que parece ser un laboratorio abandonado, junto a un tiefling violeta de origen desconocido el cual se presentó como [Denzen](denzen.md).
 Luego de discutir entre ellos al respecto de cómo terminaron en este lugar, llegaron a la conclusión de que ninguno de los 2 recordaba nada sobre dónde estaban ni como llegaron, tampoco recordaban haberse conocido.
 
-De aquí emprendieron un viaje por la hondonada en donde conocieron a [Harold](harold.md), [Luthor](luthor.md), [First'Righ](first.md), y [Mary Anne](mary.md), quienes compondrán la [party](../party.md) de la campaña
+De aquí emprendieron un viaje por la hondonada en donde conocieron a [Harold](harold.md), [Luthor](luthor.md), [First'Righ](first.md), y [Mary Anne](mary.md), quienes compondrán la [party](../../factions/party.md) de la campaña
 Durante este viaje encontraron un [mapa](../../index.md) del continente de [Cyllene](../../locations/continentes/cyllene.md). que mostraba un continente mucho más desarrollado de lo que recordaban.
 Viendo el mapa Iri no lograba encontrar a [Aira](../../locations/settlements/aira.md), ni reconocer en qué dirección estaría en relación al continente donde se encontraban. Por otra parte [Denzen](denzen.md) logró recordar que él provenía de la [Ciudad Capital](../../locations/settlements/ciudad_capital.md).
 
@@ -129,7 +129,7 @@ Durante el adentramiento en las catacumbas de la [catedral de verna](../../locat
 #### Glavok
 En [Glavok](../../locations/settlements/glavok.md) Iri se metió en una apuesta contra la [Party de bardos](../../factions/party_bardos.md) sobre qué grupo ganará el torneo del [Colozoo](../../locations/buildings/colozoo.md), apostando sus instrumentos contra los de ellos.
 Durante el desarrollo del torneo surgió el rumor de que Iri era el príncipe de un reino lejano, lo cual le trajo esperanzas al creer que alguien lo había reconocido por fin. Finalmente resultó que los rumores habían sido esparcidos por [Denzen](denzen.md).
-Sin embargo esto consiguió que Iri sea invitado a desayunar en el palco del emperador de Glavok, [Sifo Glavok II](../NPCs/sipho_glavok.md), quien al notar lo dañado de su armadura y la falta de una corona le regaló una corona ornamental y la [Armadura de Glavok](../../items/armadura_glavok.md), una armadura ligera de cuero tachonado +1.
+Sin embargo esto consiguió que Iri sea invitado a desayunar en el palco del emperador de Glavok, [Sipho Glavok II](../NPCs/sipho_glavok.md), quien al notar lo dañado de su armadura y la falta de una corona le regaló una corona ornamental y la [Armadura de Glavok](../../items/armadura_glavok.md), una armadura ligera de cuero tachonado +1.
 La party acabó ganando el torneo, pero Iri no pudo tomar los premios de su apuesta ya que los instrumentos se encontraban inutilizables.
 
 ### The Plot Thickens
