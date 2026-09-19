@@ -6,6 +6,10 @@ kind: region
 continent: Cyllene
 map_x: 44.0
 map_y: 37.5
+events:
+  - year: 280
+    era: DF
+    text: "Empieza a crecer [El Bosque](.), tres años despues de que se cerrara [La Grieta](/locations/regions/la_grieta.html)."
 ---
 
 # Bosque Inescrutable

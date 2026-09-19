@@ -450,6 +450,114 @@ nota. Ver <code>wc_fields</code> en <code>wiki_card.html</code>.</p>
 
 {%- comment -%}
   ======================================================================
+  3b. Linea de tiempo
+  ======================================================================
+
+  Los eventos de _includes/timeline.html viven en el front matter, y el front
+  matter no lo mira nadie: un año mal tipeado no rompe el build, se dibuja en
+  el lugar equivocado y listo. Esto es la red.
+
+  Lo que mas pasa es el menos Unicode. La tabla vieja de calendario.md usaba
+  U+2212 en las tres columnas, asi que cualquier copy-paste de ahi entra como
+  String, `to_i` lo hace 0 y el evento aterriza sobre la Desfragmentacion sin
+  chistar. El chequeo es un round-trip: si `{{ year }}` y `{{ year | plus: 0 }}`
+  no dan lo mismo, no era un entero. Tambien pesca `year: "245 DF"`.
+
+  Los links de los eventos no los ve el chequeo de links muertos de mas
+  arriba, que barre `content`: estos estan en el front matter y ademas van
+  absolutos y en .html, no en .md. Por eso se revisan aca.
+{%- endcomment -%}
+{%- assign hs_tl_urls  = site.pages | map: "url" | join: "|" | prepend: "|" | append: "|" -%}
+{%- assign hs_tl_pages = site.pages | where_exp: "hs_p", "hs_p.events" | sort: "url" -%}
+{%- assign hs_tl_rows = "" -%}
+{%- assign hs_n_tl = 0 -%}
+{%- assign hs_n_ev = 0 -%}
+{%- for hs_p in hs_tl_pages -%}
+  {%- for hs_e in hs_p.events -%}
+    {%- assign hs_n_ev = hs_n_ev | plus: 1 -%}
+    {%- capture hs_tl_head -%}<li><a href="{{ hs_p.url | relative_url }}">{{ hs_p.title }}</a>, evento {{ forloop.index }} —{%- endcapture -%}
+
+    {%- comment -%} year {%- endcomment -%}
+    {%- if hs_e.year == nil -%}
+      {%- assign hs_n_tl = hs_n_tl | plus: 1 -%}
+      {%- capture hs_tl_rows -%}{{ hs_tl_rows }}{{ hs_tl_head }} sin <code>year</code>: el include lo saltea.</li>{%- endcapture -%}
+    {%- else -%}
+      {%- capture hs_tl_raw -%}{{ hs_e.year }}{%- endcapture -%}
+      {%- capture hs_tl_rt -%}{{ hs_e.year | plus: 0 }}{%- endcapture -%}
+      {%- if hs_tl_raw != hs_tl_rt -%}
+        {%- assign hs_n_tl = hs_n_tl | plus: 1 -%}
+        {%- capture hs_tl_rows -%}{{ hs_tl_rows }}{{ hs_tl_head }} <code>year: {{ hs_tl_raw }}</code> no es un entero ASCII, se lee como <b>{{ hs_tl_rt }}</b>.</li>{%- endcapture -%}
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- comment -%} era {%- endcomment -%}
+    {%- assign hs_tl_era = hs_e.era | default: "DF" | strip | upcase -%}
+    {%- capture hs_tl_probe -%}|{{ hs_tl_era }}|{%- endcapture -%}
+    {%- unless "|DF|DC|AUREO|" contains hs_tl_probe -%}
+      {%- assign hs_n_tl = hs_n_tl | plus: 1 -%}
+      {%- capture hs_tl_rows -%}{{ hs_tl_rows }}{{ hs_tl_head }} <code>era: {{ hs_e.era }}</code> no existe; el include lo trata como DF.</li>{%- endcapture -%}
+    {%- endunless -%}
+
+    {%- comment -%} text y order {%- endcomment -%}
+    {%- assign hs_tl_txt = hs_e.text | default: "" | strip -%}
+    {%- if hs_tl_txt == "" -%}
+      {%- assign hs_n_tl = hs_n_tl | plus: 1 -%}
+      {%- capture hs_tl_rows -%}{{ hs_tl_rows }}{{ hs_tl_head }} sin <code>text</code>: sale un renglon vacio.</li>{%- endcapture -%}
+    {%- endif -%}
+    {%- if hs_e.order -%}
+      {%- assign hs_tl_ord = hs_e.order | plus: 0 -%}
+      {%- if hs_tl_ord < 0 or hs_tl_ord > 999 -%}
+        {%- assign hs_n_tl = hs_n_tl | plus: 1 -%}
+        {%- capture hs_tl_rows -%}{{ hs_tl_rows }}{{ hs_tl_head }} <code>order: {{ hs_e.order }}</code> se sale de 0-999 y la clave lo recorta mal.</li>{%- endcapture -%}
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- comment -%}
+      links del texto. El punto se saltea: `(.)` es el destino especial que
+      el include cambia por la url de la pagina donde vive el evento.
+    {%- endcomment -%}
+    {%- assign hs_tl_parts = hs_tl_txt | split: "](" -%}
+    {%- for hs_tl_part in hs_tl_parts -%}
+      {%- unless forloop.first -%}
+        {%- assign hs_tl_dest = hs_tl_part | split: ")" | first | split: " " | first -%}
+        {%- unless hs_tl_dest contains "http" or hs_tl_dest == "" or hs_tl_dest == "." -%}
+          {%- assign hs_tl_first = hs_tl_dest | slice: 0, 1 -%}
+          {%- unless hs_tl_first == "#" -%}
+            {%- capture hs_tl_need -%}|{{ hs_tl_dest }}|{%- endcapture -%}
+            {%- unless hs_tl_urls contains hs_tl_need -%}
+              {%- assign hs_n_tl = hs_n_tl | plus: 1 -%}
+              {%- if hs_tl_dest contains ".md" -%}
+                {%- capture hs_tl_why -%}es un <code>.md</code>. Los links del front matter no los toca jekyll-relative-links: van absolutos desde la raiz y en <code>.html</code>{%- endcapture -%}
+              {%- elsif hs_tl_first != "/" -%}
+                {%- capture hs_tl_why -%}es relativo. Tiene que arrancar en <code>/</code>{%- endcapture -%}
+              {%- else -%}
+                {%- capture hs_tl_why -%}no existe{%- endcapture -%}
+              {%- endif -%}
+              {%- capture hs_tl_rows -%}{{ hs_tl_rows }}{{ hs_tl_head }} el link a <code>{{ hs_tl_dest }}</code> {{ hs_tl_why }}.</li>{%- endcapture -%}
+            {%- endunless -%}
+          {%- endunless -%}
+        {%- endunless -%}
+      {%- endunless -%}
+    {%- endfor -%}
+  {%- endfor -%}
+{%- endfor -%}
+{%- capture hs_out_tl -%}
+{%- if hs_n_ev == 0 -%}
+No hay ningun `events:` cargado.
+{%- elsif hs_n_tl == 0 -%}
+Todo OK: {{ hs_n_ev }} eventos en {{ hs_tl_pages.size }} paginas.
+{%- else %}
+<details open>
+<summary><b>Eventos con problemas</b> — {{ hs_n_tl }} sobre {{ hs_n_ev }}</summary>
+<p>El formato esta documentado arriba de <code>_includes/timeline.html</code>.</p>
+<ul>{{ hs_tl_rows }}</ul>
+</details>
+{% endif -%}
+{% endcapture %}
+
+
+{%- comment -%}
+  ======================================================================
   4. Huerfanas, detras de bandera
   ======================================================================
 
@@ -563,6 +671,10 @@ Se miran por dentro {{ hs_scan.size }} paginas.
 ### Front matter que no resuelve
 
 {{ hs_out_fm }}
+
+## Linea de tiempo
+
+{{ hs_out_tl }}
 
 ## Paginas que nadie enlaza
 

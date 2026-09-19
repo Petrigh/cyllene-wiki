@@ -6,3 +6,9 @@ type: npc
 ---
 
 # Amiris
+De [Salacia](../../locations/settlements/salacia.md).
+Pareja de [Anya](anya.md).
+Padre de:
+- [Arten](arten.md)
+- Denzen
+- [Gelem](gelem.md)

@@ -14,6 +14,10 @@ aliases:
   - name: Obeon
     link: /sessions/18.html
 player: Sharon
+events:
+  - year: 160
+    era: DF
+    text: "Nace [Iranon Goldenstag II](.) en [Aira](/locations/settlements/aira.html), primer primogenito hombre desde [Iranon I](/characters/NPCs/iranon.html)."
 ---
 
 # Iranon Goldenstag
@@ -73,7 +77,7 @@ Al ser el primer primogénito hombre desde [Iranon I](../NPCs/iranon.md), el pri
 
 Creció sin hermanos como único heredero al trono, por lo que recibió la formación tradicional de la monarquía en diplomacia, historia aurea, esgrima y arquería. Y desarrollando un interés particular en la historia y las artes, en donde indaga en sus tiempos libres.
 
-Durante su juventud en Aira desarrolló múltiples amistades con habitantes del reino como [Caribdis Idreius](../NPCs/caribdis_idreius.md), o [la familia Greene](../../factions/the_greenes.md), particularmente los 2 hijos [Peter](../NPCs/peter_greene.md) y [Mathew](../NPCs/mathew_greene.md).
+Durante su juventud en Aira desarrolló múltiples amistades con habitantes del reino como [Caribdis Idreius](../NPCs/caribdis_idreius.md), o [la familia Greene](../../factions/the_greenes.md), particularmente los 2 hijos Peter y Mathew.
 
 LLegada la fecha de su coronación, aprovechando que sus padres seguían en vigencia, Iri decidió emprender un viaje fuera de la isla, con la expectativa de ganar nuevas experiencias, conocer [Ta Phaestri](../../locations/ta_phaestri.md) y sus distintas culturas, y generar nuevas relaciones diplomáticas con Aira “lograr poner a Aira en el [mapa](../../index.md)”. 
 

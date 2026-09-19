@@ -457,8 +457,206 @@ $wiki-card-width: 20rem;
 }
 
 
-// La tabla de la linea de tiempo tiene columnas de años que no deben cortarse.
-.linea-tiempo td:nth-child(-n + 3) { white-space: nowrap; text-align: right; }
+// ---- Linea de tiempo (_includes/timeline.html) -----------------------------
+// Reemplaza a la vieja regla `.linea-tiempo td:nth-child(-n + 3)`, que
+// enderezaba las tres columnas de años de la tabla escrita a mano en
+// lore/calendario.md. Esa clase nunca se aplico en ningun lado -- la tabla no
+// llevaba el `{: .linea-tiempo}` -- y la tabla ya no existe: ahora los eventos
+// salen del front matter de cada pagina.
+//
+// TODO ESTO VA ANIDADO ADENTRO DE .main-content, Y NO ES COSMETICO.
+//
+// El tema mete content.scss entero adentro de `.main-content { ... }`, asi que
+// sus reglas de lista arrancan en especificidad (0,1,x) y le ganan a una clase
+// suelta. Con selectores pelados la linea de tiempo se dibujaba mal en tres
+// lugares a la vez, y ninguno avisaba:
+//
+//   propiedad          | el tema / esta hoja                    | spec  | gana
+//   -------------------|----------------------------------------|-------|------
+//   padding-left del   | .main-content ol { padding-left: 1.5em }| 0,1,1 | tema
+//     <ol>             | .tl { padding-left: 8.5rem }           | 0,1,0 |
+//   content del punto  | .main-content ol > li::before {        | 0,1,3 | tema
+//                      |   content: counter(step-counter) }     |       |
+//                      | .tl > li::before { content: "" }       | 0,1,2 |
+//   max-width del <li> | .main-content li { max-width: 90% }    | 0,1,1 | hoja
+//                      |   (linea 34 de este archivo)           |       |
+//
+// O sea: el riel de 8.5rem nunca existia --el <ol> se quedaba con 1.5em-- y las
+// fechas, posicionadas a -8.5rem, caian 136px a la izquierda de un hueco de
+// 24px y se montaban sobre el texto. Y los "puntos" eran en realidad los
+// numeritos de lista del tema, colgados en left: -1.6em.
+//
+// Anidando en .main-content las reglas pasan a (0,2,x) y ganan de una, sin
+// depender del orden de import. Si alguien "simplifica" esto sacando el
+// wrapper, vuelven los tres bugs juntos.
+.main-content {
+
+  // La geometria es un grid de dos columnas --fecha | evento-- y no
+  // posicionamiento absoluto: asi el alto de cada fila sale solo y el texto
+  // nunca se mete abajo de la fecha. Las medidas son custom properties para
+  // que el media query de abajo cambie una sola cosa.
+  ol.tl {
+    --tl-date: 8.5rem;              // ancho de la columna de años
+    --tl-gap: 3rem;                 // canaleta entre las dos columnas
+    --tl-half-gap: 1.5rem;          // la mitad de --tl-gap, a mano: ver abajo
+    // El espinazo va en el medio de la canaleta. Se calcula con una variable
+    // aparte en vez de `calc(var(--tl-gap) / 2)` porque esta hoja la compila
+    // jekyll-sass-converter 1.5.2 (Ruby Sass 3.x) y la barra adentro de calc()
+    // es justo lo que a esa version se le mezcla con su propia division.
+    --tl-line: calc(var(--tl-date) + var(--tl-half-gap));
+
+    position: relative;
+    margin: 1.5rem 0;
+    padding: 0;
+    list-style: none;
+
+    // el espinazo. Arranca y termina en el primer/ultimo punto, no en el
+    // borde, para que no sobresalga por arriba ni por abajo de la serie.
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0.55rem;
+      bottom: 0.55rem;
+      left: var(--tl-line);
+      width: 1px;
+      background: $border-color;
+    }
+
+    > li {
+      display: grid;
+      // minmax(0, 1fr) y no 1fr: el minimo automatico de una pista de grid es
+      // el largo de su palabra mas larga, y los textos de los eventos traen
+      // links con nombres largos que desbordarian la columna.
+      grid-template-columns: var(--tl-date) minmax(0, 1fr);
+      column-gap: var(--tl-gap);
+      position: relative;
+      max-width: none;              // gana a .main-content li { max-width: 90% }
+      margin: 0;
+      padding: 0 0 1.15rem;
+
+      // El punto. `content: ""` es lo que tapa el counter del tema, y
+      // `position: absolute` hace dos cosas: le gana al left: -1.6em del tema,
+      // y --mas importante-- saca el ::before del flujo. En flujo se
+      // convertiria en un grid item y correria la fecha a la segunda celda.
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0.35rem;
+        left: var(--tl-line);
+        transform: translateX(-50%);
+        width: 9px;
+        height: 9px;
+        border: 1px solid $link-color;
+        border-radius: 50%;
+        background: $body-background-color;
+      }
+    }
+  }
+
+  // Sin `grid-column` a mano: el auto-placement ya manda el primer hijo a la
+  // columna 1 y el segundo a la 2. Fijarlo romperia el apilado de abajo, donde
+  // la grilla queda de una sola columna y un `grid-column: 2` le inventaria
+  // una segunda columna implicita.
+  .tl-when {
+    min-width: 0;
+    text-align: right;
+    line-height: 1.3;
+  }
+
+  .tl-what {
+    min-width: 0;
+  }
+
+  .tl-y {
+    display: block;
+    font-weight: 600;
+    white-space: nowrap;            // "&minus;11158 DC" no se parte nunca
+  }
+
+  .tl-y-alt {
+    display: block;
+    margin-top: 0.15rem;
+    color: $search-result-preview-color;
+    font-size: 0.7rem;
+  }
+
+  // markdownify siempre envuelve el texto en <p>: se lo neutraliza en vez de
+  // sacarlo con un replace, que romperia cualquier evento de varios parrafos.
+  .tl-what > p {
+    margin-top: 0;
+
+    &:last-of-type { margin-bottom: 0; }
+  }
+
+  // El hito de "hoy" (site.today_df). Sus dos <span> son los grid items, asi
+  // que cae en la misma grilla que los eventos sin markup extra. Punto lleno
+  // en vez de anillo.
+  .tl-now {
+    &::before { background: $link-color !important; }
+
+    .tl-now-y {
+      text-align: right;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .tl-now-t {
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 0.72rem;
+      color: $search-result-preview-color;
+    }
+  }
+
+  .tl-empty { color: $search-result-preview-color; font-style: italic; }
+
+  // Espejo en texto plano para el buscador del tema. Oculto por clip y no por
+  // display:none, que lo sacaria del flujo pero tambien de search-data.json en
+  // cuanto alguien decidiera filtrar por visibilidad.
+  .tl-index {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  // En pantalla angosta la columna de años no entra al costado: la grilla pasa
+  // a una sola columna, la fecha queda arriba del texto en un solo renglon y
+  // el espinazo se va al borde izquierdo. Como el espinazo y el punto los dos
+  // miran --tl-line, alcanza con redefinir esa variable para mover los dos.
+  // Mismo breakpoint que usa .wiki-page para desarmar la ficha.
+  @media (max-width: 62rem) {
+    ol.tl {
+      --tl-line: 3px;
+      padding-left: 1.25rem;
+
+      > li { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    .tl-when,
+    .tl-now .tl-now-y {
+      text-align: left;
+    }
+
+    .tl-y,
+    .tl-y-alt {
+      display: inline;
+      margin-top: 0;
+    }
+
+    .tl-y-alt { margin-left: 0.4rem; }
+  }
+
+  @media print {
+    ol.tl > li { break-inside: avoid; }
+  }
+}
 
 
 // ---- Peso de los titulos --------------------------------------------------
