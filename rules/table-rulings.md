@@ -3,6 +3,7 @@ title: Tabla de reglas
 parent: House Rules
 nav_order: 1
 summary: Rulings we made and intend to keep
+backlinks: false
 ---
 
 # Tabla de reglas

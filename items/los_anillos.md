@@ -14,7 +14,7 @@ Parecieran funcionar parecido a un *spell storing ring*, pero nadie sabe que gua
 
 | Color | De quien era | Donde esta ahora |
 | -- | -- | -- |
-| Rojo | [Sipho Glavok](../characters/NPCs/glavok.md) | [Sifo Glavok II](../characters/NPCs/sifo_glavok.md) |
+| Rojo | [Sipho Glavok](../characters/NPCs/glavok.md) | [Sipho Glavok II](../characters/NPCs/sipho_glavok.md) |
 | Verde | [Brolwund](../characters/NPCs/brolwund.md) | [Camora Schiaparelli](../characters/NPCs/schiaparelli.md), dueño de los casinos |
 | Amarillo | [Verna](../characters/NPCs/verna.md) | Perdido en batalla |
 | Azul | [Naivara](../characters/NPCs/naivara.md) | [Naivara](../characters/NPCs/naivara.md) , se asume |

@@ -2,7 +2,7 @@
 title: Harold Fielt
 parent: The Party
 summary: Monje de principios cuestionables 👹
-grand_parent: Characters
+grand_parent: Factions
 type: pc
 class: Monje
 player: Judit

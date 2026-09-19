@@ -1,5 +1,5 @@
 {%- comment -%}
-  Mini grafo de la pagina actual: sus vecinos inmediatos, en un anillo.
+  Mini grafo de la pagina actual: las paginas que enlaza, en un anillo.
 
   Cuelga de _layouts/wiki_base.html, o sea que corre en las ~194 paginas. Por
   eso NO toca site.pages ni hace ningun cruce en Liquid: lo unico que se
@@ -40,6 +40,17 @@
   var NS   = 'http://www.w3.org/2000/svg';
   var base = box.dataset.base || '';
   var self = box.dataset.url;
+
+  // Cuantos vecinos entran al anillo. Doce es lo que se lee de un vistazo con
+  // etiqueta y todo en 480x320, y es holgado para el wiki: de los 211 nodos
+  // solo cinco pasan de ahi y la mediana es 2. El recorte existe para las dos
+  // biografias largas -- Iri, con 48 vecinos, y Denzen con 29 --; los otros
+  // tres son sesiones muy cargadas (la 26 con 14, la 01 y la 17 con 13) que
+  // pierden uno o dos y ni se nota.
+  //
+  // Lo que queda afuera no se anuncia. El mini grafo es el vecindario, no el
+  // censo: la foto completa es el grafo global de la home, que ademas deja
+  // filtrar por seccion.
   var MAX  = 12;
 
   fetch(box.dataset.src)
@@ -56,31 +67,101 @@
     var me = byUrl.get(self);
     if (!me) { return; }
 
-    // Vecinos en las dos direcciones: los que esta pagina enlaza y los que la
-    // enlazan a ella. Para el grafo la flecha no importa, importa que se tocan.
+    // Vecinos en UNA sola direccion: lo que esta pagina enlaza desde su cuerpo.
+    // Las menciones en sentido contrario no entran, aunque el JSON las tenga:
+    // de eso ya se ocupa "Mencionado en" un poco mas abajo, y sumarlas aca hacia
+    // que el anillo fuera ese bloque dibujado. En una pagina muy citada -- una
+    // region, un PJ -- el vecindario terminaba lleno de paginas que ella no
+    // nombra, que es justo lo contrario de lo que el grafo quiere mostrar.
+    //
+    // Las sesiones quedan afuera por lo mismo que arrancan apagadas en el grafo
+    // global (ver SECTIONS en graph_canvas.html): son las paginas que mas
+    // enlazan, y en un anillo de pocos nodos la cronologia tapa la estructura
+    // del mundo.
     var seen = new Set(), nb = [];
     function add(n) {
-      if (!n || n === me || seen.has(n.u)) { return; }
+      if (!n || n === me || n.s === 'sessions' || seen.has(n.u)) { return; }
       seen.add(n.u);
       nb.push(n);
     }
     (me.o || []).forEach(function (t) { add(byUrl.get(t)); });
-    data.nodes.forEach(function (n) {
-      if ((n.o || []).indexOf(self) !== -1) { add(n); }
-    });
 
     if (!nb.length) { return; }
 
-    // Los mas conectados primero, para que el recorte deje lo importante.
     var deg = new Map();
     data.nodes.forEach(function (n) {
       deg.set(n.u, (deg.get(n.u) || 0) + (n.o || []).length);
       (n.o || []).forEach(function (t) { deg.set(t, (deg.get(t) || 0) + 1); });
     });
-    nb.sort(function (a, b) { return (deg.get(b.u) || 0) - (deg.get(a.u) || 0); });
 
-    var extra = nb.length - MAX;
+    // Cuantas veces esta pagina nombra a cada destino, que es lo que emite `w`
+    // en graph-data.json, alineado indice a indice con `o`. Un destino sin peso
+    // -- la arista entre sesiones consecutivas, que no sale del cuerpo -- vale
+    // 1: existe, pero nadie la escribio.
+    var wt = new Map();
+    (me.o || []).forEach(function (t, i) { wt.set(t, ((me.w || [])[i]) || 1); });
+
+    // Relevancia, para que el recorte deje lo que la pagina es y no lo primero
+    // que nombro. Tres senales que se suman:
+    //
+    //  +4 si el destino enlaza de vuelta. Es la senal mas pesada de las tres
+    //     por el mismo motivo por el que "Mencionado en" resta lo ya enlazado:
+    //     que las dos paginas se nombren es la unica prueba dura de que la
+    //     relacion existe de los dos lados. Una mencion al pasar no la tiene.
+    //     No alcanza para ganarle a las otras dos juntas, y esta bien que sea
+    //     asi: un NPC nombrado tres veces empata en 5 con un objeto reciproco
+    //     nombrado una, y ahi decide el grado.
+    //  +2 gente y grupos, +1 lugares, +0 el resto. Una ficha de PJ enlaza sus
+    //     seis objetos magicos y las nueve posadas por las que paso; el anillo
+    //     tiene que leerse como su circulo y su mapa, no como su inventario.
+    //  +hasta 3 menciones. Tope bajo a proposito: Iri nombra a Denzen once
+    //     veces y sin techo ese solo numero se comeria el orden entero.
+    //
+    // Desempatan el grado global y despues el titulo. El titulo no es decorado:
+    // sin el, dos destinos con el mismo puntaje y el mismo grado quedan en el
+    // orden del JSON y el anillo puede girar solo porque se edito otra pagina.
+    function rank(n) {
+      var back = (n.o || []).indexOf(self) !== -1 ? 4 : 0;
+      var kind = (n.s === 'characters' || n.s === 'factions') ? 2
+               : (n.s === 'locations') ? 1 : 0;
+      return back + kind + Math.min(wt.get(n.u) || 1, 3);
+    }
+    nb.sort(function (a, b) {
+      return rank(b) - rank(a)
+          || (deg.get(b.u) || 0) - (deg.get(a.u) || 0)
+          || (a.t < b.t ? -1 : a.t > b.t ? 1 : 0);
+    });
+
     var show = nb.slice(0, MAX);
+
+    // El recorte ya esta hecho: de aca en adelante solo cambia EN QUE LUGAR del
+    // anillo cae cada uno, nunca quienes entran.
+    //
+    // Se recorren los vecinos en cadena para que los que se enlazan entre si
+    // queden pegados y su cuerda salga corta, por el borde, en vez de cruzar el
+    // dibujo de lado a lado. Semilla: el mas relevante que quede sin ubicar --
+    // como `show` ya viene ordenado por rank(), es el primero libre, y por eso
+    // el mas relevante de todos sigue cayendo arriba de todo. Desde ahi se salta
+    // siempre al primer vecino suyo que falte ubicar; cuando se acaban,
+    // se abre una cadena nueva con la siguiente semilla. Cada componente conexa
+    // termina entonces en un tramo continuo del anillo, y los sueltos al final.
+    var placed = new Set(), chain = [];
+    while (chain.length < show.length) {
+      var cur = null;
+      for (var si = 0; si < show.length; si++) {
+        if (!placed.has(show[si].u)) { cur = show[si]; break; }
+      }
+      while (cur) {
+        placed.add(cur.u);
+        chain.push(cur);
+        var next = null;
+        for (var ni = 0; ni < show.length; ni++) {
+          if (!placed.has(show[ni].u) && linked(cur, show[ni])) { next = show[ni]; break; }
+        }
+        cur = next;
+      }
+    }
+    show = chain;
 
     var W = 480, H = 320, cx = W / 2, cy = H / 2;
     var rx = W * 0.36, ry = H * 0.34;
@@ -89,14 +170,40 @@
     svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
     svg.setAttribute('class', 'page-graph-svg');
     svg.setAttribute('role', 'group');
-    svg.setAttribute('aria-label', 'Paginas conectadas con ' + me.t);
+    // "Principales" y no "Paginas conectadas": arriba de MAX la lista se corta
+    // sin decirlo, y el lector de pantalla no tiene por que anunciar como
+    // completo algo que no lo es.
+    svg.setAttribute('aria-label', 'Principales paginas conectadas con ' + me.t);
 
     var pts = show.map(function (n, i) {
-      // Se arranca arriba y se gira: asi el primero (el mas conectado) queda
-      // en la punta y no escondido abajo.
+      // Se arranca arriba y se gira: asi el primero -- que despues de encadenar
+      // sigue siendo el mas relevante, porque es la primera semilla -- queda en
+      // la punta y no escondido abajo.
       var a = (i / show.length) * Math.PI * 2 - Math.PI / 2;
       return { n: n, x: cx + Math.cos(a) * rx, y: cy + Math.sin(a) * ry };
     });
+
+    // Segundo nivel: cuerdas entre dos vecinos que se enlazan entre ellos. No
+    // agregan nodos -- el anillo sigue siendo exactamente lo que enlaza esta
+    // pagina -- pero muestran si ese vecindario es un grupo o gente suelta.
+    //
+    // Van ANTES que los rayos y que los nodos porque en SVG pinta el orden del
+    // documento: asi la cuerda queda por debajo y las que pasan por el medio se
+    // esconden atras del nodo central en vez de taparlo.
+    //
+    // El barrido es de a pares, o sea MAX*(MAX-1)/2 en el peor caso. Con MAX=12
+    // son 66 comparaciones de dos indexOf sobre arrays cortos: nada. Si MAX
+    // creciera mucho, esto es lo primero que habria que indexar.
+    for (var i = 0; i < pts.length; i++) {
+      for (var j = i + 1; j < pts.length; j++) {
+        if (!linked(pts[i].n, pts[j].n)) { continue; }
+        var ch = document.createElementNS(NS, 'line');
+        ch.setAttribute('x1', pts[i].x); ch.setAttribute('y1', pts[i].y);
+        ch.setAttribute('x2', pts[j].x); ch.setAttribute('y2', pts[j].y);
+        ch.setAttribute('class', 'page-graph-edge is-peer');
+        svg.appendChild(ch);
+      }
+    }
 
     pts.forEach(function (p) {
       var ln = document.createElementNS(NS, 'line');
@@ -112,14 +219,15 @@
     var body = box.querySelector('.page-graph-body');
     body.appendChild(svg);
 
-    if (extra > 0) {
-      var more = document.createElement('p');
-      more.className = 'page-graph-more';
-      more.textContent = '+' + extra + ' mas';
-      body.appendChild(more);
-    }
-
     box.hidden = false;
+  }
+
+  // Solo para las cuerdas entre dos vecinos ya ubicados en el anillo. Ahi si la
+  // flecha da igual -- se dibuja el mismo segmento -- asi que alcanza con que
+  // cualquiera de las dos enlace a la otra. Quien ENTRA al anillo lo decide
+  // add(), que mira unicamente lo que enlaza esta pagina.
+  function linked(a, b) {
+    return (a.o || []).indexOf(b.u) !== -1 || (b.o || []).indexOf(a.u) !== -1;
   }
 
   function cat(n) {

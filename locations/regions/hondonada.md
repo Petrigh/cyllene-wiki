@@ -10,7 +10,7 @@ map_y: 43.0
 
 # Hondonada de los faros
 
-Región al sureste del [Bosque Inescrutable](../regions/bosque_inescrutable.md), donde arrancó la campaña.
+Región al oeste del [Bosque Inescrutable](bosque_inescrutable.md), en [Cyllene](../continentes/cyllene.md) donde arrancó la campaña.
 
 ## Que sabe la party
 

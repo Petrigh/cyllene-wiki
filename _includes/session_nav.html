@@ -1,0 +1,56 @@
+{%- comment -%}
+  Anterior / siguiente al pie de cada sesion, para poder leer la bitacora de
+  corrido sin volver al indice.
+
+  El prev/next que trae just-the-docs necesita `has_children: true` en el padre
+  y un `nav_order` en cada hijo. sessions/index.md tiene `has_children: false`
+  y ninguna de las 32 sesiones declara `nav_order`, asi que el tema no da nada:
+  hay que armarlo a mano.
+
+  Ordena por `title` y NO por `date`, igual que sessions/index.md y _meta/index.md.
+  El titulo viene con el numero en dos digitos ("Sesion 01"..."Sesion 32"), asi
+  que el orden alfabetico ya es el cronologico; `date` en cambio falta en
+  sessions/11.md, y un `sort: "date"` la mandaria en silencio al principio de
+  la lista.
+
+  Cuelga de _layouts/wiki_base.html, que corre en todas las paginas, asi que el
+  guard va aca adentro: al resto del sitio le cuesta una comparacion de strings
+  y nada mas. El `for` sobre site.pages solo pasa en las sesiones, y filtrado
+  ya a 32 paginas -- nada que ver con el cruce todos-contra-todos de
+  backlinks.html.
+{%- endcomment -%}
+
+{%- if page.parent == "Sessions" and page.title -%}
+  {%- assign sn_all = site.pages | where: "parent", "Sessions" | sort: "title" -%}
+  {%- assign sn_i = -1 -%}
+  {%- for sn_p in sn_all -%}
+    {%- if sn_p.url == page.url -%}
+      {%- assign sn_i = forloop.index0 -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- comment -%}
+    Si la pagina no aparece en la lista (sn_i sigue en -1) no se dibuja nada:
+    mejor sin barra que con una barra que apunte a la sesion equivocada.
+    El chequeo de abajo tampoco es opcional -- en Liquid los indices negativos
+    cuentan desde el final, asi que sn_all[-1] en la sesion 01 devolveria la 32.
+  {%- endcomment -%}
+  {%- if sn_i >= 0 -%}
+    {%- assign sn_prev_i = sn_i | minus: 1 -%}
+    {%- assign sn_next_i = sn_i | plus: 1 -%}
+    {%- if sn_prev_i >= 0 -%}{%- assign sn_prev = sn_all[sn_prev_i] -%}{%- endif -%}
+    {%- if sn_next_i < sn_all.size -%}{%- assign sn_next = sn_all[sn_next_i] -%}{%- endif -%}
+
+    {%- if sn_prev or sn_next -%}
+<nav class="session-nav" aria-label="Sesiones">
+  {%- if sn_prev %}
+  <a class="session-nav-prev" href="{{ sn_prev.url | relative_url }}" rel="prev">&larr; {{ sn_prev.title }}</a>
+  {%- endif %}
+  {%- if sn_next %}
+  <a class="session-nav-next" href="{{ sn_next.url | relative_url }}" rel="next">{{ sn_next.title }} &rarr;</a>
+  {%- endif %}
+</nav>
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}

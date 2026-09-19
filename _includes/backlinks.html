@@ -126,11 +126,37 @@
 
   En el front matter de una pagina la saca del sistema entero: ni muestra
   bloque ni aporta menciones.
-  Va en characters/party.md, cuya tabla de PCs se arma con un for de Liquid:
-  esos links recien existen en P.content si party.md ya se renderizo, y como el
-  orden de render no esta garantizado el bloque de cada PC cambiaria de build en
-  build. party.md y los diez index.md son las unicas paginas con Liquid en el
-  cuerpo, y los index ya quedan afuera por la URL.
+
+  Es para las paginas cuyo cuerpo NO es invariante al orden de render, o sea
+  las que imprimen links con Liquid: esos links recien existen en P.content si
+  la pagina ya se renderizo, y como el orden no esta garantizado el bloque de
+  quien enlazan cambiaria de build en build. Por ese motivo hoy no lo lleva
+  ninguna: los diez index.md, que son las unicas paginas con Liquid en el
+  cuerpo, ya quedan afuera por la URL.
+
+  factions/party.md lo llevo hasta que su roster salia de un for de Liquid.
+  Ahora los seis links a los PC estan escritos a mano en el cuerpo y solo los
+  datos de cada celda salen de Liquid (_includes/roster_cells.html, que devuelve
+  texto plano y ningun destino .html), asi que la pagina volvio al sistema. Si
+  alguna vez se vuelve a generar un link con Liquid ahi, hay que reponer el
+  flag.
+
+  ---- El flag no se queda en los backlinks -------------------------------
+
+  Los tres sistemas -- este bloque, el grafo de relaciones (assets/graph-data.json)
+  y la salud del wiki (_meta/index.md) -- comparten el MISMO predicado: url con
+  ".html" y `backlinks` distinto de false. Asi que poner el flag para apagar el
+  bloque de menciones saca la pagina tambien del grafo y de los chequeos que
+  miran el cuerpo.
+
+  Hoy lo llevan por ese motivo lore/calendario.md y rules/table-rulings.md, que
+  son tablas de referencia donde el bloque es ruido. Conviene saber lo que
+  cuesta: calendario enlaza a Iri, a Denzen y a media geografia, y no aporta un
+  solo nodo ni una sola arista al grafo. Si en algun momento se quiere apagar
+  nada mas que el bloque, hace falta un flag propio.
+
+  El de rules/index.md no hace nada: su URL termina en barra, asi que la guarda
+  de mas abajo ya lo deja afuera.
 
   Las variables llevan prefijo bl_ a proposito: en Jekyll los assign de un
   include escriben en el scope global, asi que el prefijo evita pisar las de

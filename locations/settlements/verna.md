@@ -9,7 +9,7 @@ map_y: 38.5
 ---
 
 # Verna
-Fundada en honor a [Verna](../../characters/NPCs/verna.md), una de los [Cinco Grandes](../../factions/cinco_grandes.md).
+Fundada en honor a [Verna](../../characters/NPCs/verna.md), una de los [Cinco Grandes](../../factions/cinco_grandes.md), ubicada al sur del [Valle de los Cinco Grandes](../regions/valle_cinco_grandes.md).
 
 Verna es una ciudad religosa que veneran a un pantheon monoteista. Un saludo usual entre los residentes y seguidores de este dios es saludar con la mano y decir "Luz".
 

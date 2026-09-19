@@ -55,7 +55,7 @@ nav_exclude: true
   Todo queda entonces sin baseurl. Para navegar, el JS se lo antepone con el
   que recibe por data-attribute.
 {%- endcomment -%}
-{%- assign gr_sections = "/characters/,/locations/,/factions/,/items/,/quests/,/sessions/,/bestiary/,/lore/,/rules/" | split: "," -%}
+{%- assign gr_sections = "/characters/,/locations/,/factions/,/items/,/quests/,/sessions/,/bestiary/,/lore/" | split: "," -%}
 
 {%- comment -%}
   El MISMO predicado que hs_scan en _meta/index.md. No inventar otra lista.
@@ -65,8 +65,14 @@ nav_exclude: true
     Liquid, asi que su `content` NO tiene links cuando todavia no se renderizo y
     tiene media seccion cuando ya se renderizo. Deja afuera tambien este mismo
     archivo y el search-data.json del tema.
-  - `backlinks != false` deja afuera characters/party.md, que tiene exactamente
-    el mismo problema (su tabla de PCs tambien sale de un `for`).
+  - `backlinks != false` es el opt-out por pagina para el mismo problema en una
+    pagina que si tiene URL con ".html". Por ese motivo no lo lleva ninguna:
+    factions/party.md lo llevo mientras su roster salia de un `for`, y quedo
+    libre cuando los links a los PC pasaron a estar escritos a mano en el cuerpo.
+    Si lo llevan lore/calendario.md y rules/table-rulings.md, pero para otra
+    cosa: apagar el bloque de menciones en dos tablas de referencia. Como el
+    predicado es compartido, de paso quedan afuera de aca. Ver el comentario de
+    backlinks.html.
 
   Las dos juntas son "paginas cuyo content no depende del orden de render", que
   es la unica condicion bajo la cual este archivo sale igual en dos builds
@@ -74,6 +80,18 @@ nav_exclude: true
   Dir.entries, o sea del filesystem, y cambia de maquina en maquina.
 {%- endcomment -%}
 {%- assign gr_scan = site.pages | where_exp: "gr_q", "gr_q.url contains '.html'" | where_exp: "gr_q", "gr_q.backlinks != false" | sort: "url" -%}
+
+{%- comment -%}
+  La cadena cronologica de sesiones, la misma que dibuja al pie
+  _includes/session_nav.html. Esos dos links viven en el layout y no en el
+  cuerpo, asi que los barridos de abajo -- que miran `gr_p.content` -- no los
+  ven nunca: la arista hay que agregarla a mano, mas abajo en este mismo for.
+
+  Ordena por `title` y no por `date` por lo mismo que el include: el titulo trae
+  el numero en dos digitos ("Sesion 01".."Sesion 32"), y `date` falta en
+  sessions/11.md.
+{%- endcomment -%}
+{%- assign gr_sess = site.pages | where: "parent", "Sessions" | sort: "title" -%}
 {"nodes":[
 {%- assign gr_first = true -%}
 {%- for gr_p in gr_scan -%}
@@ -135,6 +153,70 @@ nav_exclude: true
     {%- assign gr_seen = gr_seen | append: gr_t | append: "|" -%}
     {%- unless gr_lfirst -%},{%- endunless -%}{%- assign gr_lfirst = false -%}
     {{- gr_t | jsonify -}}
+  {%- endfor -%}
+
+  {%- comment -%}
+    Arista a la sesion siguiente. Alcanza con la de ida: las dos vistas tratan
+    las aristas como no dirigidas (page_graph.html junta los destinos de `o`
+    con los nodos que tienen a esta pagina en el suyo), asi que la 17 ve a la
+    16 y a la 18 con una sola arista por par.
+
+    `forloop.index` es 1-based, o sea que ya es el indice 0-based del que
+    sigue; en la ultima sesion se pasa del final y lo corta el `< size`.
+    Igual que en los dos barridos, pasa por gr_seen: si alguna sesion enlaza a
+    la siguiente desde el cuerpo, la arista no se duplica.
+  {%- endcomment -%}
+  {%- if gr_sec == "sessions" -%}
+    {%- assign gr_si = -1 -%}
+    {%- for gr_s in gr_sess -%}
+      {%- if gr_s.url == gr_p.url -%}{%- assign gr_si = forloop.index -%}{%- break -%}{%- endif -%}
+    {%- endfor -%}
+    {%- if gr_si > 0 and gr_si < gr_sess.size -%}
+      {%- assign gr_t = gr_sess[gr_si].url -%}
+      {%- assign gr_key = "|" | append: gr_t | append: "|" -%}
+      {%- unless gr_seen contains gr_key -%}
+        {%- assign gr_seen = gr_seen | append: gr_t | append: "|" -%}
+        {%- unless gr_lfirst -%},{%- endunless -%}{%- assign gr_lfirst = false -%}
+        {{- gr_t | jsonify -}}
+      {%- endunless -%}
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- comment -%}
+    Peso de cada arista: cuantas veces el cuerpo nombra a ese destino. Sale en
+    un array aparte y NO adentro de `o` para no cambiarle la forma a quien ya
+    lo lee: graph_canvas.html arma sus aristas con `n.o` y de `w` no se entera.
+    Lo consume page_graph.html, que con esto ordena el anillo por relevancia en
+    vez de mostrar los primeros sesenta destinos que aparecieron.
+
+    Los dos barridos de arriba ya dejaron en gr_seen cada destino aceptado, en
+    el MISMO orden en que lo emitieron -- por eso el bloque de la arista de
+    sesion, que antes solo leia gr_seen, ahora tambien apila: si no, esa arista
+    correria los indices y cada sesion quedaria con los pesos del vecino
+    equivocado. Asi las dos listas son paralelas y alcanza con recorrer una.
+
+    gr_seen arranca en "|", asi que sin el remove_first el split devolveria un
+    primer elemento vacio y `w` saldria con un elemento de mas.
+
+    La cuenta es un split del cuerpo por destino: `size` da los pedazos, o sea
+    las apariciones mas uno. Funciona igual que el `contains` de backlinks.html
+    -- la URL va sin baseurl y el cuerpo la tiene con baseurl, pero una es
+    substring de la otra -- y no se pisan entre destinos porque entre las URLs
+    .html del sitio ninguna es cola de otra (el argumento largo esta en el
+    comentario de backlinks.html).
+
+    Costo: un split por destino unico, ~700 en todo el sitio. Es lineal, como
+    el resto del archivo; lo caro sigue siendo el cruce de backlinks.html.
+
+    La arista de sesion, que es la unica que no sale del cuerpo, cuenta 0. El
+    JS la lee como 1: existe, pero nadie la escribio.
+  {%- endcomment -%}
+  {%- assign gr_list = gr_seen | remove_first: "|" | split: "|" -%}
+],"w":[
+  {%- assign gr_wfirst = true -%}
+  {%- for gr_w in gr_list -%}
+    {%- unless gr_wfirst -%},{%- endunless -%}{%- assign gr_wfirst = false -%}
+    {{- gr_p.content | split: gr_w | size | minus: 1 -}}
   {%- endfor -%}
 ]}
 {%- endfor -%}

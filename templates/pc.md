@@ -14,7 +14,7 @@ Copy into `characters/party/`. Written by the player, edited by nobody else.
 ---
 title: Vess Ardenmoor
 parent: The Party
-grand_parent: Characters
+grand_parent: Factions
 type: pc
 summary: Tiefling warlock paying off a debt she did not sign
 race: Tiefling

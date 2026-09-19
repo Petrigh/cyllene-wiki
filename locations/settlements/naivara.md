@@ -9,4 +9,4 @@ map_y: 50.8
 ---
 
 # Naivara
-Fundada en honor a [Naivara](../../characters/NPCs/naivara.md), uno de los [Cinco Grandes](../../factions/cinco_grandes.md). La party todavía no la visitó.
+Fundada en honor a [Naivara](../../characters/NPCs/naivara.md), uno de los [Cinco Grandes](../../factions/cinco_grandes.md). Ubicada en el centro del [Valle de los Cinco Grandes](../regions/valle_cinco_grandes.md) La party todavía no la visitó.

@@ -2,7 +2,7 @@
 title: Luthor Rivendale
 parent: The Party
 summary: Ex-Paladin de Carnahan
-grand_parent: Characters
+grand_parent: Factions
 type: pc
 class: Paladin
 player: Tom

@@ -2,7 +2,7 @@
 title: Denzen Durgromoth
 parent: The Party
 summary: 6to miembro de los Cinco Grandes
-grand_parent: Characters
+grand_parent: Factions
 type: pc
 race: Tiefling de Levistus
 class: Hexblade Warlock
@@ -55,7 +55,7 @@ Nacido en la ciudad de [Salacia](../../locations/settlements/salacia.md) en el a
 En el 262 a sus 17 años, esta curiosidad lo llevó al [desierto nocturno](../../locations/regions/desierto_nocturno.md), donde, durante una excavación, ingresó a una cámara oculta sin que el resto del equipo se enterara. Allí encontró una tumba que tenía inscrita: «Hasta que nos volvamos a ver, tú y yo, por siempre, amor mío», escrito en lengua infernal. Al abrir la tumba, se encontró con un esqueleto femenino; además, había un [collar](../../items/collar_obeon.md) con una gema que parecía ser un ojo. Con sus dos neuronas haciendo sinapsis instantáneas, tuvo la mejor idea de ponérselo.
 En ese momento, un [ente](../NPCs/obeon.md) contenido en la gema se hizo presente en su mente y le propuso formar un pacto: el ente vería el mundo a través de los ojos de Denzen y, a cambio, lo ayudaría en sus expediciones arqueológicas.
 Así fue como después decidió trabajar como arqueólogo independiente y salir a explorar por su cuenta. Esto lo llevó a tener problemas con un grupo de [paladines de Lucerna](../../factions/paladines_lucerna.md), haciendo que fuera habitual que terminara en cana y que su familia tuviera que sacarlo.
-Después de un tiempo, un grupo llamado [La Sociedad de los Vientos Arcanos](../../factions/sociedad_vientos_arcanos.md) se contactó con él para resolver el problema de la [grieta](../../locations/regions/la_grieta.md) al norte del [continente](../../locations/continentes/cyllene.md), donde había una gran cantidad de demonios que salían y generaban problemas. A partir de esto conoció a quienes serían sus compañeros: [Brolwund](../NPCs/brolwund.md), [Carnahan], [Glavok](../NPCs/glavok.md), [Naivara](../NPCs/naivara.md) y [Verna](../NPCs/verna.md), con quienes formó el equipo conocido como [Los ~~Cinco~~ Seis Grandes](../../factions/cinco_grandes.md).
+Después de un tiempo, un grupo llamado [La Sociedad de los Vientos Arcanos](../../factions/sociedad_vientos_arcanos.md) se contactó con él para resolver el problema de la [grieta](../../locations/regions/la_grieta.md) al norte del [continente](../../locations/continentes/cyllene.md), donde había una gran cantidad de demonios que salían y generaban problemas. A partir de esto conoció a quienes serían sus compañeros: [Brolwund](../NPCs/brolwund.md), [Carnahan], [Glavok](../NPCs/glavok.md), [Naivara](../NPCs/naivara.md) y [Verna](../NPCs/verna.md), con quienes formó el equipo conocido como [Los Seis Grandes](../../factions/cinco_grandes.md).
 
 ### Durante los Cinco Grandes
 Cada integrante aportaba una función primordial; la de Denzen era el apoyo táctico en su conocimiento sobre demonología y la habilidad de poder rastrear reliquias que ayuden en el trabajo de los cinco grandes en poder cerrar la grieta.

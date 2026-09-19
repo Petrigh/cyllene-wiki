@@ -2,7 +2,7 @@
 title: Mary Ann Bevan
 parent: The Party
 summary: Se suma en Whiterun
-grand_parent: Characters
+grand_parent: Factions
 type: pc
 class: Wizard
 player: Marian

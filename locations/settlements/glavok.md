@@ -9,4 +9,5 @@ map_y: 49.0
 ---
 
 # Glavok
-Fundada en honor a [Glavok](../../characters/NPCs/glavok.md), uno de los [Cinco Grandes](../../factions/cinco_grandes.md). La party todavía no la visitó.
+Fundada en honor a [Glavok](../../characters/NPCs/glavok.md), uno de los [Cinco Grandes](../../factions/cinco_grandes.md). 
+Glavok es una ciudad ubicada al este del [Valle de los 5 Grandes](../regions/valle_cinco_grandes.md)

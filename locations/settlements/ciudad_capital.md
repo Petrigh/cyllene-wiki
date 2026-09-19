@@ -9,3 +9,4 @@ map_y: 62.0
 ---
 
 # Ciudad Capital
+Ciudad ubicada al norte del [Valle de los 5 Grandes](../regions/valle_cinco_grandes.md)

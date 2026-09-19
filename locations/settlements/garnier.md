@@ -7,4 +7,5 @@ region: Hondonada de los faros
 ---
 
 # Garnier
+Pueblo vecino a [Fywick](fywick.md), en la [Hondonada de los faros](../regions/hondonada.md). 
 

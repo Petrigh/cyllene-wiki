@@ -10,7 +10,7 @@ map_y: 41.8
 
 # Valle de los Cinco Grandes
 
-En el centro-este del continente. A su alrededor están las cinco ciudades que llevan el nombre de los [Cinco Grandes](../../factions/cinco_grandes.md):
+En el centro-este del [continente](../continentes/cyllene.md). A su alrededor están las cinco ciudades que llevan el nombre de los [Cinco Grandes](../../factions/cinco_grandes.md):
 
 | Ciudad | Donde, respecto del valle |
 | -- | -- |

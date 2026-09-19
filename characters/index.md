@@ -12,7 +12,7 @@ Lista de personajes. Arriba los PCs, debajo el resto de NPCs.
 {% assign pcs  = site.pages | where: "parent", "The Party" | sort: "title" %}
 {% assign npcs = site.pages | where: "parent", page.title | where: "type", "npc" | sort: "title" %}
 
-## [The Party](party.md)
+## [The Party](../factions/party.md)
 
 Roster de PCs.
 
