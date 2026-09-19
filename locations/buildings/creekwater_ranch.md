@@ -6,3 +6,4 @@ region: Costa Brumosa
 ---
 
 # CreekWater Ranch
+Rancho ubicado en la [Costa Brumosa](../regions/costa_brumosa.md)

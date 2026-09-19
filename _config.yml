@@ -23,6 +23,13 @@ backlinks: true
 # pagina suelta, `graph: false` en su front matter.
 graph: true
 
+# El "hoy" del mundo, en DF (ver lore/calendario.md). Lo usa
+# _includes/timeline.html para clavar el hito de Actualidad en la linea de
+# tiempo. Va aca y no como un evento mas porque se mueve con la campaña:
+# avanzar el calendario tiene que ser esta linea, no una caceria de front
+# matter. 780 DF = 503 DC = 11662 Aureo.
+today_df: 780
+
 search_enabled: true
 search:
   heading_level: 1

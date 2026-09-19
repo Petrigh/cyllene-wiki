@@ -7,6 +7,14 @@ type: pc
 race: Tiefling de Levistus
 class: Hexblade Warlock
 player: Johnny
+events:
+  - year: 249
+    era: DF
+    text: "Nace [Denzen](.) en [Salacia](/locations/settlements/salacia.html), en una familia de tieflings."
+  - year: 262
+    era: DF
+    text: "En una excavacion en el [Desierto Nocturno](/locations/regions/desierto_nocturno.html), [Denzen](.) encuentra el [collar](/items/collar_obeon.html) y pacta con [Obeon](/characters/NPCs/obeon.html)."
+    order: 600
 ---
 
 # Denzen Durgromoth

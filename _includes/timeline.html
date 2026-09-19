@@ -1,0 +1,233 @@
+{%- comment -%}
+  Linea de tiempo del mundo. Se arma sola: cada pagina declara sus propios
+  eventos en el front matter y este include los junta y los ordena.
+
+  Uso:  {% include timeline.html %}     (hoy, solo en lore/calendario.md)
+
+  ---------------------------------------------------------------- el schema
+
+      ---
+      title: Denzen Durgromoth
+      events:
+        - year: 249            # entero ASCII
+          era: DF              # DF | DC | Aureo -- opcional, default DF
+          text: "Nace Denzen en Salacia."
+          order: 500           # opcional 0-999, desempata dentro del año
+      ---
+
+  Cuatro trampas de YAML que rompen callado, en orden de probabilidad:
+
+  1. `text:` va SIEMPRE entre comillas. Un escalar sin comillas que arranca
+     con `[` es una secuencia YAML y voltea el build entero; un `dos puntos +
+     espacio` en el medio, tambien.
+  2. El menos va en guion ASCII. La tabla vieja usaba U+2212 (`−10881`): eso
+     parsea como String, `to_i` lo hace 0 y el evento aterriza mudo sobre la
+     Desfragmentacion. El `&minus;` bonito lo pone este include al dibujar.
+  3. Nunca rellenar con ceros: `year: 0277` es octal, o sea 191.
+  4. `year: 0` (la Desfragmentacion) esta bien -- en Liquid el 0 es truthy y
+     `default:` no lo pisa. El peligro es el inverso: un `year` ausente haria
+     `nil | plus: 20000` y el evento caeria en el año 0. Por eso el guard.
+
+  Los links dentro de `text` van absolutos desde la raiz y con .html:
+
+      text: "Arrancan [Las Cruzadas](/lore/las_cruzadas.html)."
+
+  No sirve `../lore/las_cruzadas.md`: jekyll-relative-links reescribe el
+  cuerpo de las paginas, nunca el front matter, asi que el .md quedaria tal
+  cual y muerto. El baseurl lo pega este include con un replace.
+
+  Y hay un destino especial, el punto: `(.)` es "la pagina donde vive este
+  evento". Casi todos los eventos ya nombran a su protagonista en la prosa,
+  asi que en vez de repetirlo abajo en un chip, se enlaza la mencion:
+
+      # en characters/party/denzen.md
+      text: "Nace [Denzen](.) en [Salacia](/locations/settlements/salacia.html)."
+
+  Sirve con cualquier redaccion --`[El Bosque](.)`, `[Iranon Goldenstag II](.)`--
+  porque no adivina nada: el que escribe marca cual es la mencion. Un evento
+  sin `(.)` simplemente no tiene vuelta a su pagina, no se rompe nada.
+
+  ------------------------------------------------------- como se ordena
+
+  Liquid no tiene `push` ni sort numerico estable, asi que se arma una clave
+  de digitos por evento, se acumulan en un string separado por comas (el mismo
+  idioma que `gr_seen` en assets/graph-data.json), se hace `split | sort` y se
+  desarma:
+
+      año(6) - order(3) - indicePagina(3) - indiceEvento(2)    "009119-500-004-00"
+
+  El texto NO entra en la clave. Si entrara, cualquier `|` o `,` de la prosa
+  partiria mal el split, y dos eventos del mismo año quedarian ordenados
+  alfabeticamente por su descripcion sin que nadie lo pida. Como la clave es
+  solo [0-9-], el `-` y la `,` no pueden chocar con nada.
+
+  El año se normaliza a DF antes de rellenar y se le suma un offset de 20000
+  para que los negativos (hasta -10881 DF) den positivos y el orden
+  lexicografico coincida con el numerico.
+
+  `sort: "url"` en el scan no es cosmetico: es lo que hace que dos builds
+  seguidos den el mismo HTML, que es de lo que vive el chequeo "compilar dos
+  veces y diffear" de _meta/. Mismo motivo que documenta graph-data.json.
+
+  Dos lineas fragiles, por si algun dia sale en blanco:
+
+  * `tl_f[2] | plus: 0` -- el `| plus: 0` es lo que convierte "004" en Integer.
+    El acceso por indice de Liquid solo dispara con un Integer de verdad; un
+    String devuelve nil y no se rompe nada, simplemente no hay pagina.
+  * Liquid 4 no tiene `forloop.parentloop` (eso es Liquid 5) y el `forloop` de
+    adentro pisa al de afuera, asi que el indice de pagina se captura ANTES
+    de entrar al loop de eventos.
+
+  Y una de kramdown: este include se llama desde un .md, asi que el HTML que
+  emite tiene que arrancar en la columna 0 y con una linea en blanco arriba.
+  Con cuatro espacios de sangria kramdown se come la linea de tiempo entera
+  y la escupe como bloque de codigo.
+
+  ------------------------------------------------------------------ costo
+
+  Es lineal y corre una sola vez: un `where_exp` sobre site.pages que toca
+  solo front matter (nunca `content`) mas ~40 vueltas. Milisegundos.
+  NO meter este include en _layouts/wiki_base.html: ahi pasaria a ser
+  206 x 40 invocaciones de kramdown y costaria mas que los backlinks.
+{%- endcomment -%}
+
+{%- assign tl_off   = 20000 -%}
+{%- assign tl_today = site.today_df | default: 780 -%}
+{%- assign tl_pages = site.pages | where_exp: "tl_q", "tl_q.events" | sort: "url" -%}
+
+{%- comment -%} ---- 1. juntar y armar las claves ---- {%- endcomment -%}
+{%- assign tl_keys = "" -%}
+{%- for tl_p in tl_pages -%}
+  {%- assign tl_kp = "000" | append: forloop.index0 | slice: -3, 3 -%}
+  {%- for tl_e in tl_p.events -%}
+    {%- assign tl_ke = "00" | append: forloop.index0 | slice: -2, 2 -%}
+    {%- if tl_e.year == nil -%}{%- continue -%}{%- endif -%}
+
+    {%- assign tl_era = tl_e.era | default: "DF" | strip | upcase -%}
+    {%- assign tl_y = tl_e.year | plus: 0 -%}
+    {%- if tl_era == "DC"    -%}{%- assign tl_y = tl_y | plus: 277 -%}{%- endif -%}
+    {%- if tl_era == "AUREO" -%}{%- assign tl_y = tl_y | minus: 10882 -%}{%- endif -%}
+
+    {%- assign tl_n = tl_y | plus: tl_off -%}
+    {%- if tl_n < 0 or tl_n > 999999 -%}{%- continue -%}{%- endif -%}
+    {%- assign tl_ky = "000000" | append: tl_n | slice: -6, 6 -%}
+
+    {%- assign tl_ord = tl_e.order | default: 500 -%}
+    {%- assign tl_ko = "000" | append: tl_ord | slice: -3, 3 -%}
+
+    {%- assign tl_keys = tl_keys | append: tl_ky | append: "-" | append: tl_ko | append: "-" | append: tl_kp | append: "-" | append: tl_ke | append: "," -%}
+  {%- endfor -%}
+{%- endfor -%}
+
+{%- assign tl_sorted = tl_keys | split: "," | sort -%}
+
+{%- if tl_sorted.size == 0 -%}
+{%- comment -%} Sin eventos no hay nada que dibujar, pero tampoco hay que
+    dejar un <ol> vacio que la hoja de estilos pinte como una raya suelta. {%- endcomment -%}
+
+<p class="tl-empty">Todavia no hay eventos cargados.</p>
+
+{%- else -%}
+{%- capture tl_href -%}href="{{ site.baseurl }}/{%- endcapture -%}
+{%- assign tl_prev  = "none" -%}
+{%- assign tl_dup   = 0 -%}
+{%- assign tl_hoy   = false -%}
+
+<ol class="tl">
+{%- for tl_k in tl_sorted -%}
+  {%- assign tl_f  = tl_k | split: "-" -%}
+  {%- assign tl_df = tl_f[0] | plus: 0 | minus: tl_off -%}
+  {%- assign tl_pi = tl_f[2] | plus: 0 -%}
+  {%- assign tl_ei = tl_f[3] | plus: 0 -%}
+  {%- assign tl_p  = tl_pages[tl_pi] -%}
+  {%- assign tl_e  = tl_p.events[tl_ei] -%}
+  {%- assign tl_dc = tl_df | minus: 277 -%}
+  {%- assign tl_au = tl_df | plus: 10882 -%}
+
+  {%- comment -%} el hito de "hoy" se cuela donde la secuencia lo cruza {%- endcomment -%}
+  {%- unless tl_hoy -%}{%- if tl_df > tl_today -%}
+    {%- assign tl_hoy = true -%}
+
+<li class="tl-now"><span class="tl-now-y">{{ tl_today }} DF</span><span class="tl-now-t">Actualidad</span></li>
+  {%- endif -%}{%- endunless -%}
+
+  {%- comment -%} ancla estable y escribible a mano: #y262, #y-10881, #y270-2 {%- endcomment -%}
+  {%- if tl_df == tl_prev -%}
+    {%- assign tl_dup = tl_dup | plus: 1 -%}
+    {%- capture tl_id -%}y{{ tl_df }}-{{ tl_dup | plus: 1 }}{%- endcapture -%}
+  {%- else -%}
+    {%- assign tl_dup = 0 -%}
+    {%- capture tl_id -%}y{{ tl_df }}{%- endcapture -%}
+  {%- endif -%}
+  {%- assign tl_prev = tl_df -%}
+
+  {%- comment -%} las tres cuentas; la que escribio el autor va destacada.
+      Una era que no existe cae a DF en vez de dejar el renglon sin destacar. {%- endcomment -%}
+  {%- assign tl_era = tl_e.era | default: "DF" | strip | upcase -%}
+  {%- capture tl_probe -%}|{{ tl_era }}|{%- endcapture -%}
+  {%- unless "|DF|DC|AUREO|" contains tl_probe -%}{%- assign tl_era = "DF" -%}{%- endunless -%}
+  {%- assign tl_main = "" -%}
+  {%- assign tl_alt  = "" -%}
+  {%- assign tl_cuentas = "DF,DC,Aureo" | split: "," -%}
+  {%- for tl_x in tl_cuentas -%}
+    {%- assign tl_xu = tl_x | upcase -%}
+    {%- if tl_xu == "DF"    -%}{%- assign tl_v = tl_df -%}{%- endif -%}
+    {%- if tl_xu == "DC"    -%}{%- assign tl_v = tl_dc -%}{%- endif -%}
+    {%- if tl_xu == "AUREO" -%}{%- assign tl_v = tl_au -%}{%- endif -%}
+    {%- if tl_v < 0 -%}
+      {%- assign tl_vp = 0 | minus: tl_v -%}
+      {%- capture tl_vtxt -%}&minus;{{ tl_vp }}{%- endcapture -%}
+    {%- else -%}
+      {%- capture tl_vtxt -%}{{ tl_v }}{%- endcapture -%}
+    {%- endif -%}
+    {%- if tl_xu == tl_era -%}
+      {%- capture tl_main -%}{{ tl_vtxt }} {{ tl_x }}{%- endcapture -%}
+    {%- else -%}
+      {%- if tl_alt != "" -%}{%- assign tl_alt = tl_alt | append: " &middot; " -%}{%- endif -%}
+      {%- capture tl_one -%}{{ tl_vtxt }} {{ tl_x }}{%- endcapture -%}
+      {%- assign tl_alt = tl_alt | append: tl_one -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- comment -%}
+    El orden de los dos replace NO da igual. El de la raiz va primero: si se
+    resolviera `(.)` antes, el href recien armado ya empezaria con `href="/` y
+    el otro replace le pegaria el baseurl una segunda vez
+    (/cyllene-wiki/cyllene-wiki/...). Al reves no pasa, porque `href="."` no
+    empieza con `href="/` y el primer replace ni lo mira.
+  {%- endcomment -%}
+  {%- capture tl_self -%}href="{{ tl_p.url | relative_url }}"{%- endcapture -%}
+
+<li class="tl-ev" id="{{ tl_id }}">
+<div class="tl-when"><span class="tl-y">{{ tl_main }}</span><span class="tl-y-alt">{{ tl_alt }}</span></div>
+<div class="tl-what">
+{{ tl_e.text | markdownify | replace: 'href="/', tl_href | replace: 'href="."', tl_self }}
+</div>
+</li>
+{%- endfor -%}
+{%- unless tl_hoy -%}
+
+<li class="tl-now"><span class="tl-now-y">{{ tl_today }} DF</span><span class="tl-now-t">Actualidad</span></li>
+{%- endunless -%}
+</ol>
+
+{%- comment -%}
+  Espejo en texto plano. Al pasar los eventos de la tabla al front matter, la
+  prosa dejaria de estar en `content` y el buscador del tema -- que arma
+  search-data.json justamente desde `content` -- no la indexaria mas. Esto la
+  devuelve. Va oculto por clip, no por display:none.
+{%- endcomment -%}
+<div class="tl-index" aria-hidden="true">
+{%- for tl_k in tl_sorted -%}
+  {%- comment -%} el `| plus: 0` no puede ir adentro de los corchetes:
+      Liquid no acepta filtros en un indice, hay que asignar antes. {%- endcomment -%}
+  {%- assign tl_f  = tl_k | split: "-" -%}
+  {%- assign tl_df = tl_f[0] | plus: 0 | minus: tl_off -%}
+  {%- assign tl_pi = tl_f[2] | plus: 0 -%}
+  {%- assign tl_ei = tl_f[3] | plus: 0 -%}
+  {%- assign tl_p  = tl_pages[tl_pi] -%}
+  {%- assign tl_e  = tl_p.events[tl_ei] -%}
+{{ tl_df }} DF. {{ tl_e.text | markdownify | strip_html | normalize_whitespace }}
+{%- endfor -%}
+</div>
+{%- endif -%}

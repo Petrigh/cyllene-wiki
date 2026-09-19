@@ -6,3 +6,7 @@ type: npc
 ---
 
 # Arten
+De [Salacia](../../locations/settlements/salacia.md).
+Padres:
+- [Anya](anya.md)
+- [Amiris](amiris.md)

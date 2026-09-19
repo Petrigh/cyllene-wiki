@@ -6,6 +6,11 @@ kind: region
 continent: Cyllene
 map_x: 62.3
 map_y: 29.0
+events:
+  - year: 0
+    era: DF
+    text: "**La Desfragmentacion**. Se abre [La Grieta](.), y de ella empiezan a salir demonios. El año arranca la cuenta DF."
+    order: 500
 ---
 
 # La Grieta

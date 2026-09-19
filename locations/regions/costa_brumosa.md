@@ -9,4 +9,4 @@ map_y: 21.0
 ---
 
 # Costa Brumosa
-Región del sur de [Cyllene](../continentes/cyllene.md). La costa queda separada del resto de la region por las [Montanas ardientes](montanas_ardientes.md).
+Región del sur de [Cyllene](../continentes/cyllene.md). La costa queda separada del resto de la region por las [Montañas ardientes](montanas_ardientes.md).

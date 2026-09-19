@@ -2,6 +2,10 @@
 title: Iranon I
 parent: Characters
 type: npc
+events:
+  - year: 1
+    era: Aureo
+    text: "Nace [Iranon I](.), el primer heredero de [Aira](/locations/settlements/aira.html), cuando todavia se llamaba Aith Telperin. Su nacimiento es el año 1 del calendario aureo."
 ---
 
 # Iranon I

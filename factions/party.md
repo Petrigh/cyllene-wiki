@@ -27,10 +27,3 @@ Roster, esto es mas para estar al tanto de que es capaz el equipo para tomar dec
 ## Orden de formacion
 
 Frente: — · Medio: — · Detras: —
-
-## Leyes que se imparten al grupo
-
-Reglas que el grupo acordo a seguir.
-
-- No se acepta absolutamente nada de las feys.
-- [Denzen](../characters/party/denzen.md) no puede saber donde esta la [muñeca](../items/muneca_ethel.md).
