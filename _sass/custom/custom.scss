@@ -734,10 +734,14 @@ h6,
 // Son nueve categorias, mas de las que el ojo separa por color solo. El color
 // aca ordena y agrupa; quien identifica es la etiqueta, el tooltip y los
 // filtros. Todos los tonos son oscuros sobre el papel #e9e7e0 del tema.
+//
+// La excepcion es el par pc/npc: como el grafo global tiene un chip para cada
+// uno, son dos entradas de la leyenda y no dos matices de una, asi que tienen
+// que separarse a simple vista. Mismo verde, distancia real de luminosidad.
 .wiki-graph-wrap,
 .page-graph {
   --g-pc:        #2f6f60;   // el propio $link-color: los PJs son el centro
-  --g-npc:       #4a7f72;
+  --g-npc:       #7a9c86;   // el mismo verde, bastante mas claro
   --g-locations: #7d6a32;   // el mismo ocre que los puntos de region del mapa
   --g-factions:  #7d3232;   // oxblood, como los spoilers
   --g-items:     #6b5a7d;

@@ -5,4 +5,6 @@ type: npc
 ---
 
 # Madres de Harold
-Viven en [Verna](../../locations/settlements/verna.md). Sus contrapartes, las *Anti Mamás*, fueron acusadas de asesinar al resto de los [elegidos](../../lore/elegidos.md) e incineradas.
+Madres de [Harold](../party/harold.md) que viven en [Verna](../../locations/settlements/verna.md), siendo devotas de [Ghama](../../lore/panteon_ghama.md). 
+Sus contrapartes, las *Anti Mamás*, fueron acusadas de asesinar al resto de los [elegidos](../../lore/elegidos.md) e incineradas.
+

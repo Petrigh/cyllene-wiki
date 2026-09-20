@@ -1,12 +1,12 @@
 ---
 title: The Name of Aira
 parent: Leyendas de Aira
-summary: Cómo Enoch mató a Aira y por qué Iranon I le puso su nombre al reino
+summary: Balada fundacional del reino
 ---
 
 # The Name of Aira
 
-La balada fundacional del [reino](../../locations/settlements/aira.md), cantada en primera persona por alguien que dice haber estado ahí.
+La balada fundacional del [reino](../../locations/settlements/aira.md).
 
 > This is the sad story
 > Of our lady, [Aira](../../characters/NPCs/aira.md) the Pure

@@ -48,16 +48,9 @@ Sailor
 ## History
 Proveniente desde un monte de otro continente, la sobrepoblacion y falta de espacio en su lugar de origen forzo a First a embarcarse en busca de tierras libres, capaces de albergar mas gente para poder darle un respiro a su pueblo.
 
-Entrando al continente de Cyllene, First amarra en la isla de [Pelias](../../locations/nature/pelias.md), donde decide comenzar su campamento. Encuentra a [Gaia](../NPCs/gaia_diosa.md) lastimada y decide cuidarla de los monstruos que llegaban a la isla. Luego de un tiempo decide embarcarse al territorio continental para ponerle un fin a las oliadas de monstruos asi [Gaia](../NPCs/gaia_diosa.md) puede descansar en paz. Recibiendo una bendicion de la dioas para navegar seguro.
+Entrando al continente de [Cyllene](../../locations/continentes/cyllene.md), First amarra en la isla de [Pelias](../../locations/nature/pelias.md), donde decide comenzar su campamento. Encuentra a [Gaia](../NPCs/gaia_diosa.md) lastimada y decide cuidarla de los monstruos que llegaban a la isla. Luego de un tiempo decide embarcarse al territorio continental para ponerle un fin a las oliadas de monstruos asi [Gaia](../NPCs/gaia_diosa.md) puede descansar en paz. Recibiendo una bendicion de la dioas para navegar seguro.
 
 Logrando llegar a la costa de la [Hondonada](../../locations/regions/hondonada.md), se encuentra con [Mary Anne](mary.md) y poco despues con el resto de la [party](../../factions/party.md)
-
-## Pesadillas
-
-| Sesion | Que pasó |
-| -- | -- |
-| [12](../../sessions/12.md) | [Pesadillas](../../lore/pesadillas.md) de [goose](../../bestiary/goose.md), junto a [Luthor](luthor.md) e [Iri](iri.md). |
-| [12](../../sessions/12.md) — segunda noche | Pesadilla junto a [Iri](iri.md) y [Mary](mary.md), camino al [templo del Jester](../../locations/buildings/templo_jester.md). |
 
 ## Relaciones
 
@@ -75,3 +68,10 @@ Se enamoro de [Marcia](../NPCs/marcia.md).
 
 ### Troy
 [Troy](../../bestiary/troy.md) es un lince del cual no quiere hacerse cargo. Fue teletrasportado junto con la party cuando terminaron de [entretener](../../sessions/14.md) a [Jester](../NPCs/jester.md).
+
+## Pesadillas
+
+| Sesion | Que pasó |
+| -- | -- |
+| [12](../../sessions/12.md) | [Pesadillas](../../lore/pesadillas.md) de [goose](../../bestiary/goose.md), junto a [Luthor](luthor.md) e [Iri](iri.md). |
+| [12](../../sessions/12.md) — segunda noche | Pesadilla junto a [Iri](iri.md) y [Mary](mary.md), camino al [templo del Jester](../../locations/buildings/templo_jester.md). |

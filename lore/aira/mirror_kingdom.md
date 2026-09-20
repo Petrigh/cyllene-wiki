@@ -1,7 +1,7 @@
 ---
 title: The Mirror Kingdom
 parent: Leyendas de Aira
-summary: Ronda infantil sobre el reino del otro lado del espejo
+summary: Cuidado con los reflejos, suelen ser malvados
 ---
 
 # The Mirror Kingdom

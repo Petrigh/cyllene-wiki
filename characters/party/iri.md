@@ -125,7 +125,7 @@ Durante este periodo Iri envió un sending a su [abuelo](../NPCs/jebediah_creekw
 
 
 #### Verna
-En [Verna](../../locations/settlements/verna.md) Iri conoció a [Cachito](../NPCs/cachito.md), un owling devoto de [Ghama](../NPCs/ghama.md) que quería recuperar su hogar, e Iri quiso ayudar a llevar a cabo actos de bondad. Estos actos de bondad en conjunto con su ingenuidad llevaron a que les estafen en un callejón, Iri entregando una suma total 7.297gp para comprar sanguchitos.
+En [Verna](../../locations/settlements/verna.md) Iri conoció a [Cachito](../NPCs/cachito.md), un owling devoto de [Ghama](../../lore/panteon_ghama.md) que quería recuperar su hogar, e Iri quiso ayudar a llevar a cabo actos de bondad. Estos actos de bondad en conjunto con su ingenuidad llevaron a que les estafen en un callejón, Iri entregando una suma total 7.297gp para comprar sanguchitos.
 Al enterarse de esto [Luthor](luthor.md) le acompañó a recuperar el oro, y entre el loot encontraron un [Arito de bardo](../../items/arito_bardo.md). Desde este percance Iri no tiene permitido llevar el oro de la party.
 
 Durante el adentramiento en las catacumbas de la [catedral de verna](../../locations/buildings/catedral_verna.md), Iri pudo ver como un [Corazon negro](../../bestiary/corazon_ghama.md) atravezaba a Cachito, matandolo al instante.
