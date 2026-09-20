@@ -132,7 +132,7 @@ date: 2026-09-18
   tienen y los diez index.md no, asi que filtrar por parent los deja afuera solo,
   sin lista de excepciones.
 {%- endcomment -%}
-{%- assign hs_secs = "Characters,The Party,Locations,Sessions,Items,Quests,Factions,Lore,Bestiary,House Rules,Leyendas de Aira" | split: "," -%}
+{%- assign hs_secs = "Characters,The Party,Locations,Sessions,Items,Quests,Factions,Lore,Bestiary,House Rules,Leyendas de Aira,Objetos de Denzen,Objetos de Iri,Objetos de Mary" | split: "," -%}
 
 
 {%- comment -%}

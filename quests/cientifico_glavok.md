@@ -2,6 +2,7 @@
 title: El cientifico de Glavok
 parent: Quests
 state: Active
+summary: Sospechoso o Vicitima
 ---
 
 # El científico de Glavok

@@ -36,6 +36,8 @@ Indice
 ### Background
 
 ### Items
+- [Bag of Colding](../../items/objetos_mary.md)
+- [Anillo de Hallucinatory Terrain](../../items/objetos_mary.md)
 
 ## History
 
