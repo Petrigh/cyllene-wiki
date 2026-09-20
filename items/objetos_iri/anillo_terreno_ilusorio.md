@@ -3,7 +3,7 @@ title: Anillo de Hallucinatory Terrain
 parent: Objetos de Mary
 summary: Regalo de Mary, entregado por Morty
 rarity: --
-holder: Mary Ann Bevan
+holder: Iranon Goldenstag
 ---
 
 # Anillo de Hallucinatory Terrain

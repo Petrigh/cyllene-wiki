@@ -12,4 +12,3 @@ holder: Mary Ann Bevan
 Lo que lleva encima [Mary](../characters/party/mary.md).
 
 - [Bag of Colding](objetos_mary/bag_of_colding.md)
-- [Anillo de Hallucinatory Terrain](objetos_mary/anillo_terreno_ilusorio.md)
