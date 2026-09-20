@@ -1,7 +1,9 @@
 ---
 title: Brazalete de Adulacion
-parent: Items
+parent: Objetos de Iri
 rarity: --
+holder: Iranon Goldenstag
+summary: Slay
 ---
 
 # Brazalete de Adulacion

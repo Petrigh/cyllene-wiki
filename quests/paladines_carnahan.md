@@ -2,6 +2,7 @@
 title: El avance de los Paladines de Carnahan
 parent: Quests
 state: Active
+summary: Crece su esfera de influencia
 ---
 
 # El avance de los Paladines de Carnahan

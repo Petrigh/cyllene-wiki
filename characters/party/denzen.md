@@ -13,7 +13,7 @@ events:
     text: "Nace [Denzen](.) en [Salacia](/locations/settlements/salacia.html), en una familia de tieflings."
   - year: 262
     era: DF
-    text: "En una excavacion en el [Desierto Nocturno](/locations/regions/desierto_nocturno.html), [Denzen](.) encuentra el [collar](/items/collar_obeon.html) y pacta con [Obeon](/characters/NPCs/obeon.html)."
+    text: "En una excavacion en el [Desierto Nocturno](/locations/regions/desierto_nocturno.html), [Denzen](.) encuentra el [collar](/items/objetos_denzen/collar_obeon.html) y pacta con [Obeon](/characters/NPCs/obeon.html)."
     order: 600
 ---
 
@@ -51,16 +51,17 @@ Tiefling de Levistus.
 ### Background
 Arqueólogo
 ### Items
-- [Pearl of Power](../../items/pearl_power.md)
-- [Bolsa de caramelo media hora](../../items/caramelos_mediahora.md)
-- [Post-it de comunicación saludable](../../items/postit.md)
-- [Pacto de sangre](../../items/pacto_sangre.md)
+- Pearl of Power
+- Bolsa de caramelo media hora
+- Post-it de comunicación saludable
+- Pacto de sangre
+- Comic
 
 ## Historia
 
 ### Antes de los Cinco Grandes
 Nacido en la ciudad de [Salacia](../../locations/settlements/salacia.md) en el año [249](../../lore/calendario.md) hijo de una famlia de tieflings el desde muy joven se interesó en la demonología y en cuáles fueron los orígenes que le dieron su apariencia demoníaca. Esto hizo que pasara mucho tiempo estudiando sus orígenes y buscando desde cuándo había iniciado todo, lo que lo llevó a dedicarse a la arqueología para poder recorrer el camino de sus orígenes.
-En el 262 a sus 17 años, esta curiosidad lo llevó al [desierto nocturno](../../locations/regions/desierto_nocturno.md), donde, durante una excavación, ingresó a una cámara oculta sin que el resto del equipo se enterara. Allí encontró una tumba que tenía inscrita: «Hasta que nos volvamos a ver, tú y yo, por siempre, amor mío», escrito en lengua infernal. Al abrir la tumba, se encontró con un esqueleto femenino; además, había un [collar](../../items/collar_obeon.md) con una gema que parecía ser un ojo. Con sus dos neuronas haciendo sinapsis instantáneas, tuvo la mejor idea de ponérselo.
+En el 262 a sus 17 años, esta curiosidad lo llevó al [desierto nocturno](../../locations/regions/desierto_nocturno.md), donde, durante una excavación, ingresó a una cámara oculta sin que el resto del equipo se enterara. Allí encontró una tumba que tenía inscrita: «Hasta que nos volvamos a ver, tú y yo, por siempre, amor mío», escrito en lengua infernal. Al abrir la tumba, se encontró con un esqueleto femenino; además, había un collar con una gema que parecía ser un ojo. Con sus dos neuronas haciendo sinapsis instantáneas, tuvo la mejor idea de ponérselo.
 En ese momento, un [ente](../NPCs/obeon.md) contenido en la gema se hizo presente en su mente y le propuso formar un pacto: el ente vería el mundo a través de los ojos de Denzen y, a cambio, lo ayudaría en sus expediciones arqueológicas.
 Así fue como después decidió trabajar como arqueólogo independiente y salir a explorar por su cuenta. Esto lo llevó a tener problemas con un grupo de [paladines de Lucerna](../../factions/paladines_lucerna.md), haciendo que fuera habitual que terminara en cana y que su familia tuviera que sacarlo.
 Después de un tiempo, un grupo llamado [La Sociedad de los Vientos Arcanos](../../factions/sociedad_vientos_arcanos.md) se contactó con él para resolver el problema de la [grieta](../../locations/regions/la_grieta.md) al norte del [continente](../../locations/continentes/cyllene.md), donde había una gran cantidad de demonios que salían y generaban problemas. A partir de esto conoció a quienes serían sus compañeros: [Brolwund](../NPCs/brolwund.md), [Carnahan], [Glavok](../NPCs/glavok.md), [Naivara](../NPCs/naivara.md) y [Verna](../NPCs/verna.md), con quienes formó el equipo conocido como [Los Seis Grandes](../../factions/cinco_grandes.md).

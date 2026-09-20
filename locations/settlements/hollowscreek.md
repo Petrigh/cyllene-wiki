@@ -4,6 +4,7 @@ parent: Locations
 summary: 
 kind: settlement
 region: Hondonada de los faros
+summary: Pueblo sin alma
 ---
 
 # HollowsCreek

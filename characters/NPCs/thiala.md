@@ -2,6 +2,7 @@
 title: Thiala
 parent: Characters
 type: npc
+summary: Tavernera en Whiterun
 ---
 
 # Thiala

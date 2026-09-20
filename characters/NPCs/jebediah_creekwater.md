@@ -2,6 +2,7 @@
 title: Jebediah Creekwater
 parent: Characters
 type: npc
+summary: Abuelo de Iri
 ---
 
 # Jebediah Creekwater

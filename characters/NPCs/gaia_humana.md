@@ -2,7 +2,7 @@
 title: Gaia(humana)
 parent: Characters
 type: npc
-summary: La hermana de Gareth, rescatada de la tia Ethel
+summary: Investigadora pagana
 race: Humana
 status: Viva
 location: Safepoint
@@ -12,4 +12,4 @@ location: Safepoint
 
 Humana. Hermana de [Gareth](gareth.md). Estuvo prisionera de la [tía Ethel](tia_ethel.md) hasta que la party la rescató.
 
-No confundir con [Gaia](gaia_diosa.md), del [panteón del bosque](../../lore/panteon_bosque.md).
+Cleriga de [Safepoint](../../locations/settlements/safepoint.md), que se dedica a investigar los [dioses antiguos](../../lore/panteon_bosque.md).

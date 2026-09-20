@@ -2,6 +2,7 @@
 title: The Jester
 parent: Characters
 type: npc
+summary: Dios del Caos
 pantheon: Panteón del Bosque
 aliases:
   - The Jester

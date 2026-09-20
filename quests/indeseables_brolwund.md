@@ -1,7 +1,8 @@
 ---
 title: Los Indeseables presos
 parent: Quests
-state: Active
+state: Stale
+summary: Sera el final de Seinfeld?
 ---
 
 # Los Indeseables presos

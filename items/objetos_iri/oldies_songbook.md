@@ -1,7 +1,9 @@
 ---
 title: Ye Oldies but Goldies Songbook
-parent: Items
+parent: Objetos de Iri
 rarity: --
+holder: Iranon Goldenstag
+summary: Cancionero
 ---
 
 # Ye Oldies but Goldies Songbook

@@ -2,6 +2,7 @@
 title: Raiz
 parent: Characters
 type: npc
+summary: Reina de treboles
 ---
 
 # Raiz

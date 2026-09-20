@@ -3,6 +3,7 @@ title: Casino El Viva
 parent: Locations
 kind: building
 settlement: Brolwund
+summary: Juegos de azar y glamour
 ---
 
 # Casino El Viva

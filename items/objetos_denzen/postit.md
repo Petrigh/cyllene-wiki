@@ -1,8 +1,9 @@
 ---
 title: Post-it
-parent: Items
+parent: Objetos de Denzen
 summary: Para comunicacion saludable
 rarity: --
+holder: Denzen Durgromoth
 ---
 
 # Post-it

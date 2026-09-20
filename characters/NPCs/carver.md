@@ -1,6 +1,7 @@
 ---
 title: Carver
 parent: Characters
+summary: Motoquero
 type: npc
 ---
 

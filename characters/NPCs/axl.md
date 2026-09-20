@@ -1,6 +1,7 @@
 ---
 title: Axl
 parent: Characters
+summary: Gnomo del bosque
 type: npc
 ---
 

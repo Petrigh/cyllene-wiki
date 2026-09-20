@@ -1,6 +1,7 @@
 ---
 title: Enoch
 parent: Characters
+summary: Diablo legendario de Aira
 type: npc
 ---
 

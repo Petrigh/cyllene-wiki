@@ -2,6 +2,7 @@
 title: Melanie
 parent: Characters
 type: npc
+summary: Gnoma de Garnier
 ---
 
 # Melanie

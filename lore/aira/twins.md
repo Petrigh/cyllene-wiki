@@ -1,7 +1,7 @@
 ---
 title: The Twins
 parent: Leyendas de Aira
-summary: Los gemelos medio elfos, la garantía Baker y la constelación que dejaron
+summary: Los gemelos medio elfos, y la constelación que dejaron
 ---
 
 # The Twins

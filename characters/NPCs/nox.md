@@ -2,6 +2,7 @@
 title: Nox
 parent: Characters
 type: npc
+summary: Gnomo del bosque
 ---
 
 # Nox

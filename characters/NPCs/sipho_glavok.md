@@ -2,6 +2,7 @@
 title: Sipho Glavok II
 parent: Characters
 type: npc
+summary: Rey de Glavok
 ---
 
 # Sipho Glavok II

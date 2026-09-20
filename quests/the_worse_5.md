@@ -2,6 +2,7 @@
 title: The Worse 5
 parent: Quests
 state: Active
+summary: Surgieron al cruzar un espejo
 ---
 
 # The Worse 5

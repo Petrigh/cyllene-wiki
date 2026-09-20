@@ -1,6 +1,6 @@
 ---
 title: Items
-nav_order: 9
+nav_order: 6
 has_children: false
 has_toc: false
 ---

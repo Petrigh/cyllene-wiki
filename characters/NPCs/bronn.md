@@ -1,6 +1,7 @@
 ---
 title: Bronn
 parent: Characters
+summary: Goatkin de montaña
 type: npc
 ---
 

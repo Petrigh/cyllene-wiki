@@ -1,7 +1,7 @@
 ---
 title: The Princess That Couldn't Love
 parent: Leyendas de Aira
-summary: La princesa que rechazó a todos sus pretendientes y se casó con su doncella
+summary: Siempre hay mas opciones de las que se proponen.
 ---
 
 # The Princess That Couldn't Love

@@ -1,6 +1,7 @@
 ---
 title: Elmer Trixstar
 parent: Characters
+summary: Narnian looking ass
 type: npc
 ---
 

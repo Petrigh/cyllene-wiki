@@ -2,6 +2,7 @@
 title: Verna
 parent: Characters
 type: npc
+summary: Cleriga de los 5 Grandes
 ---
 
 # Verna Sunstep

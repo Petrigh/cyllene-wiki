@@ -1,7 +1,7 @@
 ---
 title: Los Elegidos
 parent: Lore
-summary: Grupo del que formarían parte las Anti Mamás de Harold
+summary: Grupo vendecida por Ghama
 ---
 
 # Los Elegidos

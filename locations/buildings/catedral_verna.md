@@ -3,6 +3,7 @@ title: Catedral de Verna
 parent: Locations
 kind: building
 settlement: Verna
+summary: Desacrated place
 ---
 
 # Catedral de Verna

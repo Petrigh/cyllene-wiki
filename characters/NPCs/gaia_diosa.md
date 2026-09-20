@@ -2,6 +2,7 @@
 title: Gaia
 parent: Characters
 type: npc
+summary: Diosa de la vida
 pantheon: Panteón del Bosque
 aliases:
   - The Maiden
@@ -16,5 +17,3 @@ Se cree que distintas comunidades, espcialemnte residentes del [Bosque Inescruta
 Seguidores de esta diosa entienden a la vida como algo sagrado, por lo que se comprometen a respetarla y honrar la muertes, intentando no lastimar a los demas, pero si ese es el caso, hacerlo de forma que uno pueda aprovechar los nutrientes, reutilizar huesos como herramientas, o pieles como abrigo. No quitandole la vida a los demas por mero gusto, y haciendo que sus muertes no sean en vano.
 
 Se encuentra recuperandose en [Pelias](../../locations/nature/pelias.md).
-
-No confundir con [Gaia(humana)](gaia_humana.md).

@@ -46,7 +46,7 @@ Habiendo llegado a [Brolwund](../../locations/settlements/brolwund.md) Iri y [De
 Dicha armadura fue luego dañada durante un encuentro con un [ooze](https://5e.tools/bestiary/gray-ooze-xmm.html) debajo de la [Catedral de Verna](../../locations/buildings/catedral_verna.md).
 Compitiendo en el Coliseo, [Sipho Glavok II](../NPCs/sipho_glavok.md) notó estos daños a la armadura y le regaló una armadura tachonada +1, ornamentada en marron, rojo y dorado, junto con una corona simbolica.
 
-Actualmente viste la [Armadura de Glavok](../../items/armadura_glavok.md) debajo de sus ropas tradicionales Aureas que recuperó en [Creekwater ranch](../../locations/buildings/creekwater_ranch.md), Con la corona colgada a un costado del cinturón.
+Actualmente viste la Armadura de Glavok debajo de sus ropas tradicionales Aureas que recuperó en [Creekwater ranch](../../locations/buildings/creekwater_ranch.md), Con la corona colgada a un costado del cinturón.
 
 ## Build
 
@@ -62,11 +62,11 @@ Iri es un [High Elf](https://5e.tools/races.html#elf%20(high)_phb)
 Iri tiene el background [Entertainer](https://5e.tools/backgrounds.html#entertainer_phb)
 
 ### Items
-  - [Armadura de Glavok](../../items/armadura_glavok.md)
-  - [Sir Laughs A' Lot](../../items/sir_laugh_alot.md)
-  - [Ye Oldies but Goldies Songbook](../../items/oldies_songbook.md)
-  - [Brazalete de Adulación](../../items/brazalete_adulacion.md)
-  - [Arito de Bardo](../../items/arito_bardo.md)
+  - Armadura de Glavok
+  - Sir Laughs A' Lot
+  - Ye Oldies but Goldies Songbook
+  - Brazalete de Adulación
+  - Arito de Bardo
 
 ## Historia
 
@@ -125,15 +125,15 @@ Durante este periodo Iri envió un sending a su [abuelo](../NPCs/jebediah_creekw
 
 
 #### Verna
-En [Verna](../../locations/settlements/verna.md) Iri conoció a [Cachito](../NPCs/cachito.md), un owling devoto de [Ghama](../NPCs/ghama.md) que quería recuperar su hogar, e Iri quiso ayudar a llevar a cabo actos de bondad. Estos actos de bondad en conjunto con su ingenuidad llevaron a que les estafen en un callejón, Iri entregando una suma total 7.297gp para comprar sanguchitos.
-Al enterarse de esto [Luthor](luthor.md) le acompañó a recuperar el oro, y entre el loot encontraron un [Arito de bardo](../../items/arito_bardo.md). Desde este percance Iri no tiene permitido llevar el oro de la party.
+En [Verna](../../locations/settlements/verna.md) Iri conoció a [Cachito](../NPCs/cachito.md), un owling devoto de [Ghama](../../lore/panteon_ghama.md) que quería recuperar su hogar, e Iri quiso ayudar a llevar a cabo actos de bondad. Estos actos de bondad en conjunto con su ingenuidad llevaron a que les estafen en un callejón, Iri entregando una suma total 7.297gp para comprar sanguchitos.
+Al enterarse de esto [Luthor](luthor.md) le acompañó a recuperar el oro, y entre el loot encontraron un Arito de bardo Desde este percance Iri no tiene permitido llevar el oro de la party.
 
 Durante el adentramiento en las catacumbas de la [catedral de verna](../../locations/buildings/catedral_verna.md), Iri pudo ver como un [Corazon negro](../../bestiary/corazon_ghama.md) atravezaba a Cachito, matandolo al instante.
 
 #### Glavok
 En [Glavok](../../locations/settlements/glavok.md) Iri se metió en una apuesta contra la [Party de bardos](../../factions/party_bardos.md) sobre qué grupo ganará el torneo del [Colozoo](../../locations/buildings/colozoo.md), apostando sus instrumentos contra los de ellos.
 Durante el desarrollo del torneo surgió el rumor de que Iri era el príncipe de un reino lejano, lo cual le trajo esperanzas al creer que alguien lo había reconocido por fin. Finalmente resultó que los rumores habían sido esparcidos por [Denzen](denzen.md).
-Sin embargo esto consiguió que Iri sea invitado a desayunar en el palco del emperador de Glavok, [Sipho Glavok II](../NPCs/sipho_glavok.md), quien al notar lo dañado de su armadura y la falta de una corona le regaló una corona ornamental y la [Armadura de Glavok](../../items/armadura_glavok.md), una armadura ligera de cuero tachonado +1.
+Sin embargo esto consiguió que Iri sea invitado a desayunar en el palco del emperador de Glavok, [Sipho Glavok II](../NPCs/sipho_glavok.md), quien al notar lo dañado de su armadura y la falta de una corona le regaló una corona ornamental y la Armadura de Glavok una armadura ligera de cuero tachonado +1.
 La party acabó ganando el torneo, pero Iri no pudo tomar los premios de su apuesta ya que los instrumentos se encontraban inutilizables.
 
 ### The Plot Thickens

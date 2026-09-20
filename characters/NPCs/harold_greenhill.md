@@ -2,6 +2,7 @@
 title: Harold Greenhill
 parent: Characters
 type: npc
+summary: Recepcionesta
 ---
 
 # Harold Greenhill

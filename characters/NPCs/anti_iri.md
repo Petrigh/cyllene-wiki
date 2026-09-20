@@ -1,6 +1,7 @@
 ---
 title: Anti-Iri
 parent: Characters
+summary: Clon malvado
 type: npc
 ---
 
