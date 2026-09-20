@@ -2,6 +2,7 @@
 title: Valentine Lovelace
 parent: Characters
 type: npc
+summary: Reina de Corazones
 ---
 
 # Valentine Lovelace

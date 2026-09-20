@@ -1,6 +1,7 @@
 ---
 title: Anti-First
 parent: Characters
+summary: Clon malvado
 type: npc
 ---
 

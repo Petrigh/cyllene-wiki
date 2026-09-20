@@ -2,6 +2,7 @@
 title: The Guardian
 parent: Characters
 type: npc
+summary: Dios de la caza
 pantheon: Panteón del Bosque
 aliases:
   - The Guardian

@@ -2,6 +2,7 @@
 title: Viktor
 parent: Characters
 type: npc
+summary: Traidor de Brolwund
 ---
 
 # Viktor

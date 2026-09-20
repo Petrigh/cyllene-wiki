@@ -2,6 +2,7 @@
 title: Madres de Harold
 parent: Characters
 type: npc
+summary: Cocinan rico
 ---
 
 # Madres de Harold

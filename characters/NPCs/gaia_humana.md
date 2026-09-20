@@ -2,7 +2,7 @@
 title: Gaia(humana)
 parent: Characters
 type: npc
-summary: La hermana de Gareth, rescatada de la tia Ethel
+summary: Investigadora pagana
 race: Humana
 status: Viva
 location: Safepoint

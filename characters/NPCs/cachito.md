@@ -2,6 +2,7 @@
 title: Cachito
 parent: Characters
 type: npc
+summary: Inocente owling
 race: Owling
 status: Dead
 location: Verna

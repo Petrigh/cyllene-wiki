@@ -2,6 +2,7 @@
 title: Naivara
 parent: Characters
 type: npc
+summary: Wizard de los 5 Grandes
 ---
 
 # Naivara Noldorin

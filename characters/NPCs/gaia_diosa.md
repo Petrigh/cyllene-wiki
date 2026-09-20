@@ -2,6 +2,7 @@
 title: Gaia
 parent: Characters
 type: npc
+summary: Diosa de la vida
 pantheon: Panteón del Bosque
 aliases:
   - The Maiden

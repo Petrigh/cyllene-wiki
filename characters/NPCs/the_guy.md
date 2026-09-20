@@ -2,6 +2,7 @@
 title: The Guy
 parent: Characters
 type: npc
+summary: Super Cool
 ---
 
 # The Guy

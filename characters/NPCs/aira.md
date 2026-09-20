@@ -1,6 +1,7 @@
 ---
 title: Aira (aasimar)
 parent: Characters
+summary: Reina de Aith Telperin
 type: npc
 ---
 

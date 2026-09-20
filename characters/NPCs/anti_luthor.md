@@ -1,6 +1,7 @@
 ---
 title: Anti-Luthor
 parent: Characters
+summary: Clon malvado
 type: npc
 ---
 
