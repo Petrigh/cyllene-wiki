@@ -10,11 +10,12 @@ Personajes legendarios. Cada uno tiene una ciudad fundada en su honor, que lleva
 
 ## Miembros
 
-| Personaje | Ciudad homónima |
-| -- | -- |
-| [Brolwund](../characters/NPCs/brolwund.md) | [Brolwund](../locations/settlements/brolwund.md) |
-| [Carnahan](../characters/NPCs/carnahan.md) | [Carnahan](../locations/settlements/carnahan.md) |
-| [Glavok](../characters/NPCs/glavok.md) | [Glavok](../locations/settlements/glavok.md) |
-| [Naivara](../characters/NPCs/naivara.md) | [Naivara](../locations/settlements/naivara.md) |
-| [Verna](../characters/NPCs/verna.md) | [Verna](../locations/settlements/verna.md) |
-| [Denzen Durgromoth](../characters/party/denzen.md) | — (6to miembro) |
+| Personaje | Clase   | Raza  |
+| -------- | ------- | ----- |
+| [Brolwund](../characters/NPCs/brolwund.md) | Rogue | |
+| [Carnahan](../characters/NPCs/carnahan.md) | Paladin | |
+| [Glavok](../characters/NPCs/glavok.md) | Barbar | Enano |
+| [Naivara](../characters/NPCs/naivara.md) | Wizard | Elfa |
+| [Verna](../characters/NPCs/verna.md) | Cleriga |  |
+| [Denzen Durgromoth](../characters/party/denzen.md) | Warlock | Tiefling |
+

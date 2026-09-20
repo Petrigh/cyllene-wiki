@@ -14,13 +14,8 @@ image_alt: Parche de los Indeseables de Brolwund
 
 ## Que quieren
 
-Volver a [Brolwund](../locations/settlements/brolwund.md), de donde los echaron los [Paladines de Carnahan](paladines_carnahan.md).
-
-## A quien hablarle
-
-| Name | Role | Where |
-| -- | -- | -- |
-| [Marcia Rostova](../characters/NPCs/marcia.md) | Líder | [HollowsCreek](../locations/settlements/hollowscreek.md) |
+- Volver a [Brolwund](../locations/settlements/brolwund.md), de donde los echaron los [Paladines de Carnahan](paladines_carnahan.md).
+- Se encuentran presos en [Medea](../locations/nature/medea.md)
 
 ## Rivales
 
