@@ -6,8 +6,7 @@ rarity: --
 ---
 
 # RCaine
-
-Polvo chromatico muy adictivo, parece realzar atributos de quien lo consume por un periodo de tiempo.
+Droga sintetica magica, parece un polvo chromatico muy adictivo, parece realzar atributos de quien lo consume por un periodo de tiempo.
 No se sabe quien la produce, pero el [Kraken de un ojo](../factions/one_eyed_kraken.md) es el logo que suele aparecer en su contenedor.
 
 ## Variantes

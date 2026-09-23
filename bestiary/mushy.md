@@ -8,4 +8,4 @@ summary: Humanoid Mushrooms
 Hongos humanoides que viven en [Safepoint](../locations/settlements/safepoint.md)
 
 ## Encontrado en
-[Seasion 8](../sessions/8.md)
+[Seasion 8](../sessions/08.md)

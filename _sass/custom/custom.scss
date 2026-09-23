@@ -551,6 +551,12 @@ $wiki-card-width: 20rem;
         background: $body-background-color;
       }
     }
+
+    // Renglon que repite el año del de arriba: no dibuja la fecha (ver
+    // _includes/timeline.html) y se junta un poco, para que el aire grande
+    // quede solo entre años distintos. Ahora que la corrida no trae fecha en
+    // cada linea, ese salto es lo unico que separa un año del siguiente.
+    > li.tl-rep { padding-bottom: 0.55rem; }
   }
 
   // Sin `grid-column` a mano: el auto-placement ya manda el primer hijo a la
@@ -637,6 +643,12 @@ $wiki-card-width: 20rem;
       padding-left: 1.25rem;
 
       > li { grid-template-columns: minmax(0, 1fr); }
+
+      // Con una sola columna el auto-placement ya no importa, asi que el
+      // .tl-when vacio de las repeticiones puede irse del todo. Arriba NO se
+      // puede: ahi un display:none le regalaria la columna de los años al
+      // texto del evento.
+      > li.tl-rep .tl-when { display: none; }
     }
 
     .tl-when,

@@ -150,7 +150,11 @@ El abuelo logró contarles parte de lo que pasó en las semanas próximas a la l
 
 | Sesion | Que pasó |
 | -- | -- |
-| [3](../../sessions/3.md) | Primera pesadilla, junto a [Harold](harold.md) y [Denzen](denzen.md). |
+| [3](../../sessions/03.md) | *Me desperte en el palacio, es dia de coronacion. Robert esta aca. No encuentro a mis padres. Encontre a Mark y dice que murieron. Dice que es hora de que sea rey. Ahora se ve como mi padre dice que es mi culpa que ellos no estan aca, que yo no estaba aca. Es mi culpa, yo quise irme. Desaparecio todo el reino. Es mi Culpa*|
+| [4](../../sessions/04.md) | *Frustracion, Impotencia. Aira tragada por el oceano* |
+| [5](../../sessions/05.md) | *No hay nadie en Aira. Llego al castillo. Los tronos estan de espaldas a la entrada. Mis padres estan ahi. No tiene alma. Robert y Martha estan igual. Me fui, no hay nadie. Llego a la estatua en la plaza principal. Tiene los ojos blancos, como sin alma. Se mueve. Me mató* |
+| [6](../../sessions/06.md) | *Festejos, gente aplaudiendo. Una especie de desfile. Mis padres estan en el centro y yo tambien estoy ahi. Voy al castillo, me recibe Mark. No me reconoce, cree que soy amigo de Iri. Iri parece ser un nombre comun en el reino, algo con que la gente nombra sus hijos after the royalty. Mark dice que el principe es un conchudo. Me fui. Intento interceptar el carro del principe. Se freno todo menos el. Dice ser Iranon, pero sabe que no es yo. Dice que mañana mis padres van a ser asesinados. Que el va a subir al trono. Habla de como esta llenando un espacio que yo deje, que deberia estar agradecido.* |
+| [9](../../sessions/09.md) | *Estoy en el barco. Voy a buscar al capitán. Lo reconozco, capitán South Haven, un viejo. Dice que son unas 2 semanas de viaje. Parece que voy a estar afuera unos 6 meses. Todo el mundo me esta despidiendo. Sbo, zarpamos y al rato damos la vuelta y volvemos al puerto. El capitan dice que ya terminamos, que pasaron 6 meses. No los recuedo.* |
 | [10](../../sessions/10.md) | Pesadilla junto a [Denzen](denzen.md). |
 | [12](../../sessions/12.md) | Pesadillas de [goose](../../bestiary/goose.md), junto a [Luthor](luthor.md) y [First](first.md). |
 | [12](../../sessions/12.md) — segunda noche | Pesadilla junto a [First](first.md) y [Mary](mary.md), camino al [templo del Jester](../../locations/buildings/templo_jester.md). |

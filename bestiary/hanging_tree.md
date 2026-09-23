@@ -9,4 +9,4 @@ Peleado apenas entrando al [Bosque Inescrutable](../locations/regions/bosque_ine
 
 ## Encontrado en
 
-- [Sesion 7](../sessions/7.md)
+- [Sesion 7](../sessions/07.md)

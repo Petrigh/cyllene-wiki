@@ -3,6 +3,7 @@ title: Daga de Brolwund
 parent: Items
 summary: Cuenta la leyenda que tiene sangre de Carnahan
 rarity: --
+holder: Denzen Durgromoth
 ---
 
 # Daga de Brolwund

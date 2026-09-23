@@ -9,4 +9,4 @@ Estaba detrás del [faro](../locations/buildings/faro_slumberhaven.md) de [Slumb
 
 ## Encontrado en
 
-- [Sesion 5](../sessions/5.md)
+- [Sesion 5](../sessions/05.md)

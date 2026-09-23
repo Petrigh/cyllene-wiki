@@ -7,7 +7,23 @@ region: Bosque Inescrutable
 ---
 
 # Templo del Jester
+Templo dedicado al [panteon del bosque](../../lore/panteon_bosque.md).
+Tiene estatuas rotas, áreas comunales, altares y salas de meditación. 
 
-También llamado **la Corte del Jester**. Es el mismo lugar: la corte fae adentro del [Bosque Inescrutable](../regions/bosque_inescrutable.md) a la que [Nox](../../characters/NPCs/nox.md) llevó a la party con una propuesta, y el templo al que después la guiaron él y [Axl](../../characters/NPCs/axl.md).
+## Capillas
+- La sala de [Guardian](../../characters/NPCs/guardian.md) tiene un cubo de carne y un par de lanzas.
+- La sala de [Maiden](../../characters/NPCs/gaia_diosa.md) tiene un pequeño arbol y en la pared un dibujo animado de un huevo del cual nace un ave la cual circula la habitacion volando dejando un huevo y luego falleciendo. Luego el huevo vuelve a repetir la secuencia.
+- La sala de [Jester](../../characters/NPCs/jester.md) es una habitacion cilindrica en el cual uno no logra ver el suelo ni el techo, la entrada es un balcon angosto que llega al centro de la habitacion y uno puede ver nubes.
 
-Estatuas rotas, áreas comunales, altares y salas de meditación. Tiene tres pruebas — *Show your Strength*, *Heart* y *Mind* — y al final espera [The Jester](../../characters/NPCs/jester.md), que puede sacar gente del Bosque a cambio de una buena historia.
+## Dungeon
+En la primer habitacion hay placas y cubos de piedra, barriles, jaula tapada por tela, chest cerrado con candado y una [bestia](../../bestiary/troy.md) dentro, rollos de cuero y en la pared 
+> *Show your Strength*
+
+La segunda habitacion es tubular con plantas medias muertas, y un niño llorando y en la pared
+> *Show your Heart* 
+
+En la tercera habitacion hay una grilla en el suelo con estatuas de piedra en algunas casillas, las cuales pueden ser desplazadas, en otras casillas hay marcas con una cruz. La pared muestra un contador que inicia en 24, y al deplazar las estatuas el numero baja.
+> *Show your Mind*
+
+Resolviendo las tres habitaciones uno entra a la sala del trono donde  espera [The Jester](../../characters/NPCs/jester.md)
+

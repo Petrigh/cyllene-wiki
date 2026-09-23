@@ -3,8 +3,8 @@ title: Salacia
 parent: Locations
 summary: Asentamiento.
 kind: settlement
-region: Valle de los Cinco Grandes
+settlement: Ciudad Capital
 ---
 
 # Salacia
-Pueblo ubicado en el [Valle de los 5 Grandes](../regions/valle_cinco_grandes.md).
+Barrio de la [Ciudad Capital](../settlements/ciudad_capital.md). Hace medio milenio atras, era un pueblo independiente.
