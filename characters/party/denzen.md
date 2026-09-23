@@ -10,7 +10,7 @@ player: Johnny
 events:
   - year: 245
     era: DF
-    text: "Nace [Denzen](.) en [Salacia](/locations/settlements/salacia.html), en una familia de tieflings."
+    text: "Nace [Denzen](.) en [Salacia](/locations/settlements/salacia.html)."
   - year: 262
     era: DF
     text: "En una excavacion en el [Desierto Nocturno](/locations/regions/desierto_nocturno.html), [Denzen](.) encuentra el [collar](/items/objetos_denzen/collar_obeon.html) y pacta con [Obeon](/characters/NPCs/obeon.html)."
@@ -79,7 +79,7 @@ Al salir no reconoce en donde esta y peor aun en que tiemopo esta...
 
 | Sesion | Que pasó |
 | -- | -- |
-| [3](../../sessions/3.md) | Primera [pesadilla](../../lore/pesadillas.md), junto a [Harold](harold.md) e [Iri](iri.md). |
+| [3](../../sessions/03.md) | *Septagrama, 7 voces* |
 | [10](../../sessions/10.md) | Pesadilla junto a [Iri](iri.md). |
 | Sin sesion registrada | Desde el punto de vista de alguien adentro de una habitacion violeta —como el collar de [Obeon](../NPCs/obeon.md)—: se siente como te drenan el poder cuando alguien castea un spell. |
 

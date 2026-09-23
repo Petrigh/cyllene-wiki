@@ -14,7 +14,7 @@ Aun no lo saben, pero jugarian bien al rugby
 
 ## Intereses
 
-- Obtener la [Daga de Brolwund](../items/daga_brolwund.md), cuenta la leyenda de que tiene sangre de [Carnahan](../characters/NPCs/carnahan.md)
+- Obtener la [Daga de Brolwund](../items/objetos_denzen/daga_brolwund.md), cuenta la leyenda de que tiene sangre de [Carnahan](../characters/NPCs/carnahan.md)
 - Negociaciones de [RCaine](../items/rcaine.md)
 
 ## Rivales

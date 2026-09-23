@@ -6,6 +6,7 @@ summary: Dios de la caza
 pantheon: Panteón del Bosque
 aliases:
   - The Guardian
+  - El Guardian
 ---
 
 # The Guardian

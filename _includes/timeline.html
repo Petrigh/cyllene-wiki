@@ -65,11 +65,41 @@
   para que los negativos (hasta -10881 DF) den positivos y el orden
   lexicografico coincida con el numerico.
 
+  Dentro de un año desempata `order` y despues el indice de pagina, que sale
+  del `sort: "url"`, o sea orden alfabetico. Por eso las sesiones se llaman
+  01.md y no 1.md: con un digito el alfabetico daria 1, 10, 11...19, 2, 20, y
+  cada sesion tendria que escribir su `order`. Con dos digitos el alfabetico y
+  el numerico coinciden solos.
+
+  ------------------------------------------------- corridas del mismo año
+
+  La campaña entera pasa en un año (hoy 503 DC = 780 DF), asi que ahi se
+  apilan decenas de eventos. Repetir la fecha en cada renglon convierte la
+  columna izquierda en una pared que le gana en peso visual a la prosa, asi
+  que solo el PRIMER evento de cada año la muestra: los demas llevan la clase
+  `tl-rep` y dejan la canaleta vacia.
+
+  El grupo se arma por año ya normalizado a DF, no por el texto que se ve. Es
+  a proposito: `year: 503 / era: DC` y `year: 780 / era: DF` son el mismo año
+  y tienen que caer juntos. La contra es que se ve la era del primero de la
+  corrida, asi que conviene mantener una sola era por año (las sesiones, todas
+  DC). No se pierde nada igual: el espejo de abajo sigue escribiendo el año en
+  todos los eventos, asi que el buscador los encuentra por fecha lo mismo.
+
+  El `<div class="tl-when">` vacio NO se puede sacar. La hoja de estilos ubica
+  las dos columnas por auto-placement -- sin ese div, el texto del evento se
+  correria a la columna de los años.
+
+  El hito de Actualidad nunca parte una corrida al medio: sale ante el primer
+  evento con año > site.today_df, y si el anterior fuera del mismo año tambien
+  seria > today y el hito ya habria salido. Siempre cae justo antes de una
+  cabecera de grupo.
+
   `sort: "url"` en el scan no es cosmetico: es lo que hace que dos builds
   seguidos den el mismo HTML, que es de lo que vive el chequeo "compilar dos
   veces y diffear" de _meta/. Mismo motivo que documenta graph-data.json.
 
-  Dos lineas fragiles, por si algun dia sale en blanco:
+  Tres lineas fragiles, por si algun dia sale en blanco o con un numero raro:
 
   * `tl_f[2] | plus: 0` -- el `| plus: 0` es lo que convierte "004" en Integer.
     El acceso por indice de Liquid solo dispara con un Integer de verdad; un
@@ -77,6 +107,10 @@
   * Liquid 4 no tiene `forloop.parentloop` (eso es Liquid 5) y el `forloop` de
     adentro pisa al de afuera, asi que el indice de pagina se captura ANTES
     de entrar al loop de eventos.
+  * Las cuentas van SIEMPRE con filtros. Liquid no tiene aritmetica infija:
+    `{{ tl_today - 277 }}` no es un error, se come el `- 277` sin chistar y
+    escupe el numero pelado. Asi el hito de Actualidad estuvo un tiempo
+    diciendo "780 DC" en vez de "503 DC". Va `| minus: 277`.
 
   Y una de kramdown: este include se llama desde un .md, asi que el HTML que
   emite tiene que arrancar en la columna 0 y con una linea en blanco arriba.
@@ -151,18 +185,25 @@
 <li class="tl-now"><span class="tl-now-y">{{ tl_today }} DF</span><span class="tl-now-t">Actualidad</span></li>
   {%- endif -%}{%- endunless -%}
 
-  {%- comment -%} ancla estable y escribible a mano: #y262, #y-10881, #y270-2 {%- endcomment -%}
+  {%- comment -%} ancla estable y escribible a mano: #y262, #y-10881, #y270-2.
+      La misma comparacion decide si el renglon repite el año del anterior: no
+      hace falta otra, el desempate del ancla ya la venia haciendo. {%- endcomment -%}
   {%- if tl_df == tl_prev -%}
+    {%- assign tl_rep = true -%}
     {%- assign tl_dup = tl_dup | plus: 1 -%}
     {%- capture tl_id -%}y{{ tl_df }}-{{ tl_dup | plus: 1 }}{%- endcapture -%}
   {%- else -%}
+    {%- assign tl_rep = false -%}
     {%- assign tl_dup = 0 -%}
     {%- capture tl_id -%}y{{ tl_df }}{%- endcapture -%}
   {%- endif -%}
   {%- assign tl_prev = tl_df -%}
 
   {%- comment -%} las tres cuentas; la que escribio el autor va destacada.
-      Una era que no existe cae a DF en vez de dejar el renglon sin destacar. {%- endcomment -%}
+      Una era que no existe cae a DF en vez de dejar el renglon sin destacar.
+      Adentro de una corrida del mismo año no se dibuja ninguna, asi que
+      tampoco se calculan: son ~25 vueltas de Liquid por evento. {%- endcomment -%}
+  {%- unless tl_rep -%}
   {%- assign tl_era = tl_e.era | default: "DF" | strip | upcase -%}
   {%- capture tl_probe -%}|{{ tl_era }}|{%- endcapture -%}
   {%- unless "|DF|DC|AUREO|" contains tl_probe -%}{%- assign tl_era = "DF" -%}{%- endunless -%}
@@ -188,6 +229,7 @@
       {%- assign tl_alt = tl_alt | append: tl_one -%}
     {%- endif -%}
   {%- endfor -%}
+  {%- endunless -%}
 
   {%- comment -%}
     El orden de los dos replace NO da igual. El de la raiz va primero: si se
@@ -198,8 +240,8 @@
   {%- endcomment -%}
   {%- capture tl_self -%}href="{{ tl_p.url | relative_url }}"{%- endcapture -%}
 
-<li class="tl-ev" id="{{ tl_id }}">
-<div class="tl-when"><span class="tl-y">{{ tl_main }}</span><span class="tl-y-alt">{{ tl_alt }}</span></div>
+<li class="tl-ev{% if tl_rep %} tl-rep{% endif %}" id="{{ tl_id }}">
+<div class="tl-when">{%- unless tl_rep -%}<span class="tl-y">{{ tl_main }}</span><span class="tl-y-alt">{{ tl_alt }}</span>{%- endunless -%}</div>
 <div class="tl-what">
 {{ tl_e.text | markdownify | replace: 'href="/', tl_href | replace: 'href="."', tl_self }}
 </div>
@@ -207,7 +249,7 @@
 {%- endfor -%}
 {%- unless tl_hoy -%}
 
-<li class="tl-now"><span class="tl-now-y">{{ tl_today }} DF</span><span class="tl-now-t">Actualidad</span></li>
+<li class="tl-now"><span class="tl-now-y">{{ tl_today | minus: 277 }} DC</span><span class="tl-now-t">Actualidad</span></li>
 {%- endunless -%}
 </ol>
 

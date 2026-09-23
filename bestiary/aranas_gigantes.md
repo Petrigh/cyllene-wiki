@@ -9,4 +9,4 @@ Infestaban [HollowsCreek](../locations/settlements/hollowscreek.md) y la [Casa d
 
 ## Encontrado en
 
-- [Sesion 2](../sessions/2.md)
+- [Sesion 2](../sessions/02.md)

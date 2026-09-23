@@ -9,4 +9,4 @@ Tres de ellos atacaron [Fadefair](../locations/settlements/fadefair.md) y prendi
 
 ## Encontrado en
 
-- [Sesion 2](../sessions/2.md)
+- [Sesion 02](../sessions/02.md)

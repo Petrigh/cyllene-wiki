@@ -7,6 +7,7 @@ pantheon: Panteón del Bosque
 aliases:
   - The Maiden
   - Gaia
+  - La Doncella
 ---
 
 # Gaia (diosa)

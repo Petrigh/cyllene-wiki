@@ -9,7 +9,7 @@ summary: Crece su esfera de influencia
 
 Los [Paladines de Carnahan](../factions/paladines_carnahan.md) no se quedaron
 quietos, y cada cosa que hacen apunta al mismo lado.
-- Están buscando la [Daga de Brolwund](../items/daga_brolwund.md), la que tiene
+- Están buscando la [Daga de Brolwund](../items/objetos_denzen/daga_brolwund.md), la que tiene
   sangre de [Carnahan](../characters/NPCs/carnahan.md).
 - Tomaron control de [Brolwund](../locations/settlements/brolwund.md).
 - Están tomando control de los pueblos de la

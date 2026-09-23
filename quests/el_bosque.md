@@ -12,3 +12,4 @@ Problema de [First](../characters/party/first.md).
   que controlar el [Bosque Inescrutable](../locations/regions/bosque_inescrutable.md),
   faltan dos.
 - Así que se está yendo todo al carajo.
+- Jester cree que estan enojados con el.

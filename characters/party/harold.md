@@ -45,7 +45,7 @@ Indice
 
 | Sesion | Que pasó |
 | -- | -- |
-| [3](../../sessions/3.md) | Primera [pesadilla](../../lore/pesadillas.md), junto a [Iri](iri.md) y [Denzen](denzen.md). |
+| [3](../../sessions/03.md) | Primera [pesadilla](../../lore/pesadillas.md), junto a [Iri](iri.md) y [Denzen](denzen.md). |
 | [18](../../sessions/18.md) | Le cuenta a la party que decidió ceder a las pesadillas. |
 
 ## Relaciones

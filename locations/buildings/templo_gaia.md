@@ -7,5 +7,6 @@ region: Bosque Inescrutable
 ---
 
 # Templo de Gaia
-Pequeño templo cerca de [Safepoint](../settlements/safepoint.md) al que la party no pudo entrar. Es de [Gaia](../../characters/NPCs/gaia_diosa.md), hermana de [The Jester](../../lore/panteon_bosque.md)
+Domo hecho de raices y flores en la entrada que se encuentra cerca de [Safepoint](../settlements/safepoint.md). Es de [Gaia](../../characters/NPCs/gaia_diosa.md).
+Unicamente mujeres pueden entrar en el templo.
 
