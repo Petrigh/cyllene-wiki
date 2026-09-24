@@ -1,12 +1,10 @@
 ---
 title: The Loose Goose
 parent: Bestiary
-summary: Un ganso
+summary: Mascota de Elmer
+status: Muerto
 ---
 
 # The Loose Goose
-El combate se cerró recién en la sesión siguiente. Después dejó pesadillas de goose.
-
-## Encontrado en
-
-- [Sesion 11](../sessions/11.md)
+Ganzo que aterroriza en el [Emporio de Elmer](../locations/buildings/emporio_elmer.md).
+Es mascota de [Elmer](../characters/NPCs/elmer.md)

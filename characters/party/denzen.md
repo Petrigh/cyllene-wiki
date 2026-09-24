@@ -80,7 +80,7 @@ Al salir no reconoce en donde esta y peor aun en que tiemopo esta...
 | Sesion | Que pasó |
 | -- | -- |
 | [3](../../sessions/03.md) | *Septagrama, 7 voces* |
-| [10](../../sessions/10.md) | Pesadilla junto a [Iri](iri.md). |
+| [17](../../sessions/17.md) | *Armadura aurea*|
 | Sin sesion registrada | Desde el punto de vista de alguien adentro de una habitacion violeta —como el collar de [Obeon](../NPCs/obeon.md)—: se siente como te drenan el poder cuando alguien castea un spell. |
 
 ## Relaciones
