@@ -18,3 +18,4 @@ Lo que lleva encima [Iri](../characters/party/iri.md).
 - [Arito de Bardo](objetos_iri/arito_bardo.md) — apareció en el loot del oro que Luthor le ayudó a recuperar. Desde ese percance Iri no tiene permitido llevar el oro de la party.
 - [Mapa de Cyllene](objetos_iri/mapa.md)
 - [Anillo de Hallucinatory Terrain](objetos_iri/anillo_terreno_ilusorio.md)
+- [Libro con cuentos](objetos_iri/libro_cuentos.md)

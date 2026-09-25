@@ -7,13 +7,13 @@ region: Bosque Inescrutable
 ---
 
 # Templo del Jester
-Templo dedicado al [panteon del bosque](../../lore/panteon_bosque.md).
+Templo dedicado al [panteon del bosque](../../lore/bosque/panteon_bosque.md).
 Se encuentra en un claro, donde el cielo parece estar apunto de romper en tormenta.
 En el centro del claro hay un lago con un palacio de cristal en el medio.
 Parece estar abandonadp tiene estatuas rotas, áreas comunales, altares y salas de meditación. Los muebles parecen ser trabajo enano.
 
 ## Capillas
-- La sala de [Guardian](../../characters/NPCs/guardian.md) tiene un cubo de carne, pieles y herramientas. Ademas de [muñecos](../lore/bosque/munecos_elficos.md).
+- La sala de [Guardian](../../characters/NPCs/guardian.md) tiene un cubo de carne, pieles y herramientas. Ademas de [muñecos](../../lore/bosque/munecos_elficos.md).
 - La sala de [Maiden](../../characters/NPCs/gaia_diosa.md) tiene un plantas y flores. En la pared un dibujo animado de un huevo del cual nace un ave la cual circula la habitacion volando dejando un huevo y luego falleciendo. Luego el huevo vuelve a repetir la secuencia.
 - La sala de [Jester](../../characters/NPCs/jester.md) es habitacion en mejor estado. Es una habitacion cilindrica en el cual uno no logra ver el suelo ni el techo, la entrada es un balcon angosto que llega al centro de la habitacion y se crea un clima que parece manifestar lo que sucede dentro de la mente del visitante. Pueden aparecer vientos, lluvias, granizos, nubes con un sol detras. Ademas en el altar del medio hay juguetes, colores y artes.
 

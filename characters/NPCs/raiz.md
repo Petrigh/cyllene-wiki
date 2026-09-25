@@ -6,4 +6,4 @@ summary: Reina de treboles
 ---
 
 # Raiz
-Conocido en el [Templo de la Reina de Tréboles](../../locations/buildings/capilla_treboles.md).
+Mujer alta como si un sauce fuera persona. Su vibe es bien hippie.

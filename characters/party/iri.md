@@ -118,7 +118,7 @@ Tour por el [Valle de los 5](../../locations/regions/valle_cinco_grandes.md)
 #### Brolwund
 Conocieron con [Valentine], una clériga de la [reina de corazones](../../locations/buildings/capilla_corazones.md) que logró exitosamente descursear a [Denzen](denzen.md). Ella les comentó sobre la presencia de [los paladines](../../factions/paladines_carnahan.md) en [Brolwund](../../locations/settlements/brolwund.md), y el daño que su administración en la ciudad significaba para sus habitantes. Y también Acompañó a Iri a conseguir ropa moderna que no llame tanto la atención.
 
-Aquí la party llevó a cabo un robo al [Casino El Viva](../../locations/buildings/casino_viva.md), donde Iri se encargó de distraer a la seguridad con un [show nocturno](../../sessions/18.md), para el cual se presentó como 'Obeon'.
+Aquí la party llevó a cabo un robo al [Casino El Diva](../../locations/buildings/casino_diva.md), donde Iri se encargó de distraer a la seguridad con un [show nocturno](../../sessions/18.md), para el cual se presentó como 'Obeon'.
 Durante las audiciones conoció a [[Nombre de los 3 miembros de la banda]], quienes luego durante el show lo traicionaron, pero actualmente se encuentran trabajando para la party en el plan de revolucionar Brolwund.
 
 Durante este periodo Iri envió un sending a su [abuelo](../NPCs/jebediah_creekwater.md) como parte de sus intentos (Fallidos) de contactar con alguien de su pasado, solo que esta vez contestó, significando que su abuelo seguía vivo y dándole a Iri el nuevo objetivo principal de ir a la [Costa Brumosa](../../locations/regions/costa_brumosa.md) para encontrarse con su abuelo.

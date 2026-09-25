@@ -64,7 +64,7 @@ Aliados en los que confia, lo han salvado en mas de una ocasion.
 Se enamoro de [Marcia](../NPCs/marcia.md).
 
 ### Xenon
-[Xenon](../NPCs/jester.md) es el dios del clima y el Caos, parte del [panteon del bosque](../../lore/panteon_bosque.md) al cual decide rezarle por lastima ya que esta sole sin sus hermanos.
+[Xenon](../NPCs/jester.md) es el dios del clima y el Caos, parte del [panteon del bosque](../../lore/bosque/panteon_bosque.md) al cual decide rezarle por lastima ya que esta sole sin sus hermanos.
 
 ### Troy
 [Troy](../../bestiary/troy.md) es un lince del cual no quiere hacerse cargo. Fue teletrasportado junto con la party cuando terminaron de [entretener](../../sessions/14.md) a [Jester](../NPCs/jester.md).

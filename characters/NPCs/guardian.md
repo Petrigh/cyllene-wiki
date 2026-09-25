@@ -10,6 +10,6 @@ aliases:
 ---
 
 # The Guardian
-Dios de la caza y herramientas, perteneciente al [panteón del bosque](../../lore/panteon_bosque.md).
+Dios de la caza y herramientas, perteneciente al [panteón del bosque](../../lore/bosque/panteon_bosque.md).
 
 Se cree que desaparecio tras una disputa que tuvo con [Gaia](gaia_diosa.md).

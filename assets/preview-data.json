@@ -1,0 +1,151 @@
+---
+layout: null
+sitemap: false
+backlinks: false
+search_exclude: true
+nav_exclude: true
+---
+{%- comment -%}
+  Datos de la tarjeta que aparece al pasar el mouse por un link del cuerpo:
+  por pagina, lo justo para dibujarla -- titulo, seccion, resumen e imagen.
+  Lo consume _includes/link_preview.html.
+
+  ---- Por que un .json aparte y no reusar graph-data.json ----
+
+  Son dos censos distintos. El grafo excluye a proposito los diez index.md y
+  todo /rules/ (sus aristas dependerian del orden de render, ver alla), pero el
+  cuerpo SI los enlaza y hoverearlos tiene que mostrar algo. Al reves, el grafo
+  necesita `o` y `w` -- la lista de destinos y su peso -- que a la tarjeta no le
+  sirven de nada y son el 90% del peso de ese archivo.
+
+  Ademas graph_canvas.html y page_graph.html dependen de la forma de `o`; meterle
+  campos nuevos a ese archivo es tocar dos vistas que ya andan para no ahorrar
+  nada, porque el browser cachea los dos igual.
+
+  ---- Por que no esta el cuerpo de la pagina ----
+
+  La tarjeta muestra `summary`, que esta escrito a mano en 225 de las 244
+  paginas y es una linea curada. Un extracto automatico del cuerpo seria peor
+  texto y multiplicaria el peso del archivo por diez. El extracto queda solo de
+  red de contencion para las que no tienen summary (las sesiones 20-32).
+
+  ---- Costo de build ----
+
+  Una pasada por pagina. El unico loop anidado es el de la imagen, y esta
+  acotado por partida doble: 34 archivos en site.static_files, y solo corre en
+  las paginas que tienen `card_images` (characters, locations, factions, items).
+  Nada que ver con el barrido cuadratico de backlinks.html y sus ~40s.
+
+  ---- Cuidado con el baseurl ----
+
+  Igual que en graph-data.json: `page.url` viene SIN baseurl, pero los hrefs que
+  deja jekyll-relative-links en el cuerpo vienen CON el. Aca `u` se guarda sin
+  baseurl y la normalizacion la hace el JS, que de todas formas tiene que parsear
+  el href para sacarle el #fragmento.
+
+  La imagen es la excepcion: sale ya pasada por relative_url porque el JS la
+  mete tal cual en un src. Y por uri_escape, porque hay archivos con espacios en
+  el nombre ("Warlock Motors.jpg") que sin eso cortan el src a la mitad.
+{%- endcomment -%}
+{%- assign pv_sections = "/characters/|Personaje,/locations/|Lugar,/factions/|Faccion,/items/|Objeto,/quests/|Quest,/sessions/|Sesion,/bestiary/|Bestiario,/lore/|Lore,/rules/|Regla" | split: "," -%}
+
+{%- comment -%}
+  Subtipo, traducido igual que en la ficha: `type` en characters, `kind` en
+  locations. El mapa de `kind` es el mismo de wiki_card.html -- se guarda en
+  ingles porque con eso agrupa location_children.html -- y si aparece uno que no
+  esta en la lista se muestra crudo en vez de desaparecer.
+{%- endcomment -%}
+{%- assign pv_kinds = "pc|Party Member,npc|NPC,world|Mundo,continent|Continente,region|Region,settlement|Asentamiento,building|Edificacion,nature|Naturaleza" | split: "," -%}
+
+{%- comment -%}
+  Todo lo que tenga titulo. El `sort: "url"` es por lo mismo que en
+  graph-data.json: site.pages viene en el orden de Dir.entries, o sea del
+  filesystem, y sin ordenar el archivo sale distinto en cada maquina.
+
+  A diferencia del grafo NO se filtra por `url contains ".html"`: eso dejaria
+  afuera los index.md, que son justo las paginas que este archivo suma. Los
+  .json y .xml generados (este mismo, graph-data.json, el search-data del tema,
+  el sitemap) caen solos por no tener `title`.
+{%- endcomment -%}
+{%- assign pv_scan = site.pages | where_exp: "pv_q", "pv_q.title" | sort: "url" -%}
+{"nodes":[
+{%- assign pv_first = true -%}
+{%- for pv_p in pv_scan -%}
+  {%- if pv_p.url contains ".json" or pv_p.url contains ".xml" -%}{%- continue -%}{%- endif -%}
+
+  {%- assign pv_sec = "" -%}
+  {%- for pv_s in pv_sections -%}
+    {%- assign pv_pair = pv_s | split: "|" -%}
+    {%- if pv_p.url contains pv_pair[0] -%}
+      {%- assign pv_sec = pv_pair[1] -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- assign pv_kind = pv_p.type | default: pv_p.kind | default: "" -%}
+  {%- if pv_kind != "" -%}
+    {%- for pv_k in pv_kinds -%}
+      {%- assign pv_pair = pv_k | split: "|" -%}
+      {%- if pv_pair[0] == pv_kind -%}{%- assign pv_kind = pv_pair[1] -%}{%- break -%}{%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+
+  {%- comment -%}
+    Texto: el summary si esta, y si no un extracto del cuerpo.
+
+    El extracto corre SOLO en paginas con ".html" en la URL, o sea todas menos
+    los diez index.md. No es una optimizacion: esos index arman sus listas con
+    `for` de Liquid, asi que su `content` es codigo Liquid crudo o medio seccion
+    ya renderizada segun cuando se los mire, y el extracto salia mostrando el
+    for de Liquid en crudo. Sin texto la tarjeta igual dibuja titulo y
+    seccion, que de una pagina indice es todo lo que hay para decir.
+
+    Encadena markdownify ANTES de strip_html a proposito: `content` llega a
+    veces en markdown y a veces ya en HTML segun el orden de render -- el mismo
+    problema que documentan graph-data.json y backlinks.html --, y asi las dos
+    formas terminan igual. Pasar directo a strip_html dejaba los `[texto](url)`
+    del markdown crudos adentro del extracto.
+
+    Hoy son trece paginas (las sesiones 20 a 32), asi que el markdownify de mas
+    no se nota. Si alguna vez son doscientas, lo barato es escribirles el
+    summary, no optimizar esto.
+  {%- endcomment -%}
+  {%- assign pv_text = pv_p.summary | default: "" | strip -%}
+  {%- if pv_text == "" and pv_p.url contains ".html" -%}
+    {%- assign pv_text = pv_p.content | markdownify | strip_html | normalize_whitespace | strip -%}
+    {%- comment -%} El cuerpo arranca con un `# Titulo` que repite el de la tarjeta. {%- endcomment -%}
+    {%- assign pv_text = pv_text | remove_first: pv_p.title | strip | truncate: 180 -%}
+  {%- endif -%}
+
+  {%- comment -%}
+    Imagen: el mismo match por slug que la ficha (ver wiki_card.html). Si en la
+    carpeta de la seccion hay un archivo que se llama igual que el .md, se usa
+    ese; no importan mayusculas, extension, ni si separa palabras con espacios,
+    guiones o guiones bajos.
+
+    `card_images` solo existe en las cuatro secciones a las que se lo fija
+    _config.yml, asi que el `if` de afuera saltea el barrido en sessions, lore,
+    quests, bestiary y rules, que no tienen imagenes.
+  {%- endcomment -%}
+  {%- assign pv_img = pv_p.image | default: pv_p.portrait -%}
+  {%- if pv_img == nil and pv_p.card_images != nil -%}
+    {%- assign pv_slug = pv_p.path | split: "/" | last | split: "." | first | downcase | replace: " ", "_" | replace: "-", "_" -%}
+    {%- for pv_f in site.static_files -%}
+      {%- unless pv_f.path contains pv_p.card_images -%}{%- continue -%}{%- endunless -%}
+      {%- assign pv_name = pv_f.basename | downcase | replace: " ", "_" | replace: "-", "_" -%}
+      {%- if pv_name == pv_slug -%}
+        {%- assign pv_img = pv_f.path -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+  {%- if pv_img -%}
+    {%- assign pv_img = pv_img | relative_url | uri_escape -%}
+  {%- else -%}
+    {%- assign pv_img = "" -%}
+  {%- endif -%}
+
+  {%- unless pv_first -%},{%- endunless -%}{%- assign pv_first = false -%}
+{"u":{{ pv_p.url | jsonify }},"t":{{ pv_p.title | jsonify }},"s":{{ pv_sec | jsonify }},"k":{{ pv_kind | jsonify }},"d":{{ pv_text | jsonify }},"i":{{ pv_img | jsonify }}}
+{%- endfor -%}
+]}
