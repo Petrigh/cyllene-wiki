@@ -30,6 +30,13 @@ graph: true
 # matter. 780 DF = 503 DC = 11662 Aureo.
 today_df: 780
 
+# Tarjeta de preview al pasar el mouse por un link del cuerpo
+# (_includes/link_preview.html). Como el grafo, no cuesta build: los datos
+# salen de assets/preview-data.json y todo el trabajo pasa en el browser.
+# En false se apaga en todo el sitio; en una pagina suelta, `link_previews:
+# false` en su front matter; en un link suelto, {:data-no-preview=""}.
+link_previews: true
+
 search_enabled: true
 search:
   heading_level: 1

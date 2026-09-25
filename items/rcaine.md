@@ -6,7 +6,7 @@ rarity: --
 ---
 
 # RCaine
-Droga sintetica magica, parece un polvo chromatico muy adictivo, parece realzar atributos de quien lo consume por un periodo de tiempo.
+Droga sintetica magica, parece un polvo chromatico muy adictivo, consumirla tiene chances de efectos de wild magic, ademas de efectos particulares segun la variante. Consumirla tiene chances de hacerte explotar, en especial si es impura.
 No se sabe quien la produce, pero el [Kraken de un ojo](../factions/one_eyed_kraken.md) es el logo que suele aparecer en su contenedor.
 
 ## Variantes

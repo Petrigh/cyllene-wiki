@@ -17,9 +17,8 @@ layout: default
   dibuja wiki_card.html (location, faction, region...) cuentan como "esta pagina
   ya lo enlaza" y el filtro reciproco de backlinks.html los aprovecha gratis.
 
-  El bloque sale como hermano DESPUES del <div> que cierra .wiki-page (flex) o
-  .wiki-sheet (grid), asi que es un bloque normal a todo el ancho y no se mete
-  en ninguno de los dos layouts de ficha.
+  Los bloques salen como hermanos DESPUES del <div> que cierra .wiki-page, asi
+  que son bloques normales a todo el ancho y no se meten en sus columnas.
 
   Despues de backlinks va el anterior/siguiente de las sesiones. Se cuelga aca
   y no de un _layouts/session.html propio justamente por el orden: lo que
@@ -31,6 +30,31 @@ layout: default
   un archivo local con ese nombre lo pisaria sin que se note.
 {%- endcomment -%}
 {{ content }}
+{%- comment -%}
+  El grafo al pie es para las secciones que NO pasan por wiki.html (sessions,
+  quests, lore, bestiary, rules). Las que si pasan ya lo trajeron adentro de
+  `content`, en la columna de la derecha al lado de la ficha, asi que aca se
+  saltea para no dibujarlo dos veces.
+
+  El marcador es el wrapper del include y nada mas: `class="page-graph"` con la
+  comilla de cierre no matchea page-graph-title ni el resto de los descendientes.
+  Cuando el grafo salio vacio (graph: false, paginas sin titulo) no hay marcador
+  y el include se re-evalua, pero vuelve a salir vacio y no cuesta nada: no toca
+  site.pages, todo el filtrado pasa en el browser.
+{%- endcomment -%}
+{%- unless content contains 'class="page-graph"' %}
 {% include page_graph.html %}
+{%- endunless %}
 {% include backlinks.html %}
 {% include session_nav.html %}
+{%- comment -%}
+  La tarjeta de preview que aparece al hoverear un link del cuerpo. Va aca
+  abajo de todo y no en el <head> porque el include es markup + script, y
+  porque el script busca .main-content: colgado del head correria antes de
+  que ese nodo exista. Es la misma convencion que page_graph y campaign_map.
+
+  Se cuelga de wiki_base y no de wiki para que lo reciban tambien las
+  secciones sin ficha -- sessions, quests, lore, bestiary, rules --, que son
+  justo las que mas links al cuerpo tienen.
+{%- endcomment -%}
+{% include link_preview.html %}

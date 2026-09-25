@@ -44,10 +44,11 @@ Indice
 ### Arcs
 
 ## Pesadillas
+## Pesadillas
 
 | Sesion | Que pasó |
 | -- | -- |
-| [12](../../sessions/12.md) — segunda noche | [Pesadilla](../../lore/pesadillas.md) junto a [First](first.md) e [Iri](iri.md), camino al [templo del Jester](../../locations/buildings/templo_jester.md). |
+| [15](../../sessions/15.md) | *Prado con pajaros raros. Camino mucho, no hay nada de civilizacion. Tengo mucha habmre. Como pasto, aparecen luces. Me como un Pixie.*|
 
 ## Relaciones
 

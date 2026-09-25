@@ -1,0 +1,253 @@
+{%- comment -%}
+  Tarjeta de preview al pasar el mouse por un link del cuerpo, estilo Wikipedia:
+  imagen, titulo, seccion y el `summary` de la pagina de destino.
+
+  Cuelga de _layouts/wiki_base.html, o sea que corre en las ~244 paginas. Por
+  eso NO toca site.pages: lo unico que se interpola son dos strings. Todo el
+  trabajo pasa en el browser contra assets/preview-data.json, y ese fetch es
+  PEREZOSO -- se dispara recien en el primer hover que califica, asi que la
+  pagina carga exactamente igual que antes para quien nunca hovereo un link.
+
+  Interruptores, igual que backlinks y graph: `link_previews: false` en
+  _config.yml lo apaga en todo el sitio, en el front matter de una pagina la
+  apaga solo a ella, y `{:data-no-preview=""}` pegado a un link lo apaga a el.
+{%- endcomment -%}
+
+{%- assign lp_on = true -%}
+{%- if site.link_previews == false -%}{%- assign lp_on = false -%}{%- endif -%}
+{%- if page.link_previews == false -%}{%- assign lp_on = false -%}{%- endif -%}
+
+{%- if lp_on -%}
+<div id="link-preview" role="tooltip" hidden
+     data-src="{{ '/assets/preview-data.json' | relative_url }}"
+     data-base="{{ site.baseurl }}"></div>
+
+<script>
+(function () {
+  var box = document.getElementById('link-preview');
+  if (!box) { return; }
+
+  // En tactil no hay hover: el equivalente seria un long-press, que tapa con la
+  // tarjeta justo el link que se quiere tocar. Mejor no existir.
+  if (!window.matchMedia || !window.matchMedia('(hover: hover)').matches) { return; }
+
+  // La raiz de la delegacion. Un solo listener en vez de uno por <a>: una
+  // sesion cargada pasa los cincuenta links en el cuerpo.
+  var root = document.querySelector('.main-content');
+  if (!root) { return; }
+
+  // Los bloques que wiki_base.html y wiki.html cuelgan ALREDEDOR del cuerpo, y
+  // que por eso tambien caen adentro de .main-content. Ninguno lleva tarjeta:
+  //
+  //   .backlinks    "Mencionado en" -- ya es una lista de titulos de paginas
+  //   .page-graph   "Conexiones" -- idem, y ademas sus nodos son <a> en SVG
+  //   .session-nav  anterior/siguiente, que ya dice el titulo entero
+  //   .wiki-card    la ficha de la derecha; sus links salen del front matter
+  //   .wiki-toc     indice de la propia pagina (ancla interna, no otra pagina)
+  //   .tl-index     el indice lateral de la linea de tiempo
+  //
+  // El cuerpo de la timeline (.tl-what) SI lleva, que es prosa como cualquier
+  // otra. Los tres primeros son justo los que repiten lo que la tarjeta diria:
+  // hoverearlos seria dibujar dos veces la misma informacion.
+  var SKIP = '.backlinks, .page-graph, .session-nav, .wiki-card, .wiki-toc, .tl-index';
+
+  var OPEN_MS  = 300;   // suficiente para no dispararse al cruzar un parrafo
+  var CLOSE_MS = 200;   // gracia para llegar con el mouse hasta la tarjeta
+
+  var base = box.dataset.base || '';
+  var openT = null, closeT = null;
+  var current = null;   // el <a> que tiene la tarjeta abierta
+  var pending = null;   // el <a> que espera que venza OPEN_MS
+  var dataP = null;     // promesa del JSON, cacheada: se pide una sola vez
+
+  box.innerHTML =
+    '<img class="lp-img" alt="" loading="lazy" hidden>' +
+    '<div class="lp-text">' +
+      '<div class="lp-title"></div>' +
+      '<div class="lp-meta"></div>' +
+      '<div class="lp-desc"></div>' +
+    '</div>';
+  var elImg   = box.querySelector('.lp-img');
+  var elTitle = box.querySelector('.lp-title');
+  var elMeta  = box.querySelector('.lp-meta');
+  var elDesc  = box.querySelector('.lp-desc');
+
+  // La tarjeta vive en <body> y no adentro de .main-content: ahi heredaria el
+  // overflow y los stacking context de las columnas de wiki.html, y un link de
+  // una tabla ancha la dejaria recortada.
+  document.body.appendChild(box);
+
+  function data() {
+    if (!dataP) {
+      dataP = fetch(box.dataset.src)
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          var m = new Map();
+          d.nodes.forEach(function (n) { m.set(n.u, n); });
+          return m;
+        })
+        .catch(function (e) {
+          console.warn('link_preview: no se pudieron leer los datos.', e);
+          return new Map();
+        });
+    }
+    return dataP;
+  }
+
+  // href -> clave del JSON, o null si este link no lleva tarjeta.
+  //
+  // Se parsea con URL y no con el atributo crudo porque el cuerpo mezcla tres
+  // formas: las relativas que dejo jekyll-relative-links, las absolutas de los
+  // `events:` del front matter que arregla timeline.html, y las externas. La
+  // comparacion de origin deja afuera las externas de una (iri.md tiene diez
+  // links a 5e.tools, que terminan en .html igual que una pagina del wiki).
+  function keyFor(a) {
+    var href = a.getAttribute('href');
+    if (!href || href.charAt(0) === '#') { return null; }
+
+    var u;
+    try { u = new URL(a.href, window.location.href); }
+    catch (e) { return null; }
+    if (u.origin !== window.location.origin) { return null; }
+
+    // El baseurl se pela aca porque en el JSON las urls van sin el (ver el
+    // comentario de assets/preview-data.json).
+    var path = u.pathname;
+    if (base && path.indexOf(base) === 0) { path = path.slice(base.length); }
+    return path || null;
+  }
+
+  function fill(n) {
+    elTitle.textContent = n.t;
+    elMeta.textContent = n.k;
+    elMeta.hidden = ! n.k;
+
+    elDesc.textContent = n.d || '';
+    elDesc.hidden = !n.d;
+
+    if (n.i) {
+      elImg.src = n.i;
+      elImg.hidden = false;
+    } else {
+      elImg.hidden = true;
+      elImg.removeAttribute('src');
+    }
+
+    // Sin imagen y sin texto queda solo el titulo: la tarjeta se angosta para
+    // no ser una caja medio vacia al lado de un link de dos palabras.
+    box.classList.toggle('lp-bare', !n.i && !n.d);
+  }
+
+  // Coordenadas de DOCUMENTO, no de viewport: con position:absolute la tarjeta
+  // scrollea sola con la pagina y no hay que reposicionarla en cada scroll.
+  function place(a) {
+    var r = a.getBoundingClientRect();
+    var GAP = 8, EDGE = 8;
+
+    // Hay que medirla ya visible: con `hidden` puesto, offsetWidth da 0.
+    box.hidden = false;
+    box.style.left = '0px';
+    box.style.top  = '0px';
+    var w = box.offsetWidth, h = box.offsetHeight;
+
+    // Si no entra abajo pero si arriba, se dibuja arriba del link.
+    var below = r.bottom + GAP + h <= window.innerHeight;
+    var above = r.top - GAP - h >= 0;
+    var top = (below || !above) ? r.bottom + GAP : r.top - GAP - h;
+
+    // Alineada al borde izquierdo del link, clampeada al viewport.
+    var left = r.left;
+    if (left + w > window.innerWidth - EDGE) { left = window.innerWidth - EDGE - w; }
+    if (left < EDGE) { left = EDGE; }
+
+    box.style.left = (left + window.pageXOffset) + 'px';
+    box.style.top  = (top  + window.pageYOffset) + 'px';
+  }
+
+  function open(a) {
+    var key = keyFor(a);
+    if (!key) { return; }
+
+    data().then(function (m) {
+      var n = m.get(key);
+      // Entre el hover y la resolucion del fetch el mouse pudo irse a otro
+      // lado: si este ya no es el link pendiente, no se dibuja nada.
+      if (!n || pending !== a) { return; }
+      fill(n);
+      place(a);
+      box.classList.add('is-open');
+      a.setAttribute('aria-describedby', 'link-preview');
+      current = a;
+    });
+  }
+
+  function close() {
+    if (current) { current.removeAttribute('aria-describedby'); }
+    current = null;
+    pending = null;
+    box.classList.remove('is-open');
+    box.hidden = true;
+  }
+
+  function schedule(a) {
+    if (a === current || a === pending) { clearTimeout(closeT); return; }
+    clearTimeout(openT);
+    clearTimeout(closeT);
+    pending = a;
+    openT = setTimeout(function () { open(a); }, OPEN_MS);
+  }
+
+  function scheduleClose() {
+    clearTimeout(openT);
+    clearTimeout(closeT);
+    pending = null;
+    closeT = setTimeout(close, CLOSE_MS);
+  }
+
+  function candidate(e) {
+    var a = e.target.closest ? e.target.closest('a[href]') : null;
+    if (!a || !root.contains(a)) { return null; }
+    if (a.hasAttribute('data-no-preview')) { return null; }
+    if (a.closest(SKIP)) { return null; }
+    return a;
+  }
+
+  root.addEventListener('mouseover', function (e) {
+    var a = candidate(e);
+    if (a) { schedule(a); }
+  });
+
+  root.addEventListener('mouseout', function (e) {
+    if (candidate(e)) { scheduleClose(); }
+  });
+
+  // Teclado: tabular por el cuerpo abre la tarjeta igual que el mouse, pero sin
+  // esperar los 300ms (ahi la intencion es explicita, no hay que adivinarla).
+  root.addEventListener('focusin', function (e) {
+    var a = candidate(e);
+    if (!a) { return; }
+    clearTimeout(openT);
+    clearTimeout(closeT);
+    pending = a;
+    open(a);
+  });
+
+  root.addEventListener('focusout', function (e) {
+    if (candidate(e)) { scheduleClose(); }
+  });
+
+  // Pasar el mouse POR ENCIMA de la tarjeta la mantiene abierta: si no, cruzar
+  // los 8px de GAP para leerla entera la cerraria en el camino.
+  box.addEventListener('mouseover', function () { clearTimeout(closeT); });
+  box.addEventListener('mouseout', scheduleClose);
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && current) { close(); }
+  });
+
+  // Al navegar se cierra sola, pero un click del medio o un ancla interna dejan
+  // la pagina donde estaba y la tarjeta colgada.
+  root.addEventListener('click', close);
+})();
+</script>
+{%- endif -%}

@@ -118,7 +118,7 @@ Tour por el [Valle de los 5](../../locations/regions/valle_cinco_grandes.md)
 #### Brolwund
 Conocieron con [Valentine], una clériga de la [reina de corazones](../../locations/buildings/capilla_corazones.md) que logró exitosamente descursear a [Denzen](denzen.md). Ella les comentó sobre la presencia de [los paladines](../../factions/paladines_carnahan.md) en [Brolwund](../../locations/settlements/brolwund.md), y el daño que su administración en la ciudad significaba para sus habitantes. Y también Acompañó a Iri a conseguir ropa moderna que no llame tanto la atención.
 
-Aquí la party llevó a cabo un robo al [Casino El Viva](../../locations/buildings/casino_viva.md), donde Iri se encargó de distraer a la seguridad con un [show nocturno](../../sessions/18.md), para el cual se presentó como 'Obeon'.
+Aquí la party llevó a cabo un robo al [Casino El Diva](../../locations/buildings/casino_diva.md), donde Iri se encargó de distraer a la seguridad con un [show nocturno](../../sessions/18.md), para el cual se presentó como 'Obeon'.
 Durante las audiciones conoció a [[Nombre de los 3 miembros de la banda]], quienes luego durante el show lo traicionaron, pero actualmente se encuentran trabajando para la party en el plan de revolucionar Brolwund.
 
 Durante este periodo Iri envió un sending a su [abuelo](../NPCs/jebediah_creekwater.md) como parte de sus intentos (Fallidos) de contactar con alguien de su pasado, solo que esta vez contestó, significando que su abuelo seguía vivo y dándole a Iri el nuevo objetivo principal de ir a la [Costa Brumosa](../../locations/regions/costa_brumosa.md) para encontrarse con su abuelo.
@@ -155,10 +155,10 @@ El abuelo logró contarles parte de lo que pasó en las semanas próximas a la l
 | [5](../../sessions/05.md) | *No hay nadie en Aira. Llego al castillo. Los tronos estan de espaldas a la entrada. Mis padres estan ahi. No tiene alma. Robert y Martha estan igual. Me fui, no hay nadie. Llego a la estatua en la plaza principal. Tiene los ojos blancos, como sin alma. Se mueve. Me mató* |
 | [6](../../sessions/06.md) | *Festejos, gente aplaudiendo. Una especie de desfile. Mis padres estan en el centro y yo tambien estoy ahi. Voy al castillo, me recibe Mark. No me reconoce, cree que soy amigo de Iri. Iri parece ser un nombre comun en el reino, algo con que la gente nombra sus hijos after the royalty. Mark dice que el principe es un conchudo. Me fui. Intento interceptar el carro del principe. Se freno todo menos el. Dice ser Iranon, pero sabe que no es yo. Dice que mañana mis padres van a ser asesinados. Que el va a subir al trono. Habla de como esta llenando un espacio que yo deje, que deberia estar agradecido.* |
 | [9](../../sessions/09.md) | *Estoy en el barco. Voy a buscar al capitán. Lo reconozco, capitán South Haven, un viejo. Dice que son unas 2 semanas de viaje. Parece que voy a estar afuera unos 6 meses. Todo el mundo me esta despidiendo. Sbo, zarpamos y al rato damos la vuelta y volvemos al puerto. El capitan dice que ya terminamos, que pasaron 6 meses. No los recuedo.* |
-| [10](../../sessions/10.md) | Pesadilla junto a [Denzen](denzen.md). |
-| [12](../../sessions/12.md) | Pesadillas de [goose](../../bestiary/goose.md), junto a [Luthor](luthor.md) y [First](first.md). |
-| [12](../../sessions/12.md) — segunda noche | Pesadilla junto a [First](first.md) y [Mary](mary.md), camino al [templo del Jester](../../locations/buildings/templo_jester.md). |
-| [15](../../sessions/15.md) | Pesadilla al llegar a [Brolwund](../../locations/settlements/brolwund.md). |
+| [12](../../sessions/12.md) | *Estoy en Aira, en la casa de los Greene. Me llega un mensaje del palacio, tengo que ir con urgencia. Mientras estoy yendo el piso de Aira tiene ramitas y semillas. Mis padres no me estan viendo, estan discutiendo por algo. Me acerco. Son gansos.* |
+| [12](../../sessions/12.md) - Siguiente noche | *Estoy en una habitacion, parece preparada para la realeza. Miro por la ventana, es un terreno pantanoso con tierra roja. El capitan me da una carta, tiene un sello. Una estrella negra de 7 puntas.* |
+| [15](../../sessions/15.md) | *Estoy en mi castillo. Briiana, madre de Iranon I. Estaban haciendo mi cuadro. Soy rey?. Soy Iranon I. Escucho ruido asi que lo voy a seguir. Creo que es mi esposa. La encuentro, hermosa, maravillosamente hermosa.* |
+| [17](../../sessions/17.md) | *Estoy viendo una armadura en una vidriera. Hay varias cosas de esa epoca, parece un museo. Estoy yo como parte de la exhibicion. Mi madre me mira, esta triste de que no estoy aca. Me dejan en una vidriera por años. Eventualmente la gente se olvida de mi.* |
 
 ## Relaciones
 

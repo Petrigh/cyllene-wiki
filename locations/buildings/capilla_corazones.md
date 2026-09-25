@@ -7,5 +7,6 @@ settlement: Brolwund
 ---
 
 # Capilla de Corazones
-Capilla ubicada en [Brolwund](../settlements/brolwund.md). Es donde la party abrió la caja del [Night Market](night_market.md) junto a [Valentine](../../characters/NPCs/valentine.md).
+Capilla ubicada en [Brolwund](../settlements/brolwund.md). Gran castillo de 3 pisos hecho de naipes.
+[Valentine](../../characters/NPCs/valentine.md) es la encargada del lugar.
 

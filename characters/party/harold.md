@@ -45,8 +45,7 @@ Indice
 
 | Sesion | Que pasó |
 | -- | -- |
-| [3](../../sessions/03.md) | Primera [pesadilla](../../lore/pesadillas.md), junto a [Iri](iri.md) y [Denzen](denzen.md). |
-| [18](../../sessions/18.md) | Le cuenta a la party que decidió ceder a las pesadillas. |
+| [17](../../sessions/17.md) | *En su templo conoce a Juana. Se ve como Aira* |
 
 ## Relaciones
 
