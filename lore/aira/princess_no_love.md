@@ -2,6 +2,10 @@
 title: The Princess That Couldn't Love
 parent: Leyendas de Aira
 summary: Siempre hay mas opciones de las que se proponen.
+layout: legend
+scans:
+  - /assets/lore/princess_no_love.png
+  - /assets/lore/princess_no_love2.png
 ---
 
 # The Princess That Couldn't Love
@@ -53,9 +57,3 @@ Un cuento de reino lejano, con chiste final.
 > And that is the reason why
 > She married her maiden.
 {: .verse}
-
-## Páginas originales
-
-![The princess that couldnt love](../../assets/lore/princess_no_love.png)
-![The princess that couldnt love 2](../../assets/lore/princess_no_love2.png)
-

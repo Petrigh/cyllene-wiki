@@ -84,15 +84,15 @@ LLegada la fecha de su coronación, aprovechando que sus padres seguían en vige
 Dicho viaje empezaría desde el rancho de su abuelo [Jebediah Creekwater](../NPCs/jebediah_creekwater.md), en la [Costa Brumosa](../../locations/regions/costa_brumosa.md)
 
 ### Ï̴̧̨̭̟͙̹͓̮͚͙͍͖̫̜̗͖̀̍̂͝n̸̲̭͚̰̋̀͗̏̈́̑̉͊͑́̒̋̓̓̓̕̕t̸̡̡̤̫͖̳̓̒̽̊̑̒͛̿́̔̍̈e̷̢̬̘̫̮̬̼͒͗͆̾͛̉͌̔̆͘͠r̸͙̝̳̓́͒́̇̏̈́̐̓m̵̻͈̣̗̈́̑͒̾̕̚͝i̸̺̜͖͉̞̗̣͑͂̿̃̎̌̐̍͊͊̉̏͋͘̚͜͠͝ş̶̯̙̺̯̮͙͈̭̀̏̅͛̽̂̂̈́̑́̅̌̈̒́͐͒s̵̨̞̗̜̒̍́͑͛͂̅̌͋̕͝͝į̷̖̥̤̪͇͉̟̘͙̺͑̌͐̈́̆͌̉͋̃̎̔͆̎͋̎̚͜o̶̙͇̳̻̖͍̜͑̓̍̓͒n̷̗̤̖̤̜̥̥̩͉͙̭̙̙̆͜
-Una vez llegado a [Creekwater Ranch](../../locations/buildings/creekwater_ranch.md) Iri recibió una carta firmada por [Los 6 Grandes](../../factions/cinco_grandes.md) invitandole a la [Fortaleza de los 6](../../locations/buildings/fortaleza_grandes.md) donde se llevaría a cabo un baile con el objetivo de formar relaciones diplomáticas entre [Cyllene](../../locations/continentes/cyllene.md) y reinos externos, ya que estaban buscando sponsors que puedan ayudar en con la guerra que se estaba dando en [La grieta](../../locations/regions/la_grieta.md)
+Una vez llegado a [Creekwater Ranch](../../locations/buildings/creekwater_ranch.md) Iri recibió una carta firmada por [Los 5 Grandes](../../factions/cinco_grandes.md) invitandole a la [Fortaleza de los 5](../../locations/buildings/fortaleza_grandes.md) donde se llevaría a cabo un baile con el objetivo de formar relaciones diplomáticas entre [Cyllene](../../locations/continentes/cyllene.md) y reinos externos, ya que estaban buscando sponsors que puedan ayudar en con la guerra que se estaba dando en [La grieta](../../locations/regions/la_grieta.md)
 
-En este baile Iri conoció a los miembros de [Los 6 Grandes](../../factions/cinco_grandes.md) y notoriamente a [Denzen](denzen.md), uno de los miembros del grupo.
+En este baile Iri conoció a los miembros de [Los 5 Grandes](../../factions/cinco_grandes.md) y notoriamente a [Denzen](denzen.md), uno de los miembros del grupo.
 
 ??????????????????????
 
 Luego de un tiempo Iri recibió una carta encriptada enviada por [Denzen](denzen.md), marcando un punto de encuentro cerca del muelle.
 
-Al parecer había algo pasando que involucraba tanto a Iri como a [Denzen](denzen.md), y era de importancia que los demás miembros de [Los 6 Grandes](../../factions/cinco_grandes.md) no sepan que ellos 2 estaban al tanto.
+Al parecer había algo pasando que involucraba tanto a Iri como a [Denzen](denzen.md), y era de importancia que los demás miembros de [Los 5 Grandes](../../factions/cinco_grandes.md) no sepan que ellos 2 estaban al tanto.
 
 ??????????????????????
 

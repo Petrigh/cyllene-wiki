@@ -2,6 +2,10 @@
 title: The Fierceless Pirate Queen
 parent: Leyendas de Aira
 summary: Cómo se ahogó la reina pirata y nacieron las sirenas
+layout: legend
+scans:
+  - /assets/lore/fierceless_pirate_queen.png
+  - /assets/lore/fierceless_pirate_queen2.png
 ---
 
 # The Fierceless Pirate Queen
@@ -53,9 +57,3 @@ Un relato de marinero, contado por el único sobreviviente de la tripulación qu
 > Salt like hair loose on the breeze
 > Pirate girls but never ghasts
 {: .verse}
-
-## Páginas originales
-
-![The Fierceless Pirate Queen](../../assets/lore/fierceless_pirate_queen.png)
-![The Fierceless Pirate Queen 2](../../assets/lore/fierceless_pirate_queen2.png)
-

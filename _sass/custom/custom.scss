@@ -118,6 +118,11 @@
   &[data-kind="nature"] { background: #3f6b3a; }
 }
 
+// El unico feedback INMEDIATO del marcador, y por eso importa que se quede:
+// el texto lo pone ahora la tarjeta de preview (_includes/link_preview.html),
+// que tarda sus 300ms en aparecer. Sin este hover el punto quedaria mudo todo
+// ese rato. Aca vivia tambien el estilo del tooltip de Leaflet
+// (.leaflet-tooltip .campaign-map-sub), que se fue junto con el tooltip.
 .campaign-map-pin a:hover .campaign-map-dot,
 .campaign-map-pin a:focus .campaign-map-dot {
   transform: scale(1.5);
@@ -125,11 +130,6 @@
 }
 
 .campaign-map-pin a:focus-visible { outline: 2px solid $link-color; outline-offset: 2px; }
-
-.leaflet-tooltip .campaign-map-sub {
-  font-weight: normal;
-  color: $search-result-preview-color;
-}
 
 .campaign-map-reset a { font-size: 1rem; line-height: 1.55; text-align: center; }
 
@@ -1045,6 +1045,100 @@ a.page-graph-node {
 //     {: .verse}
 blockquote.verse p {
   white-space: pre-line;
+}
+
+
+// ---- Columna de escaneos de las baladas (_layouts/legend.html) -----------
+// Mismo par de columnas que .wiki-page / .wiki-aside mas arriba en este
+// archivo: el cuerpo a la izquierda y una columna fija a la derecha. Aca la
+// columna no lleva ficha ni grafo, sino las dos hojas escaneadas del cuaderno,
+// que antes iban apiladas al pie del markdown.
+//
+// No se reusan las clases .wiki-* a proposito: las trae wiki.html desde el
+// front matter de characters/, locations/, factions/ e items/, y estas paginas
+// no pasan por ahi. Compartir nombres ataria dos layouts distintos.
+
+// Las hojas son ~550x780 (ratio 0.7): a 22rem cada una se dibuja en ~500px de
+// alto, y las dos apiladas quedan a la par del largo del verso. Mas angosta
+// -las 20rem de la ficha- las dejaba cortas y sobraba costado.
+$legend-scan-width: 22rem;
+
+.legend-page {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.legend-body {
+  flex: 1 1 0;
+  min-width: 0;
+
+  // La medida del verso, y la razon por la que no es flexible del todo: las
+  // baladas no pasan de ~48 caracteres por linea, asi que una columna mas ancha
+  // no agrega texto, solo abre un hueco entre el ultimo caracter del verso y la
+  // primera hoja. Con el tope, el sobrante se va al margen derecho de .main
+  // --donde ya vive el del resto del sitio-- y las dos columnas quedan pegadas.
+  max-width: 36rem;
+
+  > :first-child { margin-top: 0; }
+
+  // El verso ya vive en una columna; el tope del 90% lo angostaria de nuevo.
+  blockquote.verse p { max-width: none; }
+}
+
+.legend-scans {
+  flex: 0 0 $legend-scan-width;
+  margin-top: 0.4rem;               // alinea con la primera linea del h1
+}
+
+.legend-scans-title {
+  max-width: none;                  // .main-content p tiene max-width: 90%
+  margin: 0 0 0.5rem;
+  color: $search-result-preview-color;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.legend-scan {
+  margin: 0 0 1rem;
+  &:last-child { margin-bottom: 0; }
+  a { background-image: none; }     // el tema subraya los links; aca molesta
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid $border-color;
+  }
+}
+
+// Mismo breakpoint que usa .wiki-page para desarmar la ficha.
+@media (max-width: 62rem) {
+  .legend-page {
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  // Apilado no hay columna de al lado: el tope de arriba solo dejaria un hueco.
+  .legend-body { max-width: none; }
+
+  // Ya no es una columna: las dos hojas pasan a fila y se reparten el ancho,
+  // debajo del verso, que es donde estaban antes de mudarse al costado. No
+  // hace falta el display: contents de .wiki-aside, que existe alla para poder
+  // ordenar ficha y grafo por separado; aca el bloque es uno solo.
+  .legend-scans {
+    align-self: stretch;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .legend-scans-title { flex: 1 0 100%; margin-bottom: 0; }
+
+  .legend-scan {
+    flex: 1 1 14rem;
+    max-width: $legend-scan-width;
+    margin: 0;
+  }
 }
 
 
