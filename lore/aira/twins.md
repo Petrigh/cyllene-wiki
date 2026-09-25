@@ -2,6 +2,10 @@
 title: The Twins
 parent: Leyendas de Aira
 summary: Los gemelos medio elfos, y la constelación que dejaron
+layout: legend
+scans:
+  - /assets/lore/twins.png
+  - /assets/lore/twins2.png
 ---
 
 # The Twins
@@ -43,8 +47,3 @@ Dos hermanos aventureros, una pícara y un mago, que terminan siendo estrellas.
 > Above all that ever hurt them
 > Tyrants, crooks and emperors
 {: .verse}
-
-## Páginas originales
-
-![The Twins](../../assets/lore/twins.png)
-![The Twins 2](../../assets/lore/twins2.png)

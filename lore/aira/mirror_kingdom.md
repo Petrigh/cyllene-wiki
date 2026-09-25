@@ -2,6 +2,10 @@
 title: The Mirror Kingdom
 parent: Leyendas de Aira
 summary: Cuidado con los reflejos, suelen ser malvados
+layout: legend
+scans:
+  - /assets/lore/mirror_kingdom.png
+  - /assets/lore/mirror_kingdom2.png
 ---
 
 # The Mirror Kingdom
@@ -40,9 +44,3 @@ Una ronda para asustar chicos, cantada por una vieja en la cocina.
 > Just like snakes
 > Careful or they'll trap you like a mouse!
 {: .verse}
-
-## Páginas originales
-
-![The Mirror Kingdom](../../assets/lore/mirror_kingdom.png)
-![The Mirror Kingdom 2](../../assets/lore/mirror_kingdom2.png)
-

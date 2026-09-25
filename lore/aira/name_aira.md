@@ -2,6 +2,10 @@
 title: The Name of Aira
 parent: Leyendas de Aira
 summary: Balada fundacional del reino
+layout: legend
+scans:
+  - /assets/lore/name_aira.png
+  - /assets/lore/name_aira2.png
 ---
 
 # The Name of Aira
@@ -68,8 +72,3 @@ La balada fundacional del [reino](../../locations/settlements/aira.md).
 > And we became
 > Aira, the kingdom
 {: .verse}
-
-## Páginas originales
-
-![The Name of Aira](../../assets/lore/name_aira.png)
-![The Name of Aira 2](../../assets/lore/name_aira2.png)

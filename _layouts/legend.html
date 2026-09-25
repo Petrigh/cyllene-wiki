@@ -1,0 +1,55 @@
+---
+layout: wiki_base
+---
+{%- comment -%}
+  Las cinco baladas de lore/aira/: a la izquierda la pagina entera --titulo,
+  intro y el verso-- y a la derecha una columna con los escaneos del cuaderno.
+
+  Antes las dos imagenes iban en el markdown, al pie, bajo un "## Paginas
+  originales". Quedaba mal por partida doble: el verso es angosto y dejaba todo
+  el costado derecho vacio, y los escaneos --dos hojas de ~550x780-- alargaban
+  la pagina con una cola que nadie lee en ese orden. Puestos al costado llenan
+  el hueco y se leen al lado de la estrofa, que es como estan en el cuaderno.
+
+  Es un layout y no un <div markdown="1"> en cada .md por lo mismo que
+  wiki.html: el markdown se queda siendo puro texto y el envoltorio no se
+  repite cinco veces.
+
+  Las rutas salen del front matter (`scans:`), absolutas desde la raiz del
+  sitio, y pasan por relative_url porque baseurl es /cyllene-wiki: las
+  relativas del markdown (../../assets/...) no sirven desde aca.
+
+  Sin `scans` esto no envuelve nada y la pagina sale igual que sin layout.
+{%- endcomment -%}
+{%- if page.scans == nil or page.scans == empty -%}
+{{ content }}
+
+{%- else -%}
+{%- comment -%}
+  La columna va DESPUES del cuerpo en el HTML aunque se dibuje al costado, por
+  lo mismo que en wiki.html: un lector de pantalla lee primero la balada.
+
+  El titulo es un <p> y no un <h2>: un heading que no esta en el markdown se
+  colaria en el indice de busqueda y en los heading anchors. Mismo criterio que
+  .wiki-toc-title.
+
+  Cada escaneo va envuelto en un <a> al PNG original, como .wiki-portrait en
+  wiki_card.html: a 22rem la caligrafia del cuaderno no se lee y el click la
+  abre a tamaño completo.
+{%- endcomment -%}
+<div class="legend-page">
+  <div class="legend-body">
+    {{ content }}
+  </div>
+  <div class="legend-scans">
+    <p class="legend-scans-title">Páginas originales</p>
+    {%- for scan in page.scans %}
+    <figure class="legend-scan">
+      <a href="{{ scan | relative_url }}">
+        <img src="{{ scan | relative_url }}" alt="{{ page.title }} — página {{ forloop.index }}" loading="lazy">
+      </a>
+    </figure>
+    {%- endfor %}
+  </div>
+</div>
+{%- endif -%}
