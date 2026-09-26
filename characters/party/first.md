@@ -38,6 +38,7 @@ Por un maleficio desconocido, First luce como un pequeño arbol en una maceta.
 ### Clase
 Explorador nivel 7
 ### Feats
+- Su maldicion divina de planta le permite liberar un halo de esporas.
 
 ### Especie
 Hill dwarf
@@ -71,7 +72,8 @@ Se enamoro de [Marcia](../NPCs/marcia.md).
 
 ## Pesadillas
 
-| Sesion | Que pasó |
-| -- | -- |
+| Sesion | Palabra | Que pasó |
+| -- | -- | -- |
 | [12](../../sessions/12.md) | [Pesadillas](../../lore/pesadillas.md) de [goose](../../bestiary/goose.md), junto a [Luthor](luthor.md) e [Iri](iri.md). |
 | [12](../../sessions/12.md) — segunda noche | Pesadilla junto a [Iri](iri.md) y [Mary](mary.md), camino al [templo del Jester](../../locations/buildings/templo_jester.md). |
+| [23](../../sessions/23.md) | Bosque - Volver | *Gaia tratando de volver. Ella sangrando genera vida, monstruos. Fertilidad* |

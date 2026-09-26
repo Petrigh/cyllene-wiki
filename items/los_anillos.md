@@ -12,7 +12,7 @@ Parecieran funcionar parecido a un *spell storing ring*, pero nadie sabe que gua
 
 ## Quien tiene cual
 
-| Color | De quien era | Donde esta ahora |
+| Color | De quien era | Quien lo tiene |
 | -- | -- | -- |
 | Rojo | [Sipho Glavok](../characters/NPCs/glavok.md) | [Sipho Glavok II](../characters/NPCs/sipho_glavok.md) |
 | Verde | [Brolwund](../characters/NPCs/brolwund.md) | [Camora Schiaparelli](../characters/NPCs/schiaparelli.md), dueño de los casinos |

@@ -80,11 +80,12 @@ Al salir no reconoce en donde esta y peor aun en que tiempo esta...
 
 ## Pesadillas
 
-| Sesion | Que pasó |
-| -- | -- |
-| [3](../../sessions/03.md) | *Septagrama, 7 voces* |
-| [17](../../sessions/17.md) | *Armadura aurea*|
-| Sin sesion registrada | Desde el punto de vista de alguien adentro de una habitacion violeta —como el collar de [Obeon](../NPCs/obeon.md)—: se siente como te drenan el poder cuando alguien castea un spell. |
+| Sesion | Palabras | Que pasó |
+| -- | -- | -- |
+| [3](../../sessions/03.md) | | *Septagrama, 7 voces* |
+| [17](../../sessions/17.md) | | *Armadura aurea*|
+| [23](../../sessions/23.md) | Anillos | *Esta en una cocina. Llegan 6 vasos, son los 5 grandes hablando sobre como deberian conocerse como grupo. Estan todos muy jovenes. Verna y Naivara se llevan bien. Verna ofrece los anillos al grupo* |
+| Sin sesion registrada | | Desde el punto de vista de alguien adentro de una habitacion violeta —como el collar de [Obeon](../NPCs/obeon.md)—: se siente como te drenan el poder cuando alguien castea un spell. |
 
 ## Relaciones
 

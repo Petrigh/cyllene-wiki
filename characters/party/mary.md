@@ -44,7 +44,6 @@ Indice
 ### Arcs
 
 ## Pesadillas
-## Pesadillas
 
 | Sesion | Que pasó |
 | -- | -- |

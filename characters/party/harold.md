@@ -43,9 +43,10 @@ Indice
 
 ## Pesadillas
 
-| Sesion | Que pasó |
-| -- | -- |
-| [17](../../sessions/17.md) | *En su templo conoce a Juana. Se ve como Aira* |
+| Sesion | Palabra | Que pasó |
+| -- | -- | -- |
+| [17](../../sessions/17.md) | | *En su templo conoce a Juana. Se ve como Aira* |
+| [23](../../sessions/23.md) | Secretos | *En el faro. Ve un chico lindo. Amor gay. Se fue. No podian mostrarlo. Ansiedad.* |
 
 ## Relaciones
 
