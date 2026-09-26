@@ -1,5 +1,5 @@
 ---
-title: Cachito
+title: Cachito Polainas
 parent: Characters
 type: npc
 summary: Inocente owling
@@ -8,6 +8,6 @@ status: Dead
 location: Verna
 ---
 
-# Cachito
+# Cachito Polainas
 Owling devoto a [Ghama](../NPCs/ghama.md).
-Asesinado por las [pontifices](../NPCs/pontifex.md) en la ceremonia de los [elegidos](../../lore/elegidos.md).
+Asesinado por las [pontifices](../NPCs/pontifex.md) en la ceremonia de los [elegidos](../../lore/vera/elegidos.md).

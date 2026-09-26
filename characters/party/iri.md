@@ -18,6 +18,10 @@ events:
   - year: 160
     era: DF
     text: "Nace [Iranon Goldenstag II](.) en [Aira](/locations/settlements/aira.html), primer primogenito hombre desde [Iranon I](/characters/NPCs/iranon.html)."
+events:
+  - year: 270
+    era: DF
+    text: "[Iri](.) parte de [Aira](/locations/settlements/aira.md)"
 ---
 
 # Iranon Goldenstag
@@ -125,7 +129,7 @@ Durante este periodo Iri envió un sending a su [abuelo](../NPCs/jebediah_creekw
 
 
 #### Verna
-En [Verna](../../locations/settlements/verna.md) Iri conoció a [Cachito](../NPCs/cachito.md), un owling devoto de [Ghama](../../lore/panteon_ghama.md) que quería recuperar su hogar, e Iri quiso ayudar a llevar a cabo actos de bondad. Estos actos de bondad en conjunto con su ingenuidad llevaron a que les estafen en un callejón, Iri entregando una suma total 7.297gp para comprar sanguchitos.
+En [Verna](../../locations/settlements/verna.md) Iri conoció a [Cachito](../NPCs/cachito.md), un owling devoto de [Ghama](../../lore/vera/panteon_ghama.md) que quería recuperar su hogar, e Iri quiso ayudar a llevar a cabo actos de bondad. Estos actos de bondad en conjunto con su ingenuidad llevaron a que les estafen en un callejón, Iri entregando una suma total 7.297gp para comprar sanguchitos.
 Al enterarse de esto [Luthor](luthor.md) le acompañó a recuperar el oro, y entre el loot encontraron un Arito de bardo Desde este percance Iri no tiene permitido llevar el oro de la party.
 
 Durante el adentramiento en las catacumbas de la [catedral de verna](../../locations/buildings/catedral_verna.md), Iri pudo ver como un [Corazon negro](../../bestiary/corazon_ghama.md) atravezaba a Cachito, matandolo al instante.
@@ -148,17 +152,18 @@ El abuelo logró contarles parte de lo que pasó en las semanas próximas a la l
 
 ## Pesadillas
 
-| Sesion | Que pasó |
-| -- | -- |
-| [3](../../sessions/03.md) | *Me desperte en el palacio, es dia de coronacion. Robert esta aca. No encuentro a mis padres. Encontre a Mark y dice que murieron. Dice que es hora de que sea rey. Ahora se ve como mi padre dice que es mi culpa que ellos no estan aca, que yo no estaba aca. Es mi culpa, yo quise irme. Desaparecio todo el reino. Es mi Culpa*|
-| [4](../../sessions/04.md) | *Frustracion, Impotencia. Aira tragada por el oceano* |
-| [5](../../sessions/05.md) | *No hay nadie en Aira. Llego al castillo. Los tronos estan de espaldas a la entrada. Mis padres estan ahi. No tiene alma. Robert y Martha estan igual. Me fui, no hay nadie. Llego a la estatua en la plaza principal. Tiene los ojos blancos, como sin alma. Se mueve. Me mató* |
-| [6](../../sessions/06.md) | *Festejos, gente aplaudiendo. Una especie de desfile. Mis padres estan en el centro y yo tambien estoy ahi. Voy al castillo, me recibe Mark. No me reconoce, cree que soy amigo de Iri. Iri parece ser un nombre comun en el reino, algo con que la gente nombra sus hijos after the royalty. Mark dice que el principe es un conchudo. Me fui. Intento interceptar el carro del principe. Se freno todo menos el. Dice ser Iranon, pero sabe que no es yo. Dice que mañana mis padres van a ser asesinados. Que el va a subir al trono. Habla de como esta llenando un espacio que yo deje, que deberia estar agradecido.* |
-| [9](../../sessions/09.md) | *Estoy en el barco. Voy a buscar al capitán. Lo reconozco, capitán South Haven, un viejo. Dice que son unas 2 semanas de viaje. Parece que voy a estar afuera unos 6 meses. Todo el mundo me esta despidiendo. Sbo, zarpamos y al rato damos la vuelta y volvemos al puerto. El capitan dice que ya terminamos, que pasaron 6 meses. No los recuedo.* |
-| [12](../../sessions/12.md) | *Estoy en Aira, en la casa de los Greene. Me llega un mensaje del palacio, tengo que ir con urgencia. Mientras estoy yendo el piso de Aira tiene ramitas y semillas. Mis padres no me estan viendo, estan discutiendo por algo. Me acerco. Son gansos.* |
-| [12](../../sessions/12.md) - Siguiente noche | *Estoy en una habitacion, parece preparada para la realeza. Miro por la ventana, es un terreno pantanoso con tierra roja. El capitan me da una carta, tiene un sello. Una estrella negra de 7 puntas.* |
-| [15](../../sessions/15.md) | *Estoy en mi castillo. Briiana, madre de Iranon I. Estaban haciendo mi cuadro. Soy rey?. Soy Iranon I. Escucho ruido asi que lo voy a seguir. Creo que es mi esposa. La encuentro, hermosa, maravillosamente hermosa.* |
-| [17](../../sessions/17.md) | *Estoy viendo una armadura en una vidriera. Hay varias cosas de esa epoca, parece un museo. Estoy yo como parte de la exhibicion. Mi madre me mira, esta triste de que no estoy aca. Me dejan en una vidriera por años. Eventualmente la gente se olvida de mi.* |
+| Sesion | Palabra | Que pasó |
+| -- | -- | -- |
+| [3](../../sessions/03.md) | | *Me desperte en el palacio, es dia de coronacion. Robert esta aca. No encuentro a mis padres. Encontre a Mark y dice que murieron. Dice que es hora de que sea rey. Ahora se ve como mi padre dice que es mi culpa que ellos no estan aca, que yo no estaba aca. Es mi culpa, yo quise irme. Desaparecio todo el reino. Es mi Culpa*|
+| [4](../../sessions/04.md) | | *Frustracion, Impotencia. Aira tragada por el oceano* |
+| [5](../../sessions/05.md) | | *No hay nadie en Aira. Llego al castillo. Los tronos estan de espaldas a la entrada. Mis padres estan ahi. No tiene alma. Robert y Martha estan igual. Me fui, no hay nadie. Llego a la estatua en la plaza principal. Tiene los ojos blancos, como sin alma. Se mueve. Me mató* |
+| [6](../../sessions/06.md) | | *Festejos, gente aplaudiendo. Una especie de desfile. Mis padres estan en el centro y yo tambien estoy ahi. Voy al castillo, me recibe Mark. No me reconoce, cree que soy amigo de Iri. Iri parece ser un nombre comun en el reino, algo con que la gente nombra sus hijos after the royalty. Mark dice que el principe es un conchudo. Me fui. Intento interceptar el carro del principe. Se freno todo menos el. Dice ser Iranon, pero sabe que no es yo. Dice que mañana mis padres van a ser asesinados. Que el va a subir al trono. Habla de como esta llenando un espacio que yo deje, que deberia estar agradecido.* |
+| [9](../../sessions/09.md) | | *Estoy en el barco. Voy a buscar al capitán. Lo reconozco, capitán South Haven, un viejo. Dice que son unas 2 semanas de viaje. Parece que voy a estar afuera unos 6 meses. Todo el mundo me esta despidiendo. Sbo, zarpamos y al rato damos la vuelta y volvemos al puerto. El capitan dice que ya terminamos, que pasaron 6 meses. No los recuedo.* |
+| [12](../../sessions/12.md) | | *Estoy en Aira, en la casa de los Greene. Me llega un mensaje del palacio, tengo que ir con urgencia. Mientras estoy yendo el piso de Aira tiene ramitas y semillas. Mis padres no me estan viendo, estan discutiendo por algo. Me acerco. Son gansos.* |
+| [12](../../sessions/12.md) - Siguiente noche | | *Estoy en una habitacion, parece preparada para la realeza. Miro por la ventana, es un terreno pantanoso con tierra roja. El capitan me da una carta, tiene un sello. Una estrella negra de 7 puntas.* |
+| [15](../../sessions/15.md) | | *Estoy en mi castillo. Briiana, madre de Iranon I. Estaban haciendo mi cuadro. Soy rey?. Soy Iranon I. Escucho ruido asi que lo voy a seguir. Creo que es mi esposa. La encuentro, hermosa, maravillosamente hermosa.* |
+| [17](../../sessions/17.md) | | *Estoy viendo una armadura en una vidriera. Hay varias cosas de esa epoca, parece un museo. Estoy yo como parte de la exhibicion. Mi madre me mira, esta triste de que no estoy aca. Me dejan en una vidriera por años. Eventualmente la gente se olvida de mi.* |
+| [23](../../sessions/23.md) | Abuelo | *Estoy en una bota llegando a la costa brumosa. Llego un lugar pantanoso con tierra roja. La carta es una invitacion a la fortaleza de los 5 grandes.* |
 
 ## Relaciones
 

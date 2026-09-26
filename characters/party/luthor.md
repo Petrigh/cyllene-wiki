@@ -45,12 +45,11 @@ Indice
 
 - Recuperar las [Tierras Robadas](../../locations/regions/tierras_robadas.md).
 
-## Sueños y Pesadillas
+## Pesadillas
 
-| Sesion | Que pasó |
-| -- | -- |
-| [12](../../sessions/12.md) | [Pesadillas](../../lore/pesadillas.md) de [goose](../../bestiary/goose.md), junto a [Iri](iri.md) y [First](first.md). |
-| [23](../../sessions/23.md) | Sueña que es un niño rubio de ojos celestes, hijo de [Iranon 1](../NPCs/iranon.md). Se despierta con mucho dolor de cabeza. |
+| Sesion | Palabra |  Que pasó |
+| -- | -- | -- |
+| [23](../../sessions/23.md) | Donde - Tierras | *Algo lo tira, ruido de ciudad, sal. Esta corriendo por una ciudad en capas. La gente lo quiere. Ve un guardia que se ve como el [espectro](../../bestiary/spectre.md) de Denzen. Llega al castillo. Viendose al espejo, nota que es rubio.* |
 
 ## Relaciones
 

@@ -1,10 +1,9 @@
 ---
-title: Mia
+title: Rolf
 parent: Characters
 type: npc
 summary: Motoquera
 ---
 
-# Mia
+# Rolf
 De [Warlock Motors](../../factions/warlock_motors.md).
-Tiene ventosas en los brazos

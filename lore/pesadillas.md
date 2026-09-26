@@ -12,15 +12,22 @@ Aparecen desde la [Sesion 3](../sessions/03.md) y no paran. No todes las tienen 
 
 | Sesion | Quienes |
 | -- | -- |
-| [3](../sessions/03.md) | [Harold](../characters/party/harold.md), [Iri](../characters/party/iri.md), [Denzen](../characters/party/denzen.md) |
-| [4](../sessions/04.md) | [Iri](../characters/party/iri.md) |
-| [5](../sessions/05.md) | [Iri](../characters/party/iri.md) |
-| [6](../sessions/06.md) | [Iri](../characters/party/iri.md) |
-| [9](../sessions/09.md) | [Iri](../characters/party/iri.md) |
-| [10](../sessions/10.md) | [Iri](../characters/party/iri.md), [Denzen](../characters/party/denzen.md) |
-| [12](../sessions/12.md) | [Luthor](../characters/party/luthor.md), [Iri](../characters/party/iri.md), [First](../characters/party/first.md) — pesadillas de goose. Segunda noche: First, Iri y [Mary](../characters/party/mary.md) |
-| [15](../sessions/15.md) | [Iri](../characters/party/iri.md) y [Mary](../characters/party/mary.md) |
-| [17](../sessions/17.md) | [Iri](../characters/party/iri.md); [Denzen](../characters/party/denzen.md) y [Harold](../characters/party/harold.md) |
+| [3](../sessions/03.md) | [Harold](../characters/party/harold.md#pesadillas), [Iri](../characters/party/iri.md#pesadillas), [Denzen](../characters/party/denzen.md#pesadillas) |
+| [4](../sessions/04.md) | [Iri](../characters/party/iri.md#pesadillas) |
+| [5](../sessions/05.md) | [Iri](../characters/party/iri.md#pesadillas) |
+| [6](../sessions/06.md) | [Iri](../characters/party/iri.md#pesadillas) |
+| [9](../sessions/09.md) | [Iri](../characters/party/iri.md#pesadillas) |
+| [10](../sessions/10.md) | [Iri](../characters/party/iri.md#pesadillas), [Denzen](../characters/party/denzen.md#pesadillas) |
+| [12](../sessions/12.md) | [Luthor](../characters/party/luthor.md#pesadillas), [Iri](../characters/party/iri.md#pesadillas), [First](../characters/party/first.md#pesadillas) — pesadillas de goose. Segunda noche: First, Iri y [Mary](../characters/party/mary.md#pesadillas) |
+| [15](../sessions/15.md) | [Iri](../characters/party/iri.md#pesadillas) y [Mary](../characters/party/mary.md#pesadillas) |
+| [17](../sessions/17.md) | [Iri](../characters/party/iri.md#pesadillas); [Denzen](../characters/party/denzen.md#pesadillas) y [Harold](../characters/party/harold.md#pesadillas) |
+| [23](../sessions/23.md) | [Iri](../characters/party/iri.md#pesadillas); [Denzen](../characters/party/denzen.md#pesadillas); [Harold](../characters/party/harold.md#pesadillas); [Luthor](../characters/party/luthor.md#pesadillas) y[First](../characters/party/first.md#pesadillas) | 
+
+## Sueños Conjuntos
+
+| Sesion | Palabra | Sueño |
+| -- | -- | -- |
+| [23](../sessions/23.md) | Volver | *3 Flashes. Retrato de 3 pesronas. Aira, Iranon I, y un pequeo nino rubio de ojos celestes. Se decuelga y lo guarda. Algo paso y ahora que esto este presente **It's too painful**. Bosque, hay sol. Hay figuras de palitos. Hay gente. Las sociedades funcionan. Gaia esta ayudando. Jester se ve mas en paz. Hace que lleuva y salga el sol. No es todo tormentas. The guardian, alto con un yelmo con astas. Llega con los cazadores. Robusto, protector. El unico con arma. Techos altos, musica, piedra roja. El baile. Denzen harto. Recien se esta considerando que los 6 ayuden en la grieta. La fiesta es para Iri. Denzen e Iri se conocen.* |
 
 
 # Board

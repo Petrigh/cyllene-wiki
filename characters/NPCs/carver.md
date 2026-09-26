@@ -6,4 +6,4 @@ type: npc
 ---
 
 # Carver
-De [Warlock Motors](../../factions/warlock_motors.md). Tiene a [Shinnobu](shinnobu.md) atrapado en su espada.
+Tiefling lider de [Warlock Motors](../../factions/warlock_motors.md). Tiene a [Shinnobu](shinnobu.md) atrapado en su espada.
