@@ -78,6 +78,21 @@ Sin tener recuerdos recientes el se despierta en una [cueva](../../locations/bui
 
 Al salir no reconoce en donde esta y peor aun en que tiempo esta...
 
+### Lo que dejo escrito
+En la [sesion 32](../../sessions/32.md), en la [Fortaleza de los Cinco](../../locations/buildings/fortaleza_grandes.md), la party encontro lo que Denzen habia escondido bajo un tablon del piso de su habitacion:
+
+- Un mapa del [Desierto Nocturno](../../locations/regions/desierto_nocturno.md).
+- Una copia de [la carta encriptada](../../items/objetos_denzen/carta_encriptada.md) que le mando a [Iri](iri.md).
+- Una lista con los nombres de los cinco: cruz al lado de [Glavok](../NPCs/glavok.md) y [Brolwund](../NPCs/brolwund.md), signo de pregunta en los otros tres.
+- Correspondencia oficial con pasos a seguir en una guerra.
+- Un draft tachado y nunca enviado dirigido al [Director](../NPCs/hel_baot.md): estaba preocupado por la racionalidad de sus compañeros, decia que estaban jugando con cosas con las que no deberian y que los superaban, y tenia miedo de mandarlos al frente.
+- Una planilla con los resultados de la noche del baile.
+- Fotos de los seis de chiquitos, una del baile con Iri, y una del dia en que se conocieron.
+
+En el laboratorio secreto, su estacion estaba dedicada a rastrear artefactos antiguos que pudieran ayudar en la guerra. A un costado habia flores marchitas, una vela y fotos de los seis: un altarcito.
+
+En toda la fortaleza no hay nada escrito sobre el, y eso es lo que enoja a [Obeon](../NPCs/obeon.md).
+
 ## Pesadillas
 
 | Sesion | Palabras | Que pasó |
@@ -86,6 +101,10 @@ Al salir no reconoce en donde esta y peor aun en que tiempo esta...
 | [17](../../sessions/17.md) | | *Armadura aurea*|
 | [23](../../sessions/23.md) | Anillos | *Esta en una cocina. Llegan 6 vasos, son los 5 grandes hablando sobre como deberian conocerse como grupo. Estan todos muy jovenes. Verna y Naivara se llevan bien. Verna ofrece los anillos al grupo* |
 | Sin sesion registrada | | Desde el punto de vista de alguien adentro de una habitacion violeta —como el collar de [Obeon](../NPCs/obeon.md)—: se siente como te drenan el poder cuando alguien castea un spell. |
+| [26](../../sessions/26.md) | Familia | *Sentado en el comedor de su casa, el unico ahi con su madre. Llama a tus hermanos: la hermana mayor entrenando, Arten adolescente, el padre leyendo. Obeon esta nuevito. Felicidades Denzen: es su cena de despedida. Mesa larga. Una mujer rubia alta, muy linda, le sirve la comida; el se siente muy chiquito. Es [Aira](../NPCs/aira.md). En un plato de plata ve el reflejo de un niño rubio de ojos celestes. Hay un asiento preparado al pedo. El papa esta ocupado hablando con gente importante. "Que queres que hagamos para tus 11 años". Ya en la pieza ve entrar una version de [Iri](iri.md) de unos 40 años —es [Iranon I](../NPCs/iranon.md)—, que le hace mimos en el pelo, le da un beso y se va.* |
+| [28](../../sessions/28.md) | Infernal | *Muchos recuerdos viejos. Algo escondido a un lado lo llama. [Shinnobu](../NPCs/shinnobu.md) en la espada de [Carver](../NPCs/carver.md): Shinnobu es lo fisico y el combate, [Arif](../NPCs/arif.md) el conocimiento y la arcana. Burocracia demoniaca. Si no controlas tu porcion, alguien mas puede tomarla.* |
+| [31](../../sessions/31.md) | Culpa | *Esta en el salon de baile de la [Fortaleza](../../locations/buildings/fortaleza_grandes.md), con unas armas ornamentales. Unos guardias se paran en la puerta y tocan las trompetas: es la escolta de un reino chiquito, [Aira](../../locations/settlements/aira.md). Aparece un joven elfo muy ingenuo —Iri— que queda solo entre [Brolwund](../NPCs/brolwund.md) y [Glavok](../NPCs/glavok.md), claramente incomodo. La fiesta es para convencerlo; el esta ahi para presentar Aira y dar buena imagen.* |
+| [32](../../sessions/32.md) | Inopia scriptorum | *Recuerdo. Esta en su habitacion privada, usando magia para no hacer ruido. Levanta el escritorio, despues un tablon del piso, y saca un papel. Tiene un sobre que tiene que llegar a alguien, y tiene que llegar en secreto. Esconde el mensaje dentro de un dibujo, al estilo thieves cant. Se mueve con miedo en su propia casa. Guarda una copia y busca como enviarlo. Si algo se pierde porque nadie lo escribio, algo le paso a quien escribia.* |
 
 ## Relaciones
 

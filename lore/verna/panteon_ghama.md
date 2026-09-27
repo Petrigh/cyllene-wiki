@@ -8,4 +8,4 @@ summary: Los dioses del Bosque Inescrutable
 
 ## Miembros conocidos
 
-- [Ghama](../characters/NPCs/ghama.md) — Diosa de la luz.
+- [Ghama](../../characters/NPCs/ghama.md) — Diosa de la luz.

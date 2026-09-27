@@ -14,8 +14,6 @@ quietos, y cada cosa que hacen apunta al mismo lado.
 - Tomaron control de [Brolwund](../locations/settlements/brolwund.md).
 - Están tomando control de los pueblos de la
   [Hondonada](../locations/regions/hondonada.md).
-
-## Se conecta con
-
-- [RCaine en Brolwund](rcaine_brolwund.md) — son ellos los que lo mueven.
-- [Los Indeseables presos](indeseables_brolwund.md) — a quienes echaron primero.
+- Voltearon el [emporio de Elmer](../locations/buildings/emporio_elmer.md) buscando la daga, porque creian que la tenia el.
+- Su jefe actual es [Nicmar Baram](../characters/NPCs/nicmar_baram.md).
+- Tomaron el pueblo de [los Indeseables](indeseables_brolwund.md) y los mandaron a [Medea](../locations/nature/medea.md) de por vida.

@@ -18,10 +18,9 @@ events:
   - year: 160
     era: DF
     text: "Nace [Iranon Goldenstag II](.) en [Aira](/locations/settlements/aira.html), primer primogenito hombre desde [Iranon I](/characters/NPCs/iranon.html)."
-events:
   - year: 270
     era: DF
-    text: "[Iri](.) parte de [Aira](/locations/settlements/aira.md)"
+    text: "[Iri](.) parte de [Aira](/locations/settlements/aira.html)"
 ---
 
 # Iranon Goldenstag
@@ -129,7 +128,7 @@ Durante este periodo Iri envió un sending a su [abuelo](../NPCs/jebediah_creekw
 
 
 #### Verna
-En [Verna](../../locations/settlements/verna.md) Iri conoció a [Cachito](../NPCs/cachito.md), un owling devoto de [Ghama](../../lore/vera/panteon_ghama.md) que quería recuperar su hogar, e Iri quiso ayudar a llevar a cabo actos de bondad. Estos actos de bondad en conjunto con su ingenuidad llevaron a que les estafen en un callejón, Iri entregando una suma total 7.297gp para comprar sanguchitos.
+En [Verna](../../locations/settlements/verna.md) Iri conoció a [Cachito](../NPCs/cachito.md), un owling devoto de [Ghama](../../lore/verna/panteon_ghama.md) que quería recuperar su hogar, e Iri quiso ayudar a llevar a cabo actos de bondad. Estos actos de bondad en conjunto con su ingenuidad llevaron a que les estafen en un callejón, Iri entregando una suma total 7.297gp para comprar sanguchitos.
 Al enterarse de esto [Luthor](luthor.md) le acompañó a recuperar el oro, y entre el loot encontraron un Arito de bardo Desde este percance Iri no tiene permitido llevar el oro de la party.
 
 Durante el adentramiento en las catacumbas de la [catedral de verna](../../locations/buildings/catedral_verna.md), Iri pudo ver como un [Corazon negro](../../bestiary/corazon_ghama.md) atravezaba a Cachito, matandolo al instante.
@@ -150,6 +149,10 @@ Al llegar a [Creekwater ranch](../../locations/buildings/creekwater_ranch.md) Ir
 El abuelo logró contarles parte de lo que pasó en las semanas próximas a la llegada de Iri al rancho en el año 270 [D.f.](../../lore/calendario.md), pero no parecía tener recuerdo alguno sobre los padres de Iri, ni de la existencia de un reino llamado Aira, un casteo de [Identify](https://5e.tools/spells/identify-phb.html) logró confirmar que su falta de memoria estaba causada por los efectos de un [Wish](https://5e.tools/spells/wish-phb.html) spell.
 
 
+#### La Fortaleza de los Cinco
+Del rancho la party fue a la [Fortaleza](../../locations/buildings/fortaleza_grandes.md), que hoy funciona como museo. Iri tuvo recuerdos de haber estado ahi antes, y sintio nauseas en el salon de baile.
+
+Entre los papeles que [Denzen](denzen.md) habia escondido bajo el piso de su habitacion aparecio una planilla con los resultados de la noche del baile, con pros y contras de cada noble con el que hablaron. Arriba de todo estaba el nombre de Iri, con muchos pros a tener relaciones con [Aira](../../locations/settlements/aira.md), y una pregunta: si era un buen candidato para contribuir a la guerra.
 ## Pesadillas
 
 | Sesion | Palabra | Que pasó |
@@ -164,6 +167,10 @@ El abuelo logró contarles parte de lo que pasó en las semanas próximas a la l
 | [15](../../sessions/15.md) | | *Estoy en mi castillo. Briiana, madre de Iranon I. Estaban haciendo mi cuadro. Soy rey?. Soy Iranon I. Escucho ruido asi que lo voy a seguir. Creo que es mi esposa. La encuentro, hermosa, maravillosamente hermosa.* |
 | [17](../../sessions/17.md) | | *Estoy viendo una armadura en una vidriera. Hay varias cosas de esa epoca, parece un museo. Estoy yo como parte de la exhibicion. Mi madre me mira, esta triste de que no estoy aca. Me dejan en una vidriera por años. Eventualmente la gente se olvida de mi.* |
 | [23](../../sessions/23.md) | Abuelo | *Estoy en una bota llegando a la costa brumosa. Llego un lugar pantanoso con tierra roja. La carta es una invitacion a la fortaleza de los 5 grandes.* |
+| [26](../../sessions/26.md) | Luthor | *Parate derecho y fingi que sabes lo que estas haciendo. Encuentro un muñeco de madera. Estoy en el cuerpo de un pequeño hijo de [Iranon](../NPCs/iranon.md). [Aira](../NPCs/aira.md) es mi madre, pero reconoce que no soy su hijo, que soy otro. No sabe que hago aca.* |
+| [28](../../sessions/28.md) | Obeon | *Pov [Obeon](../NPCs/obeon.md), soldados en Aith Telperin. [Iranon](../NPCs/iranon.md) era bueno, serio pero bueno. Cumpleaños, dolor, cuernos, ojos violeta. Se rompe un vidrio, grita y otra voz tambien. Quilombo por los cuernos. Iranon se enoja, le grita a [Aira](../NPCs/aira.md) y llama a los guardias. Aira me toma y me lleva a su habitacion, arriba. Traba la puerta con mucha fuerza. Saca el [collar](../../items/objetos_denzen/collar_obeon.md) y la gema es blanca. "Espero que sigas ahi". Me dice que todo va a estar bien y castea algo. Entro a la gema y escucho todo muffled. Me guarda. Entran los guardias. Se rompe un vidrio. Iranon grito, y otra voz tambien: el grito mas desgarrador que escuche.* |
+| [31](../../sessions/31.md) | *se resiste y falla* | *Estoy en mi cuerpo de cuando era chiquito. Nada en este castillo es tamaño niño. Mi padre es violeta. Tengo puesta una corona de papel. Nadie me esta tomando en serio. Estoy tratando de aprender. Voy a ser un buen rey.* |
+| [32](../../sessions/32.md) | Mentiras | *Los sueños de hoy son mas directos: la fuente no duda sobre que mostrar. Veo la estatua de [Aira](../NPCs/aira.md). Flash muy rapido, como paginas de un libro. Se detiene en seco en la estatua, y es una sensacion fea. "Como se atreve". Aca hay algo mas que es mentira, en la estatua.* |
 
 ## Relaciones
 

@@ -7,4 +7,4 @@ pantheon: Panteón de Ghama
 ---
 
 # Ghama
-Diosa de la luz, perteneciente al [panteón de Ghama](../../lore/vera/panteon_ghama.md).
+Diosa de la luz, perteneciente al [panteón de Ghama](../../lore/verna/panteon_ghama.md).
