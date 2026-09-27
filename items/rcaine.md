@@ -18,3 +18,8 @@ No se sabe quien la produce, pero el [Kraken de un ojo](../factions/one_eyed_kra
 
 ## Efectos secundarios
 - El consumidor explota.
+
+## Donde aparecio
+
+- [Brolwund](../locations/settlements/brolwund.md) — ver [RCaine en Brolwund](../quests/rcaine_brolwund.md).
+- [Glavok](../locations/settlements/glavok.md) — la [party de bardos](../factions/party_bardos.md) salio dopada a la final del [Colozoo](../locations/buildings/colozoo.md) en la [sesion 31](../sessions/31.md). Les salia la magia rara, empezaron a explotar uno por uno, y la carne se fusiono en una [amalgama](../bestiary/amalgama_bardos.md).

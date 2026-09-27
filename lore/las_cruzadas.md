@@ -32,3 +32,18 @@ amistad y como registro del proceso de ir cerrando la Grieta.
 En el **270 DF** [Denzen](../characters/party/denzen.md) descubre que el
 problema era mucho mas grande de lo que habian imaginado. Ahi se corta lo que
 el y [Iri](../characters/party/iri.md) recuerdan.
+
+## Como se abrio La Grieta
+
+La Grieta estaba cerrada, y un dia se abrio. La explicacion esta en [como estan ordenados los planos](planos_taphaestri.md): los nueve infiernos se invirtieron y se pusieron debajo del abismo, con lo que los demonios dejaron de tener que atravesarlos para llegar a la superficie.
+
+El desmadre de La Grieta es contemporaneo a la expansion del [Bosque Inescrutable](../locations/regions/bosque_inescrutable.md).
+
+## Que fueron
+
+La serie de aventuras de los seis con el objetivo de limpiar el [Valle](../locations/regions/valle_cinco_grandes.md) y cerrar La Grieta.
+
+En el medio quedaron cosas sin resolver:
+- Que hacer con los prisioneros — ver [los prisioneros de La Grieta](prisioneros_grieta.md).
+- Para que les pidio [Verna](../characters/NPCs/verna.md) [los anillos](../items/los_anillos.md) en el 270 — ver [Seis almas, seis anillos](../quests/seis_almas.md).
+- Una idea anotada en la pizarra del laboratorio de la [Fortaleza](../locations/buildings/fortaleza_grandes.md): pedir ayuda a los dioses.

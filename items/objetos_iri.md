@@ -19,3 +19,7 @@ Lo que lleva encima [Iri](../characters/party/iri.md).
 - [Mapa de Cyllene](objetos_iri/mapa.md)
 - [Anillo de Hallucinatory Terrain](objetos_iri/anillo_terreno_ilusorio.md)
 - [Libro con cuentos](objetos_iri/libro_cuentos.md)
+- [Corona de Glavok](objetos_iri/corona_glavok.md) — ornamental, regalo del mismo Glavok. La lleva colgada del cinturon.
+- [Piedra Iridiscente](objetos_iri/piedra_iridiscente.md) — cayo en el punto de meditacion de [Jester](../characters/NPCs/jester.md). Hoy la tiene el lider de la [party de bardos](../factions/party_bardos.md).
+- [Invitacion al baile](objetos_iri/invitacion_fortaleza.md) — la que lo saco de casa en el 270.
+- [Insignia P.E.T.](objetos_iri/insignia_pet.md) — *usalo si es muy necesario*.

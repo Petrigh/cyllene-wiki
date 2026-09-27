@@ -11,3 +11,5 @@ events:
 
 # Iranon I
 Rey de [Aith Telperin](../../locations/settlements/aira.md). Cuando su esposa [Aira](aira.md) muere, decide renombrar su reino en su honor.
+
+En los sueños que [Obeon](obeon.md) le manda a la party, Iranon aparece como alguien bueno y serio, pero de temperamento corto.

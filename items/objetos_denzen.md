@@ -18,3 +18,4 @@ Lo que lleva encima [Denzen](../characters/party/denzen.md).
 - [Anillo](los_anillos.md) violeta.
 - [Comic](objetos_denzen/comic.md)
 - [Daga de Brolwund](objetos_denzen/daga_brolwund.md)
+- [Carta encriptada](objetos_denzen/carta_encriptada.md) — el punto de encuentro que le mando a Iri.
