@@ -3,6 +3,7 @@ title: Mathew Greene
 parent: Characters
 type: npc
 summary: Amigo de Iri
+faction: The Greenes
 ---
 
 # Mathew Greene

@@ -4,6 +4,8 @@ parent: Characters
 summary: Traidor de Brolwund
 type: pc
 player: Tom
+faction: The Party
+location: Brolwund
 ---
 
 # Viktor

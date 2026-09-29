@@ -1,11 +1,12 @@
 ---
-title: Las Bastardettes
+title: Bastardettes
 parent: Factions
 summary: Rivales de la segunda ronda del Colozoo
 seat: Glavok
+kind: party
 ---
 
-# Las Bastardettes
+# Bastardettes
 
 Party inscripta en el torneo del [Colozoo](../locations/buildings/colozoo.md). Una cleriga, una wizard, una rogue y una fighter.
 

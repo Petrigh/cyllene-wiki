@@ -6,6 +6,7 @@ kind: settlement
 region: Valle de los Cinco Grandes
 map_x: 66.0
 map_y: 36.0
+status: Tomado
 ---
 
 # Brolwund

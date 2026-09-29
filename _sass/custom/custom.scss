@@ -1223,3 +1223,342 @@ $legend-scan-width: 22rem;
 @media (prefers-reduced-motion: reduce) {
   #link-preview { transition: none; }
 }
+
+// ---- Cylledle, el acertijo diario (_includes/cylledle.html) ---------------
+//
+// El tablero es una <table> de verdad (no una grilla de divs) porque es una
+// tabla de verdad: ocho filas de intentos por siete columnas de atributos, con
+// encabezados que las describen. Eso ya trae la navegacion por celdas de los
+// lectores de pantalla sin ARIA a mano. Abajo de 46rem se apila en tarjetas,
+// que es lo unico que entra en un celular sin scroll horizontal.
+//
+// Los cuatro estados NO se distinguen solo por color: cada celda lleva ademas
+// un glifo y un texto para lector de pantalla. Un tablero que solo cambia de
+// tinte es ilegible para una parte de la mesa.
+
+.cy-wrap {
+  --cy-hit:  #{$link-color};      // el verde del sitio: la celda acertada
+  --cy-near: #8a5a2b;             // el mismo ocre de las misiones en el grafo
+  --cy-miss: #5a6673;             // el gris azulado de las sesiones
+  --cy-void: #{$border-color};    // hueco del front matter, no error
+
+  margin: 1.5rem 0;
+}
+
+.cy-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.cy-head { margin-bottom: 0.75rem; }
+
+.cy-status {
+  margin: 0;
+  font-size: 0.9rem;
+  color: $body-heading-color;
+  font-weight: 600;
+}
+
+.cy-streak,
+.cy-left {
+  margin: 0.15rem 0 0;
+  font-size: 0.78rem;
+  color: $search-result-preview-color;
+}
+
+// ---- Entrada -------------------------------------------------------------
+
+.cy-form {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+// El <ul> de sugerencias se posiciona contra esto, no contra .cy-form: si
+// colgara del flex container quedaria del ancho de los dos hijos juntos.
+.cy-combo {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.cy-input {
+  width: 100%;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.95rem;
+  color: $body-text-color;
+  background: $table-background-color;
+  border: 1px solid $border-color;
+  border-radius: 3px;
+}
+
+.cy-input:focus {
+  outline: 2px solid $link-color;
+  outline-offset: 1px;
+}
+
+.cy-send {
+  flex: 0 0 auto;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.9rem;
+  color: $body-background-color;
+  background: $btn-primary-color;
+  border: 1px solid $btn-primary-color;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.cy-send:disabled {
+  background: $border-color;
+  border-color: $border-color;
+  cursor: not-allowed;
+}
+
+.cy-list {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 2px);
+  left: 0;
+  right: 0;
+  max-height: 15rem;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+  background: $body-background-color;
+  border: 1px solid $border-color;
+  border-radius: 3px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.cy-opt {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.cy-opt:hover,
+.cy-opt.is-on { background: $sidebar-color; }
+
+.cy-opt-s {
+  flex: 0 0 auto;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: $search-result-preview-color;
+}
+
+// ---- Tablero -------------------------------------------------------------
+
+.cy-board-wrap { margin-top: 1rem; }
+
+.cy-board {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 3px;
+  table-layout: fixed;
+}
+
+.cy-board th,
+.cy-board td {
+  padding: 0.4rem 0.35rem;
+  font-size: 0.75rem;
+  text-align: center;
+  vertical-align: middle;
+  border: 0;
+  word-break: break-word;
+}
+
+.cy-board thead th {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: $search-result-preview-color;
+  background: none;
+}
+
+// La primera columna es el nombre adivinado: alineada a la izquierda y un poco
+// mas ancha, porque es la unica celda con texto largo de verdad.
+.cy-board tbody th {
+  width: 22%;
+  text-align: left;
+  font-size: 0.82rem;
+  background: $table-background-color;
+  border-radius: 3px;
+}
+
+.cy-board tbody td {
+  color: $body-background-color;
+  border-radius: 3px;
+  line-height: 1.25;
+}
+
+.cy-mark {
+  display: block;
+  font-size: 0.8rem;
+  line-height: 1;
+}
+
+.cy-val { display: block; }
+
+.cy-board tbody td[data-state="hit"]  { background: var(--cy-hit); }
+.cy-board tbody td[data-state="near"] { background: var(--cy-near); }
+.cy-board tbody td[data-state="miss"] { background: var(--cy-miss); }
+
+// El hueco no es un error: se pinta como papel con borde punteado, para que no
+// se lea como "fallaste" cuando en realidad el wiki todavia no lo dice.
+.cy-board tbody td[data-state="void"] {
+  color: $search-result-preview-color;
+  background: $body-background-color;
+  box-shadow: inset 0 0 0 1px var(--cy-void);
+}
+
+[data-state="hit"]  .cy-mark::before { content: "\2713"; }   // check
+[data-state="near"] .cy-mark::before { content: "\223C"; }   // tilde
+[data-state="miss"] .cy-mark::before { content: "\2715"; }   // cruz
+[data-state="void"] .cy-mark::before { content: "?"; }
+
+.cy-legend {
+  margin-top: 0.6rem;
+  font-size: 0.72rem;
+  color: $search-result-preview-color;
+}
+
+.cy-key {
+  display: inline-block;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: 0 0.1rem 0 0.5rem;
+  font-size: 0.7rem;
+  line-height: 1.15rem;
+  text-align: center;
+  color: $body-background-color;
+  border-radius: 2px;
+  vertical-align: -0.2rem;
+}
+
+.cy-key[data-state="hit"]  { background: var(--cy-hit); }
+.cy-key[data-state="near"] { background: var(--cy-near); }
+.cy-key[data-state="miss"] { background: var(--cy-miss); }
+
+.cy-key[data-state="void"] {
+  color: $search-result-preview-color;
+  background: $body-background-color;
+  box-shadow: inset 0 0 0 1px var(--cy-void);
+}
+
+.cy-key[data-state="hit"]::before  { content: "\2713"; }
+.cy-key[data-state="near"]::before { content: "\223C"; }
+.cy-key[data-state="miss"]::before { content: "\2715"; }
+.cy-key[data-state="void"]::before { content: "?"; }
+
+// ---- Final ---------------------------------------------------------------
+
+.cy-end {
+  margin-top: 1.25rem;
+  padding: 0.85rem 1rem;
+  background: $table-background-color;
+  border: 1px solid $border-color;
+  border-radius: 3px;
+}
+
+.cy-verdict {
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+  color: $body-heading-color;
+}
+
+.cy-answer {
+  display: inline-block;
+  margin-right: 0.75rem;
+  font-size: 0.85rem;
+}
+
+.cy-share {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.82rem;
+  color: $body-background-color;
+  background: $btn-primary-color;
+  border: 1px solid $btn-primary-color;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.cy-copied {
+  margin-left: 0.5rem;
+  font-size: 0.78rem;
+  color: $search-result-preview-color;
+}
+
+// ---- Celular -------------------------------------------------------------
+//
+// Siete columnas no entran en 375px sin scroll horizontal, asi que cada intento
+// pasa a ser una tarjeta y cada celda una linea "Etiqueta: valor". La etiqueta
+// sale de data-label, que arma el JS copiando el <thead>: asi vive en un solo
+// lugar y no hay que repetir los siete nombres aca.
+
+@media (max-width: 46rem) {
+  .cy-board { display: block; }
+
+  .cy-board thead { display: none; }
+
+  .cy-board tbody,
+  .cy-board tbody tr { display: block; }
+
+  .cy-board tbody tr {
+    margin-bottom: 0.6rem;
+    padding: 0.35rem;
+    background: $table-background-color;
+    border: 1px solid $border-color;
+    border-radius: 3px;
+  }
+
+  .cy-board tbody th {
+    display: block;
+    width: auto;
+    margin-bottom: 0.25rem;
+    font-size: 0.95rem;
+    background: none;
+  }
+
+  .cy-board tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 2px;
+    padding: 0.3rem 0.45rem;
+    text-align: right;
+    font-size: 0.8rem;
+  }
+
+  .cy-board tbody td::before {
+    content: attr(data-label);
+    flex: 0 0 auto;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    opacity: 0.85;
+  }
+
+  .cy-board .cy-mark {
+    display: inline;
+    margin-right: 0.3rem;
+  }
+
+  .cy-board .cy-val { display: inline; }
+
+  .cy-form { flex-wrap: wrap; }
+}

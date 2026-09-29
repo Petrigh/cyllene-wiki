@@ -3,6 +3,9 @@ title: Aira (aasimar)
 parent: Characters
 summary: Reina de Aith Telperin
 type: npc
+race: Aasimar
+location: Aira
+status: Muerto
 ---
 
 # Aira (aasimar)

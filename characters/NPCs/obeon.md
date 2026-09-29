@@ -5,6 +5,7 @@ type: npc
 summary: Una persona atrapada en el collar que lleva Denzen
 status: Atrapado
 location: El collar
+faction: Cinco Grandes
 ---
 
 # Obeon

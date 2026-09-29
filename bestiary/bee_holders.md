@@ -2,6 +2,8 @@
 title: Bee-Holders
 parent: Bestiary
 summary: Guardaban los items de la Corte del Jester
+kind: monstrosity
+location: Templo del Jester
 ---
 
 # Bee-Holders

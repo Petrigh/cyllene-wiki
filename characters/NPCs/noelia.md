@@ -3,6 +3,7 @@ title: Noelia
 parent: Characters
 summary: Madre de Harold
 type: npc
+location: Verna
 ---
 
 # Noelia

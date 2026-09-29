@@ -6,6 +6,9 @@ grand_parent: Factions
 type: pc
 class: Monje
 player: Judit
+faction: The Party
+location: Verna
+status: Vivo
 ---
 
 # Harold Fielt

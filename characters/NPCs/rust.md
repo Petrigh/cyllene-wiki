@@ -3,6 +3,7 @@ title: Rust
 parent: Characters
 type: npc
 summary: Hermano del cartografo
+location: Slumberhaven
 ---
 
 # Rust

@@ -3,6 +3,7 @@ title: Anti-Denzen
 parent: Characters
 summary: Clon malvado
 type: npc
+location: Brolwund
 ---
 
 # Anti-Denzen

@@ -3,6 +3,7 @@ title: Henry Creekwater
 parent: Characters
 type: npc
 summary: Padre de Iri - Rey de Aira
+location: Aira
 ---
 
 # Henry Creekwater

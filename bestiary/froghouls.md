@@ -2,6 +2,8 @@
 title: Froghouls
 parent: Bestiary
 summary: Salieron del Bosque y atacaron Fadefair
+kind: monstrosity
+location: Fadefair
 ---
 
 # Froghouls

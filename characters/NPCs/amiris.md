@@ -3,6 +3,7 @@ title: Amiris
 parent: Characters
 summary: Padre de Denzen
 type: npc
+location: Salacia
 ---
 
 # Amiris

@@ -3,6 +3,8 @@ title: Twinkle
 parent: Characters
 type: npc
 summary: Gnomo del bosque
+race: Gnomo
+location: Safepoint
 ---
 
 # Twinkle

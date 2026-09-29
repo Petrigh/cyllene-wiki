@@ -3,6 +3,7 @@ title: Caribdis Idreius
 parent: Characters
 summary: Amigo de Iri
 type: npc
+location: Aira
 ---
 
 # Caribdis Idreius

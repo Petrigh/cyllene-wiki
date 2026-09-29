@@ -2,6 +2,8 @@
 title: Morty
 parent: Bestiary
 summary: Mascota muerta de Mary Anne
+kind: undead
+status: Muerto
 ---
 
 # Morty

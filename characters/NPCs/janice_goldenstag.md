@@ -3,6 +3,7 @@ title: Janice Goldenstag
 parent: Characters
 type: npc
 summary: Madre de Iri - Reina de Aira
+location: Aira
 ---
 
 # Janice Goldenstag

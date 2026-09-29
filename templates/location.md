@@ -41,6 +41,12 @@ up under whatever it points at.
 
 Only a `world` page carries no such key — it is the root.
 
+## `status:`
+
+Optional, and written **only when something happened** to the place:
+`En pie` `Destruido` `Tomado` `Abandonado` `Perdido`. A town the wiki never
+says anything about is left blank — see [the side card reference](card.md).
+
 If the key is missing, or names a title that does not exist, the page is not
 lost: it shows up under **Sin ubicar** at the bottom of the Locations index.
 

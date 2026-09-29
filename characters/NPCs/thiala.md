@@ -3,6 +3,8 @@ title: Thiala
 parent: Characters
 type: npc
 summary: Tavernera en Whiterun
+faction: Indeseables de Brolwund
+location: Whiterun
 ---
 
 # Thiala

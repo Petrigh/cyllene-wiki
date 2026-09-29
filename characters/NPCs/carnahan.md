@@ -3,6 +3,8 @@ title: Carnahan
 parent: Characters
 summary: Paladin de los 5 Grandes
 type: npc
+faction: Cinco Grandes
+location: Carnahan
 ---
 
 # Conrad Carnahan

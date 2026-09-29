@@ -3,6 +3,8 @@ title: Jebediah Creekwater
 parent: Characters
 type: npc
 summary: Abuelo de Iri
+location: CreekWater Ranch
+status: Vivo
 ---
 
 # Jebediah Creekwater

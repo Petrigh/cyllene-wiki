@@ -3,6 +3,7 @@ title: Mira
 parent: Characters
 type: npc
 summary: Asustada en Slumberhaven
+location: Slumberhaven
 ---
 
 # Mira

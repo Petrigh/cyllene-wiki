@@ -3,6 +3,7 @@ title: Juana
 parent: Characters
 summary: Madre de Harold
 type: npc
+location: Verna
 ---
 
 # Juana

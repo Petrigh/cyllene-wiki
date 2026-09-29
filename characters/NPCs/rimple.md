@@ -3,6 +3,7 @@ title: Rimple
 parent: Characters
 type: npc
 summary: Hey, you. You’re finally awake. 
+race: Halfling
 ---
 
 # Rimple

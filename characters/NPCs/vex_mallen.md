@@ -3,6 +3,7 @@ title: Vex Mallen
 parent: Characters
 type: npc
 summary: Jefe del museo de Brolwund
+location: Brolwund
 ---
 
 # Vex Mallen

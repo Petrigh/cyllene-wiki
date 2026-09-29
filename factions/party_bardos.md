@@ -2,7 +2,8 @@
 title: Party de Bardos
 parent: Factions
 summary: Archirivales de Iri
-status: Muertos
+status: Disuelta
+kind: party
 ---
 
 # Party de Bardos

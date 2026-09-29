@@ -3,6 +3,8 @@ title: Shinnobu
 parent: Characters
 type: npc
 summary: Tiefling atrapado dentro de una espada
+race: Tiefling
+status: Atrapado
 ---
 
 # Shinnobu

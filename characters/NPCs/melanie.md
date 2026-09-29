@@ -3,6 +3,8 @@ title: Melanie
 parent: Characters
 type: npc
 summary: Gnoma de Garnier
+race: Gnomo
+location: Garnier
 ---
 
 # Melanie

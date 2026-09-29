@@ -5,6 +5,7 @@ type: npc
 summary: El Director, quien reunio a los seis
 race: Elfo
 status: Muerto
+faction: Sociedad de los Vientos Arcanos
 ---
 
 # Hel Baot

@@ -3,6 +3,8 @@ title: Carver
 parent: Characters
 summary: Motoquero
 type: npc
+race: Tiefling
+faction: Warlock Motors
 ---
 
 # Carver

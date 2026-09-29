@@ -3,6 +3,7 @@ title: Schiaparelli
 parent: Characters
 type: npc
 summary: Dueño casino en Brolwund
+location: Brolwund
 ---
 
 # Camora Schiaparelli

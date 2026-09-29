@@ -646,6 +646,126 @@ vigila los archivos que le pasan por `--config` y se reinicia solo.
   espacios. Ver "por que la cuenta va toda arriba" en el encabezado.
 {%- endcomment -%}
 
+{%- comment -%}
+  ======================================================================
+  3c. Cylledle
+  ======================================================================
+
+  El acertijo diario (cylledle.md) puntua cada intento en cinco columnas.
+  Tres las deriva solo de los links de las sesiones y no hay nada que cargar.
+  Las otras dos salen del front matter, y son las que se llenan a mano:
+
+      Naturaleza   race en characters, kind en el resto
+      Region       region / settlement / location / continent / seat / world
+
+  `faction` y `status` supieron ser columnas y ya no lo son (ver el porque en
+  el encabezado de _includes/cylledle.html), asi que su cobertura no se mide
+  aca. Los dos chequeos de abajo sobre esas claves siguen, pero ahora por la
+  ficha: wiki_card dibuja las dos.
+
+  Una clave ausente NO es un error: el juego pinta esa celda gris y no la
+  puntua, que es lo correcto para algo que el wiki todavia no dijo. Por eso
+  aca no hay una lista de "faltantes" sino una de cobertura: sirve para saber
+  cuanto rinde cada columna, no para tachar pendientes.
+
+  Lo que SI son errores son las dos listas del final:
+
+  1. Un valor fuera del vocabulario. "Viva" y "Vivo" son la misma idea escrita
+     de dos formas, y la ficha las muestra tal cual: dos entidades en el mismo
+     estado terminan diciendo cosas distintas. Un kind fuera de la lista
+     ademas sale sin traducir en la ficha, y ese kind SI es una columna del
+     acertijo (Naturaleza).
+  2. Un faction con mas de un valor. wiki_card lo enlaza, o sea que espera un
+     escalar; una lista la pega en un solo string y deja de resolver. Ya paso
+     una vez, y quien lo encontro fue el chequeo de front matter de mas
+     arriba, no una lectura del codigo.
+
+  El barrido es lineal y sobre hs_scan, el mismo predicado que usan
+  assets/graph-data.json y assets/cylledle-data.json. No inventar otra lista.
+{%- endcomment -%}
+{%- assign hs_cy_kinds  = "|world|continent|region|settlement|building|nature|aberration|beast|undead|plant|construct|humanoid|fey|monstrosity|order|gang|council|school|family|party|" -%}
+{%- assign hs_cy_states = "|Vivo|Muerto|Atrapado|Desaparecido|En pie|Destruido|Tomado|Abandonado|Perdido|Activa|Disuelta|Latente|" -%}
+{%- assign hs_cy_secs = "/characters/,/locations/,/factions/,/bestiary/" | split: "," -%}
+{%- assign hs_cy_n = 0 -%}
+{%- assign hs_cy_nat = 0 -%}
+{%- assign hs_cy_reg = 0 -%}
+{%- assign hs_cy_bad = "" -%}
+{%- assign hs_cy_nbad = 0 -%}
+{%- for hs_p in hs_scan -%}
+  {%- unless hs_p.title -%}{%- continue -%}{%- endunless -%}
+  {%- assign hs_cy_in = false -%}
+  {%- for hs_s in hs_cy_secs -%}
+    {%- if hs_p.url contains hs_s -%}{%- assign hs_cy_in = true -%}{%- break -%}{%- endif -%}
+  {%- endfor -%}
+  {%- unless hs_cy_in -%}{%- continue -%}{%- endunless -%}
+  {%- assign hs_cy_n = hs_cy_n | plus: 1 -%}
+
+  {%- comment -%} Naturaleza: la raza en personajes, el kind en todo lo demas. {%- endcomment -%}
+  {%- if hs_p.url contains "/characters/" -%}
+    {%- assign hs_cy_nature = hs_p.race -%}
+  {%- else -%}
+    {%- assign hs_cy_nature = hs_p.kind -%}
+  {%- endif -%}
+  {%- if hs_cy_nature -%}{%- assign hs_cy_nat = hs_cy_nat | plus: 1 -%}{%- endif -%}
+  {%- assign hs_cy_where = hs_p.region | default: hs_p.settlement | default: hs_p.location | default: hs_p.continent | default: hs_p.seat | default: hs_p.world -%}
+  {%- if hs_cy_where -%}{%- assign hs_cy_reg = hs_cy_reg | plus: 1 -%}{%- endif -%}
+
+  {%- if hs_p.kind -%}
+    {%- assign hs_cy_probe = "|" | append: hs_p.kind | append: "|" -%}
+    {%- unless hs_cy_kinds contains hs_cy_probe -%}
+      {%- capture hs_cy_bad -%}{{ hs_cy_bad }}<li><a href="{{ hs_p.url | relative_url }}">{{ hs_p.title }}</a> &mdash; <code>kind: {{ hs_p.kind }}</code></li>{%- endcapture -%}
+      {%- assign hs_cy_nbad = hs_cy_nbad | plus: 1 -%}
+    {%- endunless -%}
+  {%- endif -%}
+
+  {%- if hs_p.status -%}
+    {%- assign hs_cy_probe = "|" | append: hs_p.status | append: "|" -%}
+    {%- unless hs_cy_states contains hs_cy_probe -%}
+      {%- capture hs_cy_bad -%}{{ hs_cy_bad }}<li><a href="{{ hs_p.url | relative_url }}">{{ hs_p.title }}</a> &mdash; <code>status: {{ hs_p.status }}</code></li>{%- endcapture -%}
+      {%- assign hs_cy_nbad = hs_cy_nbad | plus: 1 -%}
+    {%- endunless -%}
+  {%- endif -%}
+
+  {%- comment -%}
+    Un String en Liquid no responde a first, un array si: esa es la unica forma
+    de distinguirlos sin un filtro de tipo. size sobre un String cuenta letras,
+    asi que la comparacion solo vale despues de saber que es un array.
+  {%- endcomment -%}
+  {%- if hs_p.faction.first and hs_p.faction.size > 1 -%}
+    {%- capture hs_cy_bad -%}{{ hs_cy_bad }}<li><a href="{{ hs_p.url | relative_url }}">{{ hs_p.title }}</a> &mdash; <code>faction:</code> tiene {{ hs_p.faction.size }} valores; la ficha espera uno solo</li>{%- endcapture -%}
+    {%- assign hs_cy_nbad = hs_cy_nbad | plus: 1 -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{% capture hs_out_cy %}
+{% if hs_cy_n == 0 %}
+No hay entidades en el pool del acertijo.
+{% else %}
+Sobre {{ hs_cy_n }} entidades adivinables (characters, locations, factions,
+bestiary). Las columnas derivadas &mdash;seccion, primera aparicion y numero de
+sesiones&mdash; no se cargan a mano y no figuran aca.
+
+| Columna | Clave | Cargadas | |
+|---|---|--:|---|
+| Naturaleza | `race` / `kind` | {{ hs_cy_nat }} / {{ hs_cy_n }} | {{ hs_cy_nat | times: 100 | divided_by: hs_cy_n }}% |
+| Region | `location` y compania | {{ hs_cy_reg }} / {{ hs_cy_n }} | {{ hs_cy_reg | times: 100 | divided_by: hs_cy_n }}% |
+
+{% if hs_cy_nbad == 0 %}
+Todos los valores estan dentro del vocabulario.
+{% else %}
+<details open>
+<summary><b>Valores fuera del vocabulario</b> &mdash; {{ hs_cy_nbad }}</summary>
+<p>El juego compara sin acentos ni mayusculas, pero no sabe que dos palabras
+distintas significan lo mismo: <code>Viva</code> y <code>Vivo</code> puntuan
+como estados diferentes. Los valores validos estan en
+<code>templates/card.md</code>.</p>
+<ul>{{ hs_cy_bad }}</ul>
+</details>
+{% endif %}
+{% endif %}
+{% endcapture %}
+
+
 # Salud del wiki
 
 Pagina local de mantenimiento: lo que esta a medio cargar y no se nota mientras
@@ -675,6 +795,10 @@ Se miran por dentro {{ hs_scan.size }} paginas.
 ## Linea de tiempo
 
 {{ hs_out_tl }}
+
+## Cylledle
+
+{{ hs_out_cy }}
 
 ## Paginas que nadie enlaza
 

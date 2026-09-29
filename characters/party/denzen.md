@@ -7,6 +7,9 @@ type: pc
 race: Tiefling de Levistus
 class: Hexblade Warlock
 player: Johnny
+faction: Cinco Grandes
+location: Salacia
+status: Vivo
 events:
   - year: 245
     era: DF

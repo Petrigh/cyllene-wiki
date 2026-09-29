@@ -2,6 +2,9 @@
 title: Cinco Grandes
 parent: Factions
 summary: Personajes legendarios, cada uno con una ciudad fundada en su honor
+kind: party
+seat: Fortaleza de los Cinco
+status: Disuelta
 ---
 
 # Cinco Grandes

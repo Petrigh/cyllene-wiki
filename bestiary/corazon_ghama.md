@@ -2,6 +2,7 @@
 title: Corazon de Ghama
 parent: Bestiary
 summary: 10 seran elegidos.
+location: Catedral de Verna
 ---
 
 # Corazon de Ghama

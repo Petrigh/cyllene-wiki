@@ -2,6 +2,7 @@
 title: Pixies
 parent: Bestiary
 summary: Encantamiento nocturno con flores
+kind: fey
 ---
 
 # Pixies

@@ -2,6 +2,7 @@
 title: Paladines de Lucerna
 parent: Factions
 summary: Buscan artefactos
+kind: order
 events:
   - year: 262
     era: DF

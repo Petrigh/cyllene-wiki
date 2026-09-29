@@ -2,6 +2,9 @@
 title: Troy
 parent: Bestiary
 summary: Mascota de First
+kind: beast
+location: Templo del Jester
+status: Vivo
 ---
 
 # Troy

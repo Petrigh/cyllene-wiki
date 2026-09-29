@@ -2,6 +2,8 @@
 title: Mushy
 parent: Bestiary
 summary: Humanoid Mushrooms
+kind: plant
+location: Safepoint
 ---
 
 # Mushy

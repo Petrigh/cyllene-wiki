@@ -3,6 +3,7 @@ title: Raiz
 parent: Characters
 type: npc
 summary: Reina de treboles
+location: Brolwund
 ---
 
 # Raiz

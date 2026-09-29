@@ -92,3 +92,63 @@ facts:                              # bullets libres, para lo que no entra arrib
 ```
 
 `facts:` always goes last.
+
+## What Cylledle reads
+
+The daily puzzle ([`cylledle.md`](../cylledle.md), `_includes/cylledle.html`)
+grades a guess column by column against the answer. Four of its seven columns
+come straight from the frontmatter above — filling them in makes the game
+sharper *and* fills in the card, since they are the same keys.
+
+| Column | Key | Where it applies |
+|---|---|---|
+| Naturaleza | `race` on characters, `kind` on everything else | all |
+| Afiliacion | `faction` | mostly characters |
+| Region | `location` on characters, `settlement`/`region`/`continent`/`world` on places, `seat` on factions | all |
+| Estado | `status` | all |
+
+The other three columns — **Seccion**, **1a aparicion** and **N de sesiones** —
+are derived, not written: the game counts which session pages link the entity.
+Nothing to fill in there; just link things from the session logs as usual.
+
+A key left out is **not** an error. The game paints that cell grey and does not
+score it, which is the honest answer for something the wiki has not said yet.
+Guessing a value to fill the grid would show the table a wrong answer as canon.
+
+### `kind:` values
+
+Stored in English and lowercase, shown translated (see `wc_kinds` in
+`_includes/wiki_card.html`). Only the `locations` set groups the Locations tree;
+the other two just label the page and feed the game.
+
+| Section | Values |
+|---|---|
+| `locations/` | `world` `continent` `region` `settlement` `building` `nature` |
+| `bestiary/` | `aberration` `beast` `undead` `plant` `construct` `humanoid` `fey` `monstrosity` |
+| `factions/` | `order` `gang` `council` `school` `family` `party` |
+
+### `status:` values
+
+Free text, but keep to these so two pages meaning the same thing score as equal
+— the game compares without accents or case, yet `Vivo` and `Viva` share no word
+and would read as different answers.
+
+| Section | Values |
+|---|---|
+| characters, bestiary | `Vivo` `Muerto` `Atrapado` `Desaparecido` |
+| `locations/` | `En pie` `Destruido` `Tomado` `Abandonado` `Perdido` |
+| `factions/` | `Activa` `Disuelta` `Latente` |
+
+Use the masculine singular for people and creatures whatever their gender —
+it is the species/state, not the person, and the column has to compare.
+
+On locations, `status:` is written **only when something happened**. A town the
+wiki never says anything about is left blank rather than marked `En pie`: a
+column where fifty of fifty-six pages say the same thing tells nobody anything.
+
+### `faction:` is one value
+
+`wiki_card` links it, so it takes a single name, not a list — a list gets
+concatenated into one string and stops resolving (the health page catches this).
+If someone belongs to two, put the defining one here and leave the rest to the
+body text.

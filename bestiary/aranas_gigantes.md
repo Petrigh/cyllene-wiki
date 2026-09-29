@@ -2,6 +2,8 @@
 title: Arañas gigantes
 parent: Bestiary
 summary: Infestaron HollowsCreek
+kind: beast
+location: HollowsCreek
 ---
 
 # Arañas gigantes
