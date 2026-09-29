@@ -2,6 +2,8 @@
 title: Marioneta Golem
 parent: Bestiary
 summary: Pelea de cierre del Templo del Jester
+kind: construct
+location: Templo del Jester
 ---
 
 # Marioneta Golem

@@ -4,6 +4,7 @@ parent: Locations
 summary: La Corte del Jester — estatuas rotas, altares y tres pruebas.
 kind: building
 region: Bosque Inescrutable
+status: Abandonado
 ---
 
 # Templo del Jester

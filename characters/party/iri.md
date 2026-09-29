@@ -6,6 +6,9 @@ grand_parent: Factions
 type: pc
 race: High elf
 class: Bardo 7 (Lore)
+faction: The Party
+location: Aira
+status: Vivo
 aliases:
   - Iri
   - Iranon Goldenstag

@@ -3,6 +3,10 @@ title: Glavok
 parent: Characters
 type: npc
 summary: Barbarian de los 5 Grandes
+race: Enano
+faction: Cinco Grandes
+location: Glavok
+status: Muerto
 ---
 
 # Sypho Glavok 

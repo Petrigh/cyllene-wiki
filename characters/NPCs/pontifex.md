@@ -3,6 +3,8 @@ title: Pontifex
 parent: Characters
 type: npc
 summary: Quien controla la luz, decide que sombras permanecen 
+location: Verna
+status: Vivo
 ---
 
 # Pontifex

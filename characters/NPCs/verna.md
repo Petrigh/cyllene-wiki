@@ -3,6 +3,10 @@ title: Verna
 parent: Characters
 type: npc
 summary: Cleriga de los 5 Grandes
+race: Halfling
+faction: Cinco Grandes
+location: Montañas Ardientes
+status: Muerto
 ---
 
 # Verna Sunstep

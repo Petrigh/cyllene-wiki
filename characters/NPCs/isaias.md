@@ -3,6 +3,7 @@ title: Isaias
 parent: Characters
 summary: Tabernero de Garnier
 type: npc
+location: Garnier
 ---
 
 # Isaias

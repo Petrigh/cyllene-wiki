@@ -3,6 +3,7 @@ title: Tía Ethel
 parent: Characters
 type: npc
 summary: Referencia a Hanzel y Gretel
+status: Muerto
 ---
 
 # Tía Ethel

@@ -3,6 +3,8 @@ title: Ferr
 parent: Characters
 summary: Goatkin de montaña
 type: npc
+race: Goatkin
+location: Slumberhaven
 ---
 
 # Ferr

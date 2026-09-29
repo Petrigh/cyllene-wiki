@@ -3,6 +3,7 @@ title: Arten
 parent: Characters
 summary: Hermano de Denzen
 type: npc
+location: Salacia
 ---
 
 # Arten

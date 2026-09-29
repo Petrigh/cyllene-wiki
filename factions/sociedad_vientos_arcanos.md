@@ -3,6 +3,8 @@ title: Sociedad de los Vientos Arcanos
 parent: Factions
 summary: Big Pharma
 leader: Hel Baot
+kind: school
+status: Activa
 ---
 
 # Sociedad de los Vientos Arcanos

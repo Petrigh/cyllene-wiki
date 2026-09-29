@@ -4,8 +4,8 @@ parent: Characters
 type: npc
 summary: Lidera a los Indeseables y quiere volver a Brolwund
 role: Lider
-status: Viva
-race: Humana
+status: Vivo
+race: Humano
 faction: Indeseables de Brolwund
 location: HollowsCreek
 ---

@@ -3,6 +3,8 @@ title: The Loose Goose
 parent: Bestiary
 summary: Mascota de Elmer
 status: Muerto
+kind: beast
+location: Shady Elmer's Fun Emporium
 ---
 
 # The Loose Goose

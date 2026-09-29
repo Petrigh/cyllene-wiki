@@ -3,6 +3,7 @@ title: Rolf
 parent: Characters
 type: npc
 summary: Motoquera
+faction: Warlock Motors
 ---
 
 # Rolf

@@ -3,6 +3,9 @@ title: Sipho Glavok II
 parent: Characters
 type: npc
 summary: Rey de Glavok
+race: Enano
+location: Glavok
+status: Vivo
 ---
 
 # Sipho Glavok II

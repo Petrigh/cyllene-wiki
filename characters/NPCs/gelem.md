@@ -3,6 +3,7 @@ title: Gelem
 parent: Characters
 type: npc
 summary: Hermana de Denzen
+location: Salacia
 ---
 
 # Gelem

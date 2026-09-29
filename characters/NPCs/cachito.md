@@ -4,7 +4,7 @@ parent: Characters
 type: npc
 summary: Inocente owling
 race: Owling
-status: Dead
+status: Muerto
 location: Verna
 ---
 

@@ -3,6 +3,7 @@ title: Anya
 parent: Characters
 summary: Madre de Denzen
 type: npc
+location: Salacia
 ---
 
 # Anya

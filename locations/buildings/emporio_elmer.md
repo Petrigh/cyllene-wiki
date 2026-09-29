@@ -4,6 +4,7 @@ parent: Locations
 summary: Dungeon temática de payasos, espejos y carnavales.
 kind: building
 continent: Cyllene
+status: Destruido
 ---
 
 # Shady Elmer's Fun Emporium

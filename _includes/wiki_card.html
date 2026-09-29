@@ -84,8 +84,15 @@
 {%- comment -%}
   `kind` se guarda en ingles porque con eso agrupa el arbol de ubicaciones
   (location_children.html); en la ficha se muestra traducido.
+
+  Las primeras seis son las de locations, las unicas que miran el arbol. Las que
+  siguen son de bestiary (tipo de criatura, los de 5e) y de factions (que clase
+  de organizacion). Esas dos secciones no tenian `kind` hasta que lo pidio la
+  columna "Naturaleza" de Cylledle (ver templates/card.md), y se guardan en
+  ingles y en minuscula por la misma regla, aunque nadie las agrupe todavia.
+  Un kind que no este en esta lista se muestra tal cual, sin romper nada.
 {%- endcomment -%}
-{%- assign wc_kinds = "world|Mundo,continent|Continente,region|Region,settlement|Asentamiento,building|Edificacion,nature|Naturaleza" | split: "," -%}
+{%- assign wc_kinds = "world|Mundo,continent|Continente,region|Region,settlement|Asentamiento,building|Edificacion,nature|Naturaleza,aberration|Aberracion,beast|Bestia,undead|No-muerto,plant|Planta,construct|Constructo,humanoid|Humanoide,fey|Feerico,monstrosity|Monstruosidad,order|Orden,gang|Banda,council|Consejo,school|Escuela,family|Familia,party|Party" | split: "," -%}
 {%- assign wc_kind = page.kind -%}
 {%- for wc_k in wc_kinds -%}
   {%- assign wc_pair = wc_k | split: "|" -%}

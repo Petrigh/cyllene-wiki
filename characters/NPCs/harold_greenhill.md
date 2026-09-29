@@ -3,6 +3,8 @@ title: Harold Greenhill
 parent: Characters
 type: npc
 summary: Recepcionesta
+faction: Paladines de Carnahan
+location: Brolwund
 ---
 
 # Harold Greenhill

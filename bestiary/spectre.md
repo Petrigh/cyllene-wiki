@@ -2,6 +2,7 @@
 title: Spectre
 parent: Bestiary
 summary: Parece un soldado airano
+kind: undead
 ---
 
 # Spectre

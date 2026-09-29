@@ -3,6 +3,8 @@ title: Eric
 parent: Characters
 summary: Goon de Brolwund
 type: npc
+faction: Indeseables de Brolwund
+status: Muerto
 ---
 
 # Eric

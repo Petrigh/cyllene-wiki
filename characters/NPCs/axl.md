@@ -3,6 +3,8 @@ title: Axl
 parent: Characters
 summary: Gnomo del bosque
 type: npc
+race: Gnomo
+location: Bosque Inescrutable
 ---
 
 # Axl

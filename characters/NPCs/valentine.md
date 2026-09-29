@@ -3,6 +3,8 @@ title: Valentine Lovelace
 parent: Characters
 type: npc
 summary: Reina de Corazones
+race: Semielfo
+location: Brolwund
 ---
 
 # Valentine Lovelace

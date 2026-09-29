@@ -4,6 +4,8 @@ parent: Factions
 has_children: false
 summary: Quien se sienta en la mesa
 has_toc: false
+kind: party
+status: Activa
 ---
 
 # The Party

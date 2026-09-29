@@ -3,6 +3,7 @@ title: Iranon I
 parent: Characters
 type: npc
 summary: Rey de Aith Telperin
+location: Aira
 events:
   - year: 1
     era: Aureo

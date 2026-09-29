@@ -1,0 +1,755 @@
+{%- comment -%}
+  Cylledle: el acertijo diario del wiki.
+
+  Uso:  {% include cylledle.html %}
+
+  Hay que adivinar una entidad del wiki (personaje, lugar, faccion o criatura).
+  Cada intento se puntua columna por columna contra la respuesta del dia.
+
+  ---- De donde sale cada columna ----
+
+  Las dos de lore (naturaleza y region) salen del front matter, via
+  assets/cylledle-data.json.
+
+  Hubo tambien una columna de afiliacion y una de estado. Se sacaron porque no
+  puntuaban: `faction` esta cargada en menos de la mitad de las entidades, asi
+  que casi siempre salia gris, y `status` es "Vivo" en casi todas las demas,
+  asi que casi siempre salia verde. Una columna que da el mismo color pase lo
+  que pase no descarta nada, que es lo unico que un intento tiene para dar.
+
+  Las dos derivadas (primera aparicion y numero de sesiones) NO estan en ningun
+  front matter: se calculan aca dando vuelta las aristas de
+  assets/graph-data.json, que ya lista por cada sesion todo lo que enlaza su
+  cuerpo. O sea que una entidad entra al tablero con su historial correcto sin
+  que nadie lo escriba: alcanza con que las sesiones la enlacen, que es lo que
+  ya se hace al redactarlas.
+
+  Este include NO toca site.pages. Si lo hiciera estaria rehaciendo el cruce
+  cuadratico de backlinks.html, que ya cuesta ~40s de build.
+
+  ---- Sin interruptor global ----
+
+  backlinks, graph y link_previews tienen su flag en _config.yml porque se
+  inyectan en las ~280 paginas y hay que poder apagarlos para escribir tranquilo.
+  Esto vive en una sola pagina: borrar el include de cylledle.md ya es apagarlo.
+  La unica perilla que si tiene sentido afuera es cylledle_min_sessions, abajo.
+
+  ---- Para probarlo ----
+
+  No hay modo libre: es un acertijo por dia. Para recorrer varios, agregale
+  ?dia=N a la URL (ej. /cyllene-wiki/cylledle.html?dia=12). Ese modo no lee ni
+  escribe localStorage, asi que no ensucia la racha. Mismo espiritu que el
+  ?pick del mapa (_includes/campaign_map.html).
+{%- endcomment -%}
+
+{%- comment -%}
+  Piso de apariciones para ENTRAR AL SORTEO. En 0 puede tocar cualquiera, y hay
+  entidades que ninguna sesion enlaza todavia (facciones de puro lore, lugares
+  no visitados): esas salen con "1a aparicion" vacia y son casi inadivinables.
+  Si los dias se vuelven injustos, subilo a 2 o 3 desde _config.yml.
+
+  Ojo que esto NO achica el buscador: se puede tirar cualquier entidad como
+  intento, solo se achica el conjunto de respuestas posibles.
+{%- endcomment -%}
+{%- assign cy_min = site.cylledle_min_sessions | default: 0 -%}
+
+<div class="cy-wrap"
+     data-pool="{{ '/assets/cylledle-data.json' | relative_url }}"
+     data-graph="{{ '/assets/graph-data.json' | relative_url }}"
+     data-base="{{ site.baseurl }}"
+     data-min="{{ cy_min }}">
+
+  <div class="cy-head">
+    <p class="cy-status" role="status">Cargando el acertijo...</p>
+    <p class="cy-streak" hidden></p>
+  </div>
+
+  <div class="cy-form" hidden>
+    <label class="cy-sr-only" for="cy-input">Nombre de la entidad</label>
+    <div class="cy-combo">
+      <input type="text" id="cy-input" class="cy-input" autocomplete="off"
+             spellcheck="false" placeholder="Escribi un nombre..."
+             role="combobox" aria-expanded="false" aria-autocomplete="list"
+             aria-controls="cy-list">
+      <ul class="cy-list" id="cy-list" role="listbox" hidden></ul>
+    </div>
+    <button type="button" class="cy-send" disabled>Adivinar</button>
+  </div>
+
+  <p class="cy-left" hidden></p>
+
+  <div class="cy-board-wrap" hidden>
+    <table class="cy-board">
+      <caption class="cy-sr-only">Intentos y su puntaje por columna</caption>
+      <thead>
+        <tr>
+          <th scope="col">Entidad</th>
+          <th scope="col">Categoria</th>
+          <th scope="col">Tipo</th>
+          <th scope="col">Region</th>
+          <th scope="col">1a aparicion</th>
+          <th scope="col">Sesiones</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <p class="cy-legend">
+      <span class="cy-key" data-state="hit"></span> exacto
+      <span class="cy-key" data-state="near"></span> cerca
+      <span class="cy-key" data-state="miss"></span> no
+      <span class="cy-key" data-state="void"></span> la wiki no lo dice
+    </p>
+  </div>
+
+  <div class="cy-end" hidden>
+    <p class="cy-verdict"></p>
+    <a class="cy-answer" href="#"></a>
+    <button type="button" class="cy-share">Copiar resultado</button>
+    <span class="cy-copied" role="status" hidden>Copiado.</span>
+  </div>
+
+  <noscript>
+    <p class="cy-status">El acertijo necesita JavaScript. Mientras tanto, la
+    wiki entera esta en el menu de la izquierda.</p>
+  </noscript>
+</div>
+
+<script>
+(function () {
+  var wrap = document.querySelector('.cy-wrap');
+  if (!wrap) { return; }
+
+  var statusEl = wrap.querySelector('.cy-status');
+  var streakEl = wrap.querySelector('.cy-streak');
+  var formEl   = wrap.querySelector('.cy-form');
+  var input    = wrap.querySelector('.cy-input');
+  var listEl   = wrap.querySelector('.cy-list');
+  var sendEl   = wrap.querySelector('.cy-send');
+  var leftEl   = wrap.querySelector('.cy-left');
+  var boardW   = wrap.querySelector('.cy-board-wrap');
+  var tbody    = wrap.querySelector('.cy-board tbody');
+  var endEl    = wrap.querySelector('.cy-end');
+  var verdict  = wrap.querySelector('.cy-verdict');
+  var answerA  = wrap.querySelector('.cy-answer');
+  var shareBtn = wrap.querySelector('.cy-share');
+  var copiedEl = wrap.querySelector('.cy-copied');
+
+  var base = wrap.dataset.base || '';
+  var MIN  = parseInt(wrap.dataset.min, 10) || 0;
+
+  var MAX_GUESSES = 8;
+  var NEAR_BAND   = 3;     // distancia en sesiones que todavia se pinta "cerca"
+  var LS_KEY      = 'cylledle-v1';
+
+  // Dia 0 del juego. Es una constante del juego, no una fecha del mundo: mover
+  // esto renumera todos los acertijos y cambia la respuesta de hoy.
+  var EPOCH = Date.UTC(2026, 0, 1);
+
+  var SEC_LABEL = {
+    pc:        'Party',
+    npc:       'Personaje',
+    locations: 'Lugar',
+    factions:  'Faccion',
+    bestiary:  'Criatura'
+  };
+
+  var EMOJI = { hit: '🟩', near: '🟨', miss: '⬛', 'void': '⬜' };
+
+  var pool = [], byUrl = new Map(), answerPool = [], answer = null;
+  var regionOf = new Map();
+  var guesses = [];           // entidades ya tiradas, en orden
+  var done = false, win = false;
+  var puzzle = 0, debug = false;
+  var store = null;
+
+  // ---- Utilidades -------------------------------------------------------
+
+  // Compara sin acentos ni mayusculas: el contenido del wiki es castellano y
+  // "Faccion" y "Faccion" con tilde tienen que ser la misma celda.
+  function norm(s) {
+    return String(s == null ? '' : s)
+      .normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .toLowerCase().trim();
+  }
+
+  var STOP = { de: 1, del: 1, la: 1, el: 1, los: 1, las: 1, y: 1, en: 1 };
+  function tokens(s) {
+    return norm(s).split(/[^a-z0-9]+/).filter(function (t) {
+      return t.length > 2 && !STOP[t];
+    });
+  }
+
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+
+  // Mayuscula inicial para la celda, nada mas. El front matter escribe los
+  // `kind` de lugares en minuscula (building, settlement, region...) mientras
+  // que las razas y casi todo lo demas ya vienen capitalizados, asi que la
+  // columna Naturaleza mezclaba las dos formas.
+  //
+  // Es primera letra y no `text-transform: capitalize`, que va palabra por
+  // palabra y convertiria "Hill dwarf" en "Hill Dwarf" y "Tiefling de
+  // Levistus" en "Tiefling De Levistus". Toca solo lo que se dibuja: el
+  // puntaje compara con norm(), que pasa todo a minuscula, asi que esto no
+  // puede cambiar un color.
+  function cap(s) {
+    s = String(s == null ? '' : s);
+    return s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+  }
+
+  // Numero de acertijo de hoy. Arma la fecha local (Y/M/D) y la mide en UTC:
+  // asi el cambio de dia es la medianoche de cada jugador y el horario de
+  // verano no corre el numero.
+  function todayNum() {
+    var d = new Date();
+    return Math.round((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - EPOCH) / 86400000);
+  }
+
+  // FNV-1a. No hace falta que sea criptografico: solo que reparta bien y que
+  // de lo mismo en todos los browsers, que Math.random no puede dar.
+  function fnv(s) {
+    var h = 2166136261;
+    for (var i = 0; i < s.length; i++) {
+      h ^= s.charCodeAt(i);
+      h = (h * 16777619) >>> 0;
+    }
+    return h >>> 0;
+  }
+
+  // La respuesta del acertijo n. No es `hash(n) % largo`: eso repetia a los
+  // pocos dias (en 200 dias daba 92 respuestas distintas sobre un pool de 160,
+  // con la misma entidad cayendo dos veces en la misma semana).
+  //
+  // En vez de sortear, se baraja el pool entero y se reparte una carta por
+  // dia: dentro de una vuelta no se repite ninguna, y cada vuelta usa otra
+  // semilla, o sea otro orden. La baraja se rehace en cada carga en vez de
+  // guardarse, asi que nadie tiene que sincronizar nada: mismo n, mismo pool,
+  // mismo resultado en las seis maquinas.
+  //
+  // Al crecer el wiki cambia el largo y con el las vueltas, asi que una
+  // entidad nueva puede adelantar o atrasar a las demas. Es el precio de no
+  // tener estado en el server, y no rompe nada: el dia sigue siendo igual para
+  // todos, que es lo unico que la grilla compartida necesita.
+  function answerFor(n, list) {
+    var len = list.length;
+    var pos = ((n % len) + len) % len;          // ?dia=-1 no puede romper el indice
+    var idx = list.map(function (_, i) { return i; });
+
+    // xorshift32 sembrado por el numero de vuelta. Determinista y sin estado.
+    var seed = fnv('cylledle-' + Math.floor(n / len)) || 1;   // 0 congelaria el xorshift
+    function next() {
+      seed ^= (seed << 13); seed >>>= 0;
+      seed ^= (seed >>> 17);
+      seed ^= (seed << 5);  seed >>>= 0;
+      return seed;
+    }
+    for (var i = len - 1; i > 0; i--) {         // Fisher-Yates
+      var j = next() % (i + 1);
+      var t = idx[i]; idx[i] = idx[j]; idx[j] = t;
+    }
+    return list[idx[pos]];
+  }
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) { n.className = cls; }
+    if (text != null) { n.textContent = text; }
+    return n;
+  }
+
+  // ---- Carga ------------------------------------------------------------
+
+  Promise.all([
+    fetch(wrap.dataset.pool).then(function (r) { return r.json(); }),
+    fetch(wrap.dataset.graph).then(function (r) { return r.json(); })
+  ]).then(start).catch(function (e) {
+    console.warn('cylledle: no se pudieron leer los datos.', e);
+    statusEl.textContent = 'No se pudieron cargar los datos del acertijo.';
+  });
+
+  function start(data) {
+    pool = data[0].pool || [];
+    if (!pool.length) {
+      statusEl.textContent = 'El acertijo se quedo sin entidades.';
+      return;
+    }
+    pool.forEach(function (p) { byUrl.set(p.u, p); });
+
+    // Titulos que existen dos veces (los Cinco Grandes y su ciudad homonima).
+    // El tablero les agrega la seccion al lado del nombre: sin eso, dos filas
+    // que dicen "Brolwund" se leen como el mismo intento repetido.
+    var count = Object.create(null);
+    pool.forEach(function (p) {
+      var k = norm(p.t);
+      count[k] = (count[k] || 0) + 1;
+    });
+    pool.forEach(function (p) { p.dup = count[norm(p.t)] > 1; });
+
+    deriveSessions(data[1]);
+    buildRegions();
+
+    // El piso solo filtra las RESPUESTAS posibles: como intento sigue
+    // valiendo cualquier entidad del wiki.
+    answerPool = pool.filter(function (p) { return p.c >= MIN; });
+    if (!answerPool.length) { answerPool = pool; }
+
+    var q = new URLSearchParams(window.location.search);
+    if (q.has('dia')) {
+      debug = true;
+      puzzle = parseInt(q.get('dia'), 10) || 0;
+    } else {
+      puzzle = todayNum();
+    }
+
+    answer = answerFor(puzzle, answerPool);
+
+    if (!debug) { restore(); }
+    render();
+    wire();
+    formEl.hidden = done;
+    if (!done) { input.focus(); }
+  }
+
+  // Primera aparicion y cantidad de sesiones, dando vuelta las aristas del
+  // grafo. Se miran las dos puntas -- las sesiones que enlazan a la entidad y
+  // las que la entidad enlaza -- porque graph-data.json guarda cada arista en
+  // una sola direccion (la de quien escribio el link) y las dos vistas del
+  // grafo ya las tratan como no dirigidas. Con una sola punta, un personaje
+  // que nombra "ver sesion 18" desde su ficha perderia esa aparicion.
+  function deriveSessions(graph) {
+    var hits = new Map();     // url de entidad -> Set de numeros de sesion
+    function add(url, num) {
+      var s = hits.get(url);
+      if (!s) { s = new Set(); hits.set(url, s); }
+      s.add(num);
+    }
+    function sessNum(u) {
+      var m = /\/sessions\/(\d+)\.html$/.exec(u);
+      return m ? parseInt(m[1], 10) : null;
+    }
+
+    (graph.nodes || []).forEach(function (n) {
+      var here = sessNum(n.u);
+      (n.o || []).forEach(function (t) {
+        if (here !== null) {
+          if (byUrl.has(t)) { add(t, here); }            // sesion -> entidad
+        } else if (byUrl.has(n.u)) {
+          var there = sessNum(t);                        // entidad -> sesion
+          if (there !== null) { add(n.u, there); }
+        }
+      });
+    });
+
+    pool.forEach(function (p) {
+      var s = hits.get(p.u);
+      p.c = s ? s.size : 0;                                   // cuantas sesiones
+      p.f = s ? Math.min.apply(null, Array.from(s)) : null;   // primera aparicion
+    });
+  }
+
+  // Cada lugar apunta a su contenedor, que es lo que deja puntuar "cerca":
+  // Whiterun y la Hondonada no son iguales, pero una esta adentro de la otra.
+  // Solo los lugares aportan eslabones; un personaje con region "Whiterun"
+  // hereda la cadena de Whiterun sin declararla.
+  function buildRegions() {
+    pool.forEach(function (p) {
+      if (p.s === 'locations' && p.r) { regionOf.set(norm(p.t), norm(p.r)); }
+    });
+  }
+
+  // La cadena de contencion de una region, de lo mas chico a lo mas grande:
+  // "Brolwund" devuelve [brolwund, valle de los cinco grandes, cyllene,
+  // ta phaestri]. Una region que ninguna pagina de lugar declara (o una hoja
+  // del arbol) devuelve un solo eslabon, que es ella misma.
+  function regionChain(r) {
+    var cur = norm(r), out = [], seen = Object.create(null);
+    while (cur && !seen[cur] && out.length < 8) {
+      seen[cur] = 1;                  // corta un ciclo de datos mal cargados
+      out.push(cur);
+      var up = regionOf.get(cur);
+      if (!up || up === cur) { break; }
+      cur = up;
+    }
+    return out;
+  }
+
+  // ---- Puntaje ----------------------------------------------------------
+
+  // Devuelve { state, text } donde state es hit | near | miss | void.
+  // "void" es "el wiki no lo dice": se pinta gris y NO cuenta como error,
+  // porque una celda vacia es un hueco del front matter, no un dato.
+  function scoreText(g, a) {
+    if (!g || !a) { return { state: 'void', text: g || '—' }; }
+    if (norm(g) === norm(a)) { return { state: 'hit', text: g }; }
+    var tg = tokens(g), ta = tokens(a);
+    var shared = tg.some(function (t) { return ta.indexOf(t) !== -1; });
+    return { state: shared ? 'near' : 'miss', text: g };
+  }
+
+  // "Cerca" es parentesco INMEDIATO: una region metida dentro de la otra, o
+  // dos que cuelgan del mismo padre (Brolwund y Glavok, los dos en el Valle).
+  //
+  // Antes alcanzaba con compartir la RAIZ de la cadena, y eso hacia que la
+  // columna no dijera nada: el arbol entero termina colgando de Ta Phaestri,
+  // asi que 123 de las 160 entidades tenian la misma raiz y la celda salia
+  // amarilla contra cualquier respuesta (55% de los pares posibles, contra 1%
+  // de rojo). Comparar eslabon por eslabon y solo cerca del piso es lo que
+  // vuelve informativa la columna: Whiterun y Brolwund son dos ramas
+  // distintas de Cyllene y ahora salen en rojo, como corresponde.
+  var NEAR_STEP = 1;   // 0 = solo el nombre exacto; 2 abriria hasta los primos
+
+  function scoreRegion(g, a) {
+    if (!g || !a) { return { state: 'void', text: g || '—' }; }
+    if (norm(g) === norm(a)) { return { state: 'hit', text: g }; }
+    var cg = regionChain(g).slice(0, NEAR_STEP + 1);
+    var ca = regionChain(a).slice(0, NEAR_STEP + 1);
+    var kin = cg.some(function (r) { return ca.indexOf(r) !== -1; });
+    if (kin) { return { state: 'near', text: g }; }
+    return scoreText(g, a);   // ultimo recurso: parentesco por palabra
+  }
+
+  function scoreNum(g, a, fmt) {
+    if (g == null || a == null) {
+      return { state: 'void', text: g == null ? '—' : fmt(g) };
+    }
+    if (g === a) { return { state: 'hit', text: fmt(g) }; }
+    var arrow = g < a ? ' ↑' : ' ↓';   // apunta hacia la respuesta
+    var state = Math.abs(g - a) <= NEAR_BAND ? 'near' : 'miss';
+    return { state: state, text: fmt(g) + arrow };
+  }
+
+  function fmtSess(n) { return 'S' + pad(n); }
+  function fmtNum(n)  { return String(n); }
+
+  function scoreRow(g) {
+    var cells = [
+      scoreText(SEC_LABEL[g.s] || g.s, SEC_LABEL[answer.s] || answer.s),
+      scoreText(g.n, answer.n),
+      scoreRegion(g.r, answer.r),
+      scoreNum(g.f, answer.f, fmtSess),
+      scoreNum(g.c, answer.c, fmtNum)
+    ];
+
+    // La fila que acerto va entera en verde, incluso donde el front matter no
+    // dice nada. Celda por celda la comparacion es correcta -- vacio contra
+    // vacio no es un dato, y por eso el resto del tablero lo pinta gris --
+    // pero en la fila ganadora esa distincion no aplica: la entidad ES la
+    // respuesta, asi que cada celda coincide con la de la respuesta por
+    // definicion. Dejarla gris se leia como un error que no existe, y el
+    // cuadrito compartido de una victoria salia con huecos.
+    if (g.u === answer.u) {
+      cells.forEach(function (c) { c.state = 'hit'; });
+    }
+    return cells;
+  }
+
+  // ---- Estado guardado --------------------------------------------------
+
+  function readStore() {
+    try { return JSON.parse(localStorage.getItem(LS_KEY)) || {}; }
+    catch (e) { return {}; }     // incognito, storage bloqueado, JSON roto
+  }
+
+  function writeStore() {
+    if (debug) { return; }
+    try { localStorage.setItem(LS_KEY, JSON.stringify(store)); } catch (e) {}
+  }
+
+  function restore() {
+    store = readStore();
+    if (typeof store.streak !== 'number') { store.streak = 0; }
+    if (typeof store.max !== 'number')    { store.max = 0; }
+    if (typeof store.played !== 'number') { store.played = 0; }
+    if (typeof store.wins !== 'number')   { store.wins = 0; }
+
+    if (store.n === puzzle) {
+      (store.g || []).forEach(function (u) {
+        var e = byUrl.get(u);
+        if (e) { guesses.push(e); }
+      });
+      done = !!store.done;
+      win  = !!store.win;
+    } else {
+      store.n = puzzle;
+      store.g = [];
+      store.done = false;
+      store.win = false;
+    }
+  }
+
+  function persist() {
+    if (debug) { return; }
+    store.n = puzzle;
+    store.g = guesses.map(function (e) { return e.u; });
+    store.done = done;
+    store.win = win;
+    writeStore();
+  }
+
+  // ---- Render -----------------------------------------------------------
+
+  function render() {
+    tbody.innerHTML = '';
+    guesses.forEach(function (g) { tbody.appendChild(row(g)); });
+    boardW.hidden = guesses.length === 0;
+
+    statusEl.textContent = 'Acertijo #' + puzzle + (debug ? ' (modo prueba)' : '') +
+      ' — ' + answerPool.length + ' entidades posibles.';
+
+    if (!debug && store && store.played) {
+      streakEl.hidden = false;
+      streakEl.textContent = 'Racha: ' + store.streak + ' · mejor: ' + store.max +
+        ' · ' + store.wins + '/' + store.played + ' resueltos.';
+    }
+
+    if (done) {
+      formEl.hidden = true;
+      leftEl.hidden = true;
+      endEl.hidden = false;
+      verdict.textContent = win
+        ? 'Era ' + answer.t + '. Lo sacaste en ' + guesses.length +
+          (guesses.length === 1 ? ' intento.' : ' intentos.')
+        : 'Se acabaron los intentos. Era ' + answer.t + '.';
+      answerA.href = base + answer.u;
+      answerA.textContent = 'Ir a la pagina de ' + answer.t;
+    } else {
+      leftEl.hidden = false;
+      var n = MAX_GUESSES - guesses.length;
+      leftEl.textContent = n + (n === 1 ? ' intento restante.' : ' intentos restantes.');
+    }
+  }
+
+  var HEADS = null;
+  function row(g) {
+    if (!HEADS) {
+      HEADS = Array.prototype.map.call(
+        wrap.querySelectorAll('.cy-board thead th'),
+        function (th) { return th.textContent; }
+      );
+    }
+
+    var tr = el('tr');
+    var th = el('th');
+    th.scope = 'row';
+    var a = el('a', null, g.dup ? g.t + ' (' + (SEC_LABEL[g.s] || g.s) + ')' : g.t);
+    a.href = base + g.u;
+    // El preview al hoverear (_includes/link_preview.html) se engancharia a
+    // este link y mostraria la ficha de la entidad, que en plena partida es
+    // regalar la respuesta. Este atributo es el opt-out por link.
+    a.setAttribute('data-no-preview', '');
+    th.appendChild(a);
+    tr.appendChild(th);
+
+    var LABEL = { hit: ' (exacto)', near: ' (cerca)', miss: ' (no)', 'void': ' (sin dato)' };
+
+    scoreRow(g).forEach(function (s, i) {
+      var td = el('td');
+      td.dataset.state = s.state;
+      // Etiqueta de la columna: la usa el CSS en el modo apilado del celular,
+      // donde el thead deja de verse.
+      td.dataset.label = HEADS[i + 1];
+      td.appendChild(el('span', 'cy-mark'));
+      td.appendChild(el('span', 'cy-val', cap(s.text) || '—'));
+      td.appendChild(el('span', 'cy-sr-only', LABEL[s.state]));
+      tr.appendChild(td);
+    });
+    return tr;
+  }
+
+  // ---- Buscador ---------------------------------------------------------
+
+  var picked = null, cursor = -1, options = [];
+
+  // Que tan bien matchea una entidad. Importa mas de lo que parece, por dos
+  // rarezas del wiki:
+  //
+  //  - Cada uno de los Cinco Grandes le da su nombre a una ciudad, asi que
+  //    "Brolwund" es al mismo tiempo un NPC y un asentamiento, y "Aira" es una
+  //    ciudad pero tambien el principio de "Aira (aasimar)".
+  //  - Hay alias que son subcadena de otros titulos: "Iri" aparece adentro de
+  //    "Amiris" y de "Anti-Iri".
+  //
+  // Sin este orden, escribir el nombre exacto de algo ofrecia primero otra
+  // cosa que apenas lo contiene. El nombre exacto siempre gana.
+  function rank(p, nq) {
+    if (norm(p.t) === nq) { return 0; }
+    var al = p.al || [];
+    if (al.some(function (a) { return norm(a) === nq; })) { return 1; }
+    if (norm(p.t).indexOf(nq) === 0) { return 2; }
+    if (al.some(function (a) { return norm(a).indexOf(nq) === 0; })) { return 3; }
+    return 4;
+  }
+
+  function search(q) {
+    var nq = norm(q);
+    if (!nq) { return []; }
+    var taken = Object.create(null);
+    guesses.forEach(function (g) { taken[g.u] = 1; });
+
+    // Se juntan TODOS los candidatos y recien despues se ordena y se corta.
+    // Cortar antes de ordenar dejaba afuera al mejor match si aparecia despues
+    // del octavo en el orden del archivo (que es por URL, o sea por carpeta).
+    var out = pool.filter(function (p) {
+      if (taken[p.u]) { return false; }
+      return [p.t].concat(p.al || []).some(function (n) {
+        return norm(n).indexOf(nq) !== -1;
+      });
+    });
+
+    out.sort(function (x, y) { return rank(x, nq) - rank(y, nq); });
+    return out.slice(0, 8);
+  }
+
+  function showList(items) {
+    options = items;
+    cursor = -1;
+    listEl.innerHTML = '';
+    input.removeAttribute('aria-activedescendant');
+    if (!items.length) {
+      listEl.hidden = true;
+      input.setAttribute('aria-expanded', 'false');
+      return;
+    }
+    items.forEach(function (p, i) {
+      var li = el('li', 'cy-opt');
+      li.id = 'cy-opt-' + i;
+      li.setAttribute('role', 'option');
+      li.setAttribute('aria-selected', 'false');
+      li.appendChild(el('span', 'cy-opt-t', p.t));
+      li.appendChild(el('span', 'cy-opt-s', SEC_LABEL[p.s] || p.s));
+      li.addEventListener('mousedown', function (ev) {
+        ev.preventDefault();       // no perder el foco del input antes del click
+        choose(p);
+      });
+      listEl.appendChild(li);
+    });
+    listEl.hidden = false;
+    input.setAttribute('aria-expanded', 'true');
+  }
+
+  function moveCursor(d) {
+    if (!options.length) { return; }
+    cursor = (cursor + d + options.length) % options.length;
+    Array.prototype.forEach.call(listEl.children, function (li, i) {
+      var on = i === cursor;
+      li.setAttribute('aria-selected', String(on));
+      li.classList.toggle('is-on', on);
+      if (on) { li.scrollIntoView({ block: 'nearest' }); }
+    });
+    input.setAttribute('aria-activedescendant', 'cy-opt-' + cursor);
+  }
+
+  function choose(p) {
+    picked = p;
+    input.value = p.t;
+    showList([]);
+    sendEl.disabled = false;
+  }
+
+  function submit() {
+    if (done) { return; }
+    // Sin seleccion explicita vale el primer resultado: escribir el nombre
+    // entero y apretar Enter tiene que alcanzar.
+    var e = picked || search(input.value)[0];
+    if (!e) { return; }
+    if (guesses.some(function (g) { return g.u === e.u; })) { return; }
+
+    guesses.push(e);
+    picked = null;
+    input.value = '';
+    sendEl.disabled = true;
+    showList([]);
+
+    if (e.u === answer.u) { done = true; win = true; }
+    else if (guesses.length >= MAX_GUESSES) { done = true; win = false; }
+
+    if (done && !debug) {
+      store.played = (store.played || 0) + 1;
+      if (win) {
+        store.wins = (store.wins || 0) + 1;
+        // La racha se corta si el dia anterior no se gano: lastWin guarda el
+        // numero del ultimo acertijo resuelto, no una fecha.
+        store.streak = (store.lastWin === puzzle - 1) ? (store.streak || 0) + 1 : 1;
+        store.lastWin = puzzle;
+        if (store.streak > store.max) { store.max = store.streak; }
+      } else {
+        store.streak = 0;
+      }
+    }
+    persist();
+    render();
+    if (!done) { input.focus(); }
+  }
+
+  // ---- Compartir --------------------------------------------------------
+
+  function shareText() {
+    var lines = ['Cylledle #' + puzzle + ' ' + (win ? guesses.length : 'X') + '/' + MAX_GUESSES];
+    guesses.forEach(function (g) {
+      lines.push(scoreRow(g).map(function (s) { return EMOJI[s.state]; }).join(''));
+    });
+    lines.push(window.location.origin + window.location.pathname);
+    return lines.join('\n');
+  }
+
+  function copy(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text);
+    }
+    // Pages sirve por HTTPS, asi que esto casi nunca corre; esta por si se abre
+    // el sitio desde file:// o por http en la red local.
+    return new Promise(function (res, rej) {
+      var ta = el('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+      document.body.removeChild(ta);
+      ok ? res() : rej();
+    });
+  }
+
+  // ---- Eventos ----------------------------------------------------------
+
+  function wire() {
+    input.addEventListener('input', function () {
+      picked = null;
+      sendEl.disabled = true;
+      showList(search(input.value));
+    });
+
+    input.addEventListener('keydown', function (ev) {
+      if (ev.key === 'ArrowDown') { ev.preventDefault(); moveCursor(1); }
+      else if (ev.key === 'ArrowUp') { ev.preventDefault(); moveCursor(-1); }
+      else if (ev.key === 'Escape') { showList([]); }
+      else if (ev.key === 'Enter') {
+        ev.preventDefault();
+        if (cursor >= 0 && options[cursor]) { choose(options[cursor]); }
+        else { submit(); }
+      }
+    });
+
+    // El click en una opcion llega despues del blur, asi que la lista no se
+    // puede cerrar en el acto.
+    input.addEventListener('blur', function () {
+      setTimeout(function () { showList([]); }, 120);
+    });
+
+    sendEl.addEventListener('click', submit);
+
+    shareBtn.addEventListener('click', function () {
+      copy(shareText()).then(function () {
+        copiedEl.textContent = 'Copiado.';
+        copiedEl.hidden = false;
+        setTimeout(function () { copiedEl.hidden = true; }, 2000);
+      }, function () {
+        copiedEl.textContent = 'No se pudo copiar.';
+        copiedEl.hidden = false;
+      });
+    });
+  }
+})();
+</script>

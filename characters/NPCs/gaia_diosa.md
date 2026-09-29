@@ -4,6 +4,7 @@ parent: Characters
 type: npc
 summary: Diosa de la vida
 pantheon: Panteón del Bosque
+location: Bosque Inescrutable
 aliases:
   - The Maiden
   - Gaia

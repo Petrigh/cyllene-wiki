@@ -15,11 +15,12 @@ Copy into `factions/`.
 title: The Ashen Compact
 parent: Factions
 summary: Salvagers with a monopoly on anything pulled from the burn scar
+kind: gang            # order | gang | council | school | family | party
 standing: Wary
 leader: Marrow Quillane
 seat: Greyfen
 members: Unos cuarenta, mas los que compran
-status: Activa
+status: Activa        # Activa | Disuelta | Latente
 ---
 ```
 

@@ -3,6 +3,8 @@ title: Brolwund
 parent: Characters
 summary: Rogue de los 5 Grandes
 type: npc
+faction: Cinco Grandes
+location: Vendaval Gris
 ---
 
 # Brolwund Dogbar

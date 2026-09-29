@@ -3,6 +3,8 @@ title: Nox
 parent: Characters
 type: npc
 summary: Gnomo del bosque
+race: Gnomo
+location: Bosque Inescrutable
 ---
 
 # Nox

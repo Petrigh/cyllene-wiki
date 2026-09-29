@@ -4,6 +4,7 @@ parent: Locations
 summary: Un shopping abandonado.
 kind: building
 settlement: Brolwund
+status: Abandonado
 ---
 
 # Capilla de Treboles

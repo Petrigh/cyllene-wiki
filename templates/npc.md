@@ -21,8 +21,8 @@ type: npc
 summary: Undertaker in Greyfen who knows which graves are empty
 race: Human
 role: Undertaker
-status: Alive
-faction: None
+status: Vivo          # Vivo | Muerto | Atrapado | Desaparecido
+faction: The Ashen Compact   # uno solo, no una lista; se omite si no tiene
 location: Greyfen
 attitude: Wary
 facts:

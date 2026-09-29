@@ -6,6 +6,8 @@ grand_parent: Factions
 type: pc
 class: Wizard
 player: Marian
+faction: The Party
+status: Vivo
 ---
 
 # Mary Ann Bevan

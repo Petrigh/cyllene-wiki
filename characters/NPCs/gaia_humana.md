@@ -3,8 +3,8 @@ title: Gaia(humana)
 parent: Characters
 type: npc
 summary: Investigadora pagana
-race: Humana
-status: Viva
+race: Humano
+status: Vivo
 location: Safepoint
 ---
 

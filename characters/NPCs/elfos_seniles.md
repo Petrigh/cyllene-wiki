@@ -3,8 +3,8 @@ title: Elfos Seniles
 parent: Characters
 type: npc
 summary: Investigadora pagana
-race: Elfos
-status: Vivos
+race: Elfo
+status: Vivo
 location: Safepoint
 ---
 

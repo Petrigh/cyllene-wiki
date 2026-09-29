@@ -1,0 +1,130 @@
+---
+layout: null
+sitemap: false
+backlinks: false
+search_exclude: true
+nav_exclude: true
+---
+{%- comment -%}
+  Datos del juego diario (_includes/cylledle.html): un registro por entidad
+  adivinable, con las dos columnas de lore que salen del front matter --
+  naturaleza (`n`) y region (`r`) -- mas el titulo, la seccion y los alias que
+  necesita el buscador.
+
+  Las otras dos columnas del tablero -- primera aparicion y numero de sesiones
+  -- NO salen de aca: se calculan en el browser dando vuelta las aristas de
+  assets/graph-data.json, que ya lista, por cada sesion, todo lo que enlaza su
+  cuerpo. Duplicar ese barrido aca seria pagar dos veces por el mismo dato.
+
+  ---- Por que un .json aparte ----
+
+  El mismo motivo que graph-data.json, explicado largo alla: si estos datos
+  salieran incrustados en el cuerpo de la pagina del juego, esa pagina pasaria
+  a mencionar la URL de las ~165 entidades y backlinks.html la veria como
+  mencionante universal. Ademas la pagina del juego lleva `backlinks: false`,
+  con lo cual queda doblemente afuera.
+
+  `layout: null` es obligatorio: el `defaults:` de _config.yml aplica
+  `layout: wiki_base` al scope path "" (todo el sitio), y sin anularlo esto
+  saldria envuelto en el HTML del tema en vez de JSON.
+
+  ---- Costo de build ----
+
+  Lineal y mas barato que graph-data.json: una pasada por pagina leyendo SOLO
+  front matter. No parte el cuerpo, no cruza paginas contra paginas. Lo caro
+  del build sigue siendo el barrido cuadratico de backlinks.html (~40s).
+
+  ---- baseurl ----
+
+  `page.url` viene sin baseurl, igual que en graph-data.json. Las dos puntas
+  tienen que quedar en la misma forma porque el JS cruza las URL de los dos
+  archivos con un Map: si una llevara baseurl y la otra no, ninguna entidad
+  encontraria sus sesiones y las dos columnas derivadas saldrian vacias.
+  Ver el comentario largo en graph-data.json.
+{%- endcomment -%}
+{%- assign cy_sections = "/characters/,/locations/,/factions/,/bestiary/" | split: "," -%}
+
+{%- comment -%}
+  El MISMO predicado que gr_scan en graph-data.json y que hs_scan en
+  _meta/index.md. No inventar otra lista.
+
+  - `url contains ".html"` deja afuera los index.md de cada seccion (su URL
+    termina en barra) y a este mismo archivo.
+  - `backlinks != false` es el opt-out por pagina. De paso deja afuera la
+    pagina del juego, que lo lleva.
+
+  El `sort: "url"` es por determinismo: site.pages viene en el orden del
+  filesystem y cambia de maquina en maquina. Ademas el orden del pool es lo
+  que indexa el sorteo diario, asi que tiene que ser estable entre builds.
+{%- endcomment -%}
+{%- assign cy_scan = site.pages | where_exp: "cy_q", "cy_q.url contains '.html'" | where_exp: "cy_q", "cy_q.backlinks != false" | sort: "url" -%}
+{"pool":[
+{%- assign cy_first = true -%}
+{%- for cy_p in cy_scan -%}
+  {%- unless cy_p.title -%}{%- continue -%}{%- endunless -%}
+  {%- assign cy_sec = "" -%}
+  {%- for cy_s in cy_sections -%}
+    {%- if cy_p.url contains cy_s -%}
+      {%- assign cy_sec = cy_s | remove: "/" -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- if cy_sec == "" -%}{%- continue -%}{%- endif -%}
+
+  {%- comment -%}
+    Seccion, con los personajes abiertos en dos. Es la misma particion que hace
+    catOf en graph_canvas.html: la mesa y el resto del mundo son dos cosas
+    distintas, y con 77 paginas "personaje" a secas seria una columna que casi
+    no informa. Un personaje sin `type` cae en npc, igual que en el grafo.
+  {%- endcomment -%}
+  {%- if cy_sec == "characters" -%}
+    {%- if cy_p.type == "pc" -%}{%- assign cy_sec = "pc" -%}{%- else -%}{%- assign cy_sec = "npc" -%}{%- endif -%}
+  {%- endif -%}
+
+  {%- comment -%}
+    Naturaleza: la columna generalizada. En personajes es la raza; en el resto
+    es `kind`, que en locations ya significa exactamente esto (asentamiento,
+    edificio, region...) y se extiende igual a facciones y bestiario.
+
+    En personajes NO cae de vuelta a `type`: ahi vale "pc"/"npc", que es lo que
+    ya dice la columna de seccion. Una celda que repite la anterior no aporta
+    nada, y peor: se veria como dato cuando no lo es. Sin raza sale vacia, que
+    el tablero pinta gris y no puntua.
+  {%- endcomment -%}
+  {%- if cy_sec == "pc" or cy_sec == "npc" -%}
+    {%- assign cy_nat = cy_p.race | default: "" -%}
+  {%- else -%}
+    {%- assign cy_nat = cy_p.kind | default: cy_p.type | default: "" -%}
+  {%- endif -%}
+
+  {%- comment -%}
+    Region: la primera clave de contencion que tenga la pagina. El orden va de
+    lo mas chico a lo mas grande, asi la celda dice el lugar mas preciso que se
+    sepa. `seat` es el asiento de una faccion y `world` el ultimo recurso.
+
+    `location` es la que usan los personajes -- es la clave que wiki_card ya
+    dibuja como "Donde", y esta documentada con ese uso en su propio ejemplo.
+    Las paginas de lugares no la llevan nunca (usan region/settlement/
+    continent), asi que no compiten entre si y el orden de esta cadena no
+    decide nada: cada seccion pone una sola.
+  {%- endcomment -%}
+  {%- assign cy_reg = cy_p.region | default: cy_p.settlement | default: cy_p.location | default: cy_p.continent | default: cy_p.seat | default: cy_p.world | default: "" -%}
+
+  {%- unless cy_first -%},{%- endunless -%}{%- assign cy_first = false -%}
+{"u":{{ cy_p.url | jsonify }},"t":{{ cy_p.title | jsonify }},"s":{{ cy_sec | jsonify }},"n":{{ cy_nat | strip | jsonify }},"r":{{ cy_reg | strip | jsonify }},"al":[
+  {%- comment -%}
+    Alias, para que escribir "Iri" encuentre a Iranon. `aliases` mezcla dos
+    formas en la misma lista (ver characters/party/iri.md): strings sueltos y
+    mapas {name, link}. Sobre un string, `.name` da nil, y esa es la
+    discriminacion. Solo interesa el nombre: el link no lo usa el buscador.
+  {%- endcomment -%}
+  {%- assign cy_afirst = true -%}
+  {%- for cy_a in cy_p.aliases -%}
+    {%- assign cy_av = cy_a.name | default: cy_a | strip -%}
+    {%- if cy_av == "" -%}{%- continue -%}{%- endif -%}
+    {%- unless cy_afirst -%},{%- endunless -%}{%- assign cy_afirst = false -%}
+    {{- cy_av | jsonify -}}
+  {%- endfor -%}
+]}
+{%- endfor -%}
+]}

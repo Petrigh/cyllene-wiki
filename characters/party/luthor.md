@@ -6,6 +6,8 @@ grand_parent: Factions
 type: pc
 class: Paladin
 player: Tom
+faction: The Party
+status: Vivo
 ---
 
 # Luthor Rivendale
