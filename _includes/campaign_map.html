@@ -8,9 +8,34 @@
   imagen, asi el mapa entero entra sin franjas vacias arriba y abajo. El
   parametro height es solo el tope, por si la imagen es muy alta.
 
-  Los marcadores salen del front matter de cada pagina. Para poner una
-  ubicacion en el mapa, agregale map_x y map_y (porcentaje desde la esquina
-  superior izquierda, 0-100):
+  Hay dos vistas de la misma cosa y un boton arriba a la derecha para cambiar:
+
+    2D  Leaflet en CRS.Simple sobre la imagen plana. Es la de siempre y la que
+        abre por defecto: es liviana, anda en todos lados y es la unica donde
+        ?pick da coordenadas.
+    3D  el mapa como TERRENO: una malla desplazada segun
+        assets/img/map-height.png, con luz, agua y camara que orbita
+        (_includes/campaign_map_3d.html). Es opcional y se baja sola.
+
+  Este include ORQUESTA: mide la imagen, arma la cascara, emite el JSON de
+  marcadores y prende una vista o la otra. La escena 3D no vive aca. Cada vista
+  se baja su libreria la primera vez que se activa, asi que quien nunca entra
+  en 3D no paga los ~650 KB de three.js.
+
+  El modo elegido se guarda en localStorage. Con que abre la primera visita lo
+  decide `map_3d_default` en _config.yml, y `map_3d: false` saca el boton del
+  sitio entero. Sin WebGL el boton tampoco aparece.
+
+  La TEXTURA del terreno no es necesariamente la misma imagen que el mapa 2D.
+  Los nombres estan pintados sobre map.jpg y sobre una ladera se deforman, asi
+  que si existe assets/img/map-clean.jpg --la misma acuarela con los carteles
+  borrados-- la vista 3D la prefiere y dibuja los nombres como HTML. Mientras
+  no exista, usa map.jpg y se banca los carteles: nada queda bloqueado.
+
+  Los marcadores salen del front matter de cada pagina y los comen las DOS
+  vistas: no hay un segundo juego de coordenadas. Para poner una ubicacion en
+  el mapa, agregale map_x y map_y (porcentaje desde la esquina superior
+  izquierda, 0-100):
 
       ---
       title: Brolwund
@@ -20,36 +45,100 @@
       map_y: 35.6
       ---
 
-  Para sacar las coordenadas de un lugar nuevo, abri el mapa con ?pick al
-  final de la URL (ej. /cyllene-wiki/?pick) y clickea donde va el marcador:
-  te muestra las dos lineas listas para copiar.
+  Para sacar las coordenadas de un lugar nuevo, abri el mapa con ?pick al final
+  de la URL (ej. /cyllene-wiki/?pick) y clickea donde va el marcador: te muestra
+  las dos lineas listas para copiar. ?pick fuerza la vista 2D y esconde el
+  boton: las coordenadas son de la imagen plana y ahi son las autoritativas.
 
   El texto que sale al hoverear un marcador NO se configura aca. Cada pin es un
-  <a> de verdad adentro de .main-content, asi que lo levanta la tarjeta de
-  preview general (_includes/link_preview.html), igual que cualquier link del
-  cuerpo: de ahi salen el retrato, el titulo, el subtipo y el summary. Este
-  include tenia su propio tooltip de Leaflet y se saco justamente porque
-  dibujaba lo mismo por segunda vez, encima de la tarjeta.
+  <a> de verdad adentro de .main-content --en las dos vistas--, asi que lo
+  levanta la tarjeta de preview general (_includes/link_preview.html), igual que
+  cualquier link del cuerpo: de ahi salen el retrato, el titulo, el subtipo y el
+  summary. Este include tenia su propio tooltip de Leaflet y se saco justamente
+  porque dibujaba lo mismo por segunda vez, encima de la tarjeta.
 {%- endcomment -%}
 
 {%- assign map_image  = include.image  | default: "/assets/img/map.jpg" -%}
 {%- assign map_max_height = include.height | default: "clamp(320px, 68vh, 700px)" -%}
 {%- assign map_pins   = site.pages | where_exp: "p", "p.map_x" | where_exp: "p", "p.map_y" | sort: "title" -%}
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+{%- assign map_3d_on = true -%}
+{%- if site.map_3d == false -%}{%- assign map_3d_on = false -%}{%- endif -%}
+{%- if include.three == false -%}{%- assign map_3d_on = false -%}{%- endif -%}
 
-<div class="campaign-map-wrap">
+{%- assign map_mode_default = "2d" -%}
+{%- if site.map_3d_default == true -%}{%- assign map_mode_default = "3d" -%}{%- endif -%}
+
+{%- assign map_relief = site.map_3d_relief | default: 0.12 -%}
+{%- assign map_blur = site.map_3d_smooth | default: 6 -%}
+{%- assign map_height_img = "/assets/img/map-height.png" -%}
+
+{%- comment -%}
+  La textura del terreno: la version sin carteles si ya existe. Se pregunta por
+  site.static_files y no se asume, asi que el dia que aparezca el archivo el
+  sitio lo toma solo, sin tocar este include.
+{%- endcomment -%}
+{%- assign map_clean = "/assets/img/map-clean.jpg" -%}
+{%- assign map_clean_file = site.static_files | where: "path", map_clean | first -%}
+{%- if map_clean_file -%}
+  {%- assign map_texture = map_clean -%}
+{%- else -%}
+  {%- assign map_texture = map_image -%}
+{%- endif -%}
+
+{%- comment -%}
+  Las dos libs se inyectan desde JS, asi que el preload scanner no las ve. El
+  preconnect recupera el handshake con unpkg, que es lo que costaba.
+{%- endcomment -%}
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
+
+<div
+  class="campaign-map-wrap"
+  style="--campaign-map-max-height: {{ map_max_height }};"
+  data-image="{{ map_image | relative_url }}"
+  data-texture="{{ map_texture | relative_url }}"
+  data-heightmap="{{ map_height_img | relative_url }}"
+  data-relief="{{ map_relief }}"
+  data-smooth="{{ map_blur }}"
+  data-mode-default="{{ map_mode_default }}">
+
+  {%- if map_3d_on %}
+  <button type="button" class="campaign-map-toggle" aria-pressed="false" hidden>Ver en 3D</button>
+  {%- endif %}
+
   <div
     id="campaign-map"
     class="campaign-map"
-    style="--campaign-map-max-height: {{ map_max_height }};"
-    data-image="{{ map_image | relative_url }}"
     role="application"
     aria-label="Mapa interactivo de Cyllene">
   </div>
+
+  {%- if map_3d_on %}
+  <div
+    id="campaign-map-3d"
+    class="campaign-map campaign-map-3d"
+    role="application"
+    aria-label="Mapa de Cyllene en 3D"
+    hidden>
+    <canvas class="campaign-map-canvas"></canvas>
+    <div class="campaign-map-pins"></div>
+    <button type="button" class="campaign-map-home" title="Ver el mapa completo"
+            aria-label="Ver el mapa completo">&#10066;</button>
+  </div>
+  {%- endif %}
+
+  <p class="campaign-map-error" hidden></p>
+
   <p class="campaign-map-hint">
-    Arrastra para moverte, <kbd>+</kbd> / <kbd>&minus;</kbd> o doble click para acercar.
-    Clickea un punto para ir a su pagina.
+    <span data-hint="2d">
+      Arrastra para moverte, <kbd>+</kbd> / <kbd>&minus;</kbd> o doble click para acercar.
+      Clickea un punto para ir a su pagina.
+    </span>
+    <span data-hint="3d" hidden>
+      Arrastra para moverte, <kbd>Shift</kbd> o boton derecho para girar,
+      rueda (despues de clickear el mapa) para acercar.
+      Clickea un punto para ir a su pagina.
+    </span>
   </p>
 </div>
 
@@ -57,13 +146,24 @@
 [{% for p in map_pins %}{"x":{{ p.map_x | times: 1.0 }},"y":{{ p.map_y | times: 1.0 }},"title":{{ p.title | jsonify }},"url":{{ p.url | relative_url | jsonify }},"kind":{{ p.kind | default: "" | jsonify }}}{% unless forloop.last %},{% endunless %}{% endfor %}]
 </script>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+{%- if map_3d_on -%}{%- include campaign_map_3d.html -%}{%- endif -%}
+
 <script>
 (function () {
-  var el = document.getElementById('campaign-map');
-  if (!el || typeof L === 'undefined') { return; }
+  var wrap = document.querySelector('.campaign-map-wrap');
+  if (!wrap) { return; }
 
-  var imageUrl = el.dataset.image;
+  var el2d   = document.getElementById('campaign-map');
+  var el3d   = document.getElementById('campaign-map-3d');
+  var toggle = wrap.querySelector('.campaign-map-toggle');
+  var errBox = wrap.querySelector('.campaign-map-error');
+  var hint2d = wrap.querySelector('[data-hint="2d"]');
+  var hint3d = wrap.querySelector('[data-hint="3d"]');
+
+  var imageUrl = wrap.dataset.image;
+  var STORE    = 'cyllene:map-mode';
+  var pickMode = new URLSearchParams(window.location.search).has('pick');
+
   var pins = [];
   try {
     pins = JSON.parse(document.getElementById('campaign-map-data').textContent);
@@ -80,22 +180,150 @@
     });
   }
 
+  function fail(msg) {
+    if (!errBox) { return; }
+    errBox.textContent = msg;
+    errBox.hidden = false;
+  }
+
+  // localStorage tira en algunos modos privados, y perder la preferencia no
+  // puede llevarse puesto el mapa.
+  function remember(v) { try { window.localStorage.setItem(STORE, v); } catch (e) {} }
+  function recall()    { try { return window.localStorage.getItem(STORE); } catch (e) { return null; } }
+
+  function hasWebGL() {
+    try {
+      var c = document.createElement('canvas');
+      var gl = c.getContext('webgl2') || c.getContext('webgl') ||
+               c.getContext('experimental-webgl');
+      if (!gl) { return false; }
+      // El contexto de prueba se devuelve enseguida: la cuota por pestaña es
+      // chica (~16) y el unico que tiene que quedar vivo es el de la escena.
+      var lose = gl.getExtension('WEBGL_lose_context');
+      if (lose) { lose.loseContext(); }
+      return true;
+    } catch (e) { return false; }
+  }
+
+  // ---- Carga perezosa de Leaflet ------------------------------------------
+  var leafletP = null;
+  function loadLeaflet() {
+    if (leafletP) { return leafletP; }
+    leafletP = new Promise(function (resolve, reject) {
+      if (typeof L !== 'undefined') { resolve(); return; }
+      var css = document.createElement('link');
+      css.rel = 'stylesheet';
+      css.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+      document.head.appendChild(css);
+
+      var s = document.createElement('script');
+      s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      s.onload = function () { resolve(); };
+      s.onerror = function () { reject(new Error('Leaflet no cargo')); };
+      document.head.appendChild(s);
+    });
+    return leafletP;
+  }
+
+  // ---- Arranque -----------------------------------------------------------
   // Las dimensiones se leen de la imagen, asi que se puede reemplazar el mapa
-  // por otra version sin tocar las coordenadas (son porcentajes).
+  // por otra version sin tocar las coordenadas (son porcentajes). Se mide una
+  // sola vez, aca, y las dos vistas usan el mismo numero.
+  var W = 0, H = 0, mode = null;
+
   var probe = new Image();
-  probe.onload = function () { build(probe.naturalWidth, probe.naturalHeight); };
+  probe.onload = function () { start(probe.naturalWidth, probe.naturalHeight); };
   probe.onerror = function () {
-    el.innerHTML = '<p class="campaign-map-error">No se pudo cargar el mapa (' +
+    el2d.innerHTML = '<p class="campaign-map-error">No se pudo cargar el mapa (' +
       esc(imageUrl) + ').</p>';
   };
   probe.src = imageUrl;
 
-  function build(W, H) {
+  function start(w, h) {
+    W = w; H = h;
     // El contenedor toma la proporcion de la imagen: sin esto la vista
     // completa deja franjas muertas arriba y abajo (o a los costados).
-    el.style.setProperty('--campaign-map-ratio', W + ' / ' + H);
+    wrap.style.setProperty('--campaign-map-ratio', W + ' / ' + H);
 
-    var map = L.map(el, {
+    var can3d = !!el3d && !pickMode && hasWebGL();
+    var want  = '2d';
+
+    if (can3d) {
+      var saved = recall();
+      want = (saved === '3d' || saved === '2d') ? saved : wrap.dataset.modeDefault;
+      if (want !== '3d') { want = '2d'; }
+      toggle.hidden = false;
+      toggle.addEventListener('click', function () {
+        var next = mode === '3d' ? '2d' : '3d';
+        remember(next);
+        setMode(next);
+      });
+    } else if (toggle) {
+      toggle.hidden = true;
+    }
+
+    setMode(want);
+  }
+
+  function setMode(next) {
+    if (next === mode) { return; }
+    mode = next;
+    var is3d = mode === '3d';
+
+    if (toggle) {
+      toggle.textContent = is3d ? 'Ver en 2D' : 'Ver en 3D';
+      toggle.setAttribute('aria-pressed', is3d ? 'true' : 'false');
+    }
+    if (hint2d) { hint2d.hidden = is3d; }
+    if (hint3d) { hint3d.hidden = !is3d; }
+
+    el2d.hidden = is3d;
+    if (el3d) { el3d.hidden = !is3d; }
+
+    if (is3d) { show3d(); } else { show2d(); }
+  }
+
+  // ---- Vista 3D -----------------------------------------------------------
+  function show3d() {
+    if (!window.CampaignMap3D) { setMode('2d'); return; }
+    window.CampaignMap3D.mount({
+      stage: el3d,
+      pins: pins,
+      imageUrl: wrap.dataset.texture,
+      heightUrl: wrap.dataset.heightmap,
+      relief: parseFloat(wrap.dataset.relief) || 0.12,
+      heightBlur: parseFloat(wrap.dataset.smooth),
+      width: W,
+      height: H
+    }).catch(function (err) {
+      console.warn('campaign_map: la vista 3D no arranco.', err);
+      fail('No se pudo cargar la vista 3D. Se muestra el mapa plano.');
+      if (toggle) { toggle.hidden = true; }
+      setMode('2d');
+    });
+  }
+
+  // ---- Vista 2D (Leaflet) --------------------------------------------------
+  var map2d = null;
+
+  function show2d() {
+    if (window.CampaignMap3D) { window.CampaignMap3D.unmount(); }
+    loadLeaflet().then(function () {
+      if (!map2d) {
+        map2d = build2d();
+      } else {
+        // Estuvo escondido mientras corria el 3D: Leaflet no mide nada con el
+        // div en display:none, asi que vuelve sin saber su tamaño.
+        map2d.fit(true);
+      }
+    }).catch(function (err) {
+      console.warn('campaign_map: Leaflet no cargo.', err);
+      fail('No se pudo cargar el mapa.');
+    });
+  }
+
+  function build2d() {
+    var map = L.map(el2d, {
       crs: L.CRS.Simple,
       attributionControl: false,
       // Sin snap: fitBounds encaja la imagen justa. Con escalones de 0.25 el
@@ -150,8 +378,8 @@
     });
 
     // Rueda del mouse: solo despues de clickear el mapa, y se apaga al salir.
-    el.addEventListener('click', function () { map.scrollWheelZoom.enable(); });
-    el.addEventListener('mouseleave', function () { map.scrollWheelZoom.disable(); });
+    el2d.addEventListener('click', function () { map.scrollWheelZoom.enable(); });
+    el2d.addEventListener('mouseleave', function () { map.scrollWheelZoom.disable(); });
 
     // Boton para volver a la vista completa.
     var Reset = L.Control.extend({
@@ -172,12 +400,12 @@
     var refit = null;
     window.addEventListener('resize', function () {
       clearTimeout(refit);
-      refit = setTimeout(function () { fit(true); }, 200);
+      refit = setTimeout(function () { if (!el2d.hidden) { fit(true); } }, 200);
     });
 
     // ---- Modo ?pick: saca las coordenadas de un punto nuevo ----------------
-    if (new URLSearchParams(window.location.search).has('pick')) {
-      var out = L.DomUtil.create('div', 'campaign-map-pick', el.parentNode);
+    if (pickMode) {
+      var out = L.DomUtil.create('div', 'campaign-map-pick', wrap);
       out.innerHTML = '<em>Modo coordenadas.</em> Clickea el mapa.';
       map.on('click', function (ev) {
         var xPct = (ev.latlng.lng / W) * 100;
@@ -191,6 +419,8 @@
         }
       });
     }
+
+    return { map: map, fit: fit };
   }
 })();
 </script>

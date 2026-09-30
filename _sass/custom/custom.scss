@@ -143,6 +143,161 @@
   small { color: $search-result-preview-color; }
 }
 
+// ---- Mapa como terreno 3D (_includes/campaign_map_3d.html) ---------------
+// La vista 3D REUSA a proposito el bloque de arriba: .campaign-map le da la
+// proporcion, el tope de alto y el borde, y .campaign-map-dot le da el color
+// por kind y la crecida en hover. Aca solo va lo que la version plana no tiene.
+//
+// Dicho al reves, porque es lo que importa al tocar esto: .campaign-map-dot y
+// .campaign-map-pin a son COMPARTIDOS por las dos vistas. Lo que se cambie ahi
+// cambia en las dos.
+
+// Las dos vistas conviven en el DOM y se alternan con [hidden]. Ninguna
+// declara display, asi que el hidden del browser alcanza; queda explicito
+// igual porque el toggle entero se apoya en esta linea.
+.campaign-map[hidden] { display: none; }
+
+.campaign-map-toggle {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  // Leaflet llega a 1000 con sus controles. Como el wrap tiene isolation
+  // (ver el comentario del bloque anterior), este 1100 queda encerrado en la
+  // capa del mapa y no escapa al resto de la pagina.
+  z-index: 1100;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.72rem;
+  line-height: 1.6;
+  color: $body-text-color;
+  background: rgba(233, 231, 224, 0.92);
+  border: 1px solid $border-color;
+  border-radius: 2px;
+  cursor: pointer;
+  &:hover { background: #fff; }
+  &:focus-visible { outline: 2px solid $link-color; outline-offset: 2px; }
+}
+
+.campaign-map-3d {
+  position: relative;
+  overflow: hidden;
+  // Tiene que ser el mismo color que el SKY de la escena, o se ve un flash
+  // claro hasta que WebGL pinta el primer cuadro.
+  background: #1d242b;
+  // Sin esto el browser se queda con el gesto y arrastrar el mapa termina
+  // scrolleando la pagina. Es lo mismo que hace .leaflet-container en 2D.
+  touch-action: none;
+}
+
+.campaign-map-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+// La capa de pines no puede comerse el arrastre: los eventos la atraviesan y
+// solo los pines los reciben. El paneo igual se escucha en el escenario, asi
+// que arrastrar empezando encima de un pin tambien mueve el mapa.
+.campaign-map-pins {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+// La posicion la escribe el JS cuadro a cuadro con project(camera); aca solo
+// va el sistema de coordenadas. El translate(-50%,-50%) que agrega el JS
+// centra el marcador sobre la coordenada proyectada.
+.campaign-map-3d .campaign-map-pin {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: auto;
+  will-change: transform;
+}
+
+// En 3D el <a> lleva el punto Y el nombre, pero su CAJA sigue siendo la de
+// 20x20 del punto: el nombre va FUERA DE FLUJO. Eso es lo que mantiene el
+// marcador sobre su coordenada. El JS centra la caja del pin sobre el punto
+// proyectado con translate(-50%,-50%), asi que si el nombre contara para el
+// ancho, el punto se correria media etiqueta a la izquierda --y las regiones,
+// que llevan el nombre siempre, quedarian todas desplazadas--. Ademas evita
+// que el pin SALTE cuando el nombre aparece al acercarse (is-near).
+.campaign-map-3d .campaign-map-pin a {
+  position: relative;
+}
+
+// El nombre. Cumple el rol que cumplian los carteles PINTADOS sobre el dibujo,
+// y por eso mismo la camara ahora puede girar: esto se dibuja siempre derecho.
+// El texto va sobre terreno de cualquier color, asi que se defiende con un
+// contorno de sombra en vez de una caja, que taparia el mapa.
+.campaign-map-name {
+  // Colgado del costado del punto, sin ocupar lugar en la caja del <a>.
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #f4efe4;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.7);
+  // Por defecto no se muestra: veinte nombres a la vez tapan el mapa. Las
+  // regiones lo llevan siempre; el resto aparece al acercarse (is-near lo
+  // pone el JS segun el zoom).
+  display: none;
+}
+
+.campaign-map-3d .campaign-map-pin.is-region .campaign-map-name,
+.campaign-map-3d .campaign-map-pin.is-near .campaign-map-name {
+  display: block;
+}
+
+// El brillo del punto es lo unico del marcador que cambia entre las dos
+// vistas: sobre terreno iluminado y con niebla, el punto plano de la vista 2D
+// se pierde. Anima solo box-shadow, asi que no pelea con el scale(1.5) que el
+// bloque compartido le pone al hover.
+.campaign-map-3d .campaign-map-dot {
+  flex: none;
+  animation: campaign-map-glow 3.2s ease-in-out infinite;
+}
+
+@keyframes campaign-map-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 1px rgba(35, 43, 51, 0.35), 0 0 7px 1px rgba(255, 236, 178, 0.45);
+  }
+  50% {
+    box-shadow: 0 0 0 1px rgba(35, 43, 51, 0.35), 0 0 14px 4px rgba(255, 236, 178, 0.8);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .campaign-map-3d .campaign-map-dot { animation: none; }
+}
+
+// Mismo rol y mismo glifo que el control de Leaflet en 2D. No se puede reusar
+// .campaign-map-reset porque aquel se apoya en .leaflet-bar, que aca no existe.
+.campaign-map-home {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  z-index: 5;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: $body-text-color;
+  background: rgba(233, 231, 224, 0.92);
+  border: 1px solid $border-color;
+  border-radius: 2px;
+  cursor: pointer;
+  &:hover { background: #fff; }
+  &:focus-visible { outline: 2px solid $link-color; outline-offset: 2px; }
+}
+
 // ---- Columna lateral (_layouts/wiki.html) --------------------------------
 // La usan todas las secciones con ficha: characters, locations, factions e
 // items. Son dos columnas: a la izquierda la pagina entera --titulo, indice y

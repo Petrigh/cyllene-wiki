@@ -37,13 +37,42 @@ today_df: 780
 # false` en su front matter; en un link suelto, {:data-no-preview=""}.
 link_previews: true
 
+# Boton 2D/3D en el mapa de la home (_includes/campaign_map.html). La vista 3D
+# dibuja el mapa como TERRENO: una malla desplazada segun assets/img/map-height.png
+# --que genera tools/make_heightmap.py a partir de la acuarela-- con luz, agua y
+# camara que orbita. Tampoco cuesta build, y ademas no cuesta NADA a quien no la
+# usa: three.js (~650 KB) se baja recien cuando alguien aprieta el boton.
+# En false desaparece el boton y queda solo el mapa plano de Leaflet. Sin WebGL
+# el boton tampoco aparece, y ?pick siempre fuerza la vista 2D.
+map_3d: true
+
+# Con que vista abre el mapa la PRIMERA visita. Despues manda lo que el lector
+# haya elegido con el boton, que se guarda en su localStorage.
+# Arranca en 2D a proposito: es la vista liviana y probada, y el 3D se estrena
+# como algo que se elige. Para invertirlo alcanza con esta linea.
+map_3d_default: true
+
+# Exageracion vertical del terreno, como fraccion de la profundidad del mapa.
+# El relieve real de un continente es invisible a esta escala; esto es licencia
+# poetica y se sube hasta que se vea bien. Mas alto tambien deforma mas los
+# nombres pintados sobre map.jpg, asi que si todavia no existe map-clean.jpg
+# conviene no pasarse.
+map_3d_relief: 0.12
+
+# Radio, en pixeles de map-height.png, con el que se difumina el heightmap
+# antes de levantar la malla. La acuarela se pinta con brochazos planos y deja
+# mesetas: sin esto la costa es un acantilado vertical y las sierras son cajas.
+# Subirlo tiende las laderas, pero tambien achata los picos angostos.
+#   0 = crudo, 3 = apenas, 6 = por defecto, 12+ = colinas suaves
+map_3d_smooth: 0
+
 # Piso de apariciones para que una entidad pueda SER la respuesta del acertijo
 # diario (cylledle.md / _includes/cylledle.html). Una entidad "aparece" en una
 # sesion cuando el texto de esa sesion la enlaza; la cuenta la deriva el juego
 # de assets/graph-data.json, no hay nada que escribir a mano.
 #
 # No achica el buscador: como intento siempre vale cualquier entidad. Solo
-# achica el conjunto de respuestas posibles.
+# achica el conjunto de respuestas posib2les.
 #
 #   0 -> 160 respuestas   (el pool entero; 36 de ellas no aparecen en ninguna
 #                          sesion todavia, asi que esos dias salen con las dos
@@ -122,6 +151,9 @@ defaults:
 # private Pages, so leave dm/ excluded unless the repo itself is private.
 exclude:
   - dm/
+  # Herramienta de autor, no parte del sitio: genera assets/img/map-height.png
+  # a partir de la acuarela. Su salida SI se publica; el script no.
+  - tools/
   - notion-csv/
   - README.md
   - Gemfile
