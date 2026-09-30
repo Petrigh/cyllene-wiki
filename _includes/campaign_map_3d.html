@@ -1,0 +1,708 @@
+{%- comment -%}
+  Cyllene como terreno 3D.
+
+  No se incluye suelto: lo mete campaign_map.html, que decide el modo, dibuja la
+  cascara y emite el JSON de marcadores. Aca adentro solo vive la escena.
+
+  Es una MALLA DESPLAZADA de verdad, no un plano inclinado: un PlaneGeometry
+  subdividido al que se le levanta cada vertice segun assets/img/map-height.png
+  (lo genera tools/make_heightmap.py a partir de la acuarela; ver ahi como).
+  El relieve se ve porque hay LUZ: con MeshBasicMaterial una malla desplazada se
+  ve tan plana como un plano. La sombra es el relieve.
+
+  Tres decisiones que no son obvias y conviene no deshacer:
+
+  1. El desplazamiento se hace en CPU, no con displacementMap. Dos razones y
+     las dos hacen falta: displacementMap no recalcula las normales --el
+     terreno quedaria perfectamente plano de iluminacion-- y ademas las alturas
+     se necesitan en JS para apoyar los pines en el suelo.
+
+  2. Los marcadores NO son sprites de WebGL: son los mismos <a> de siempre, en
+     el DOM, proyectados con project(camera) sobre el canvas. Un sprite no es
+     un link: perderia la tarjeta de preview (_includes/link_preview.html, que
+     levanta cualquier <a> real dentro de .main-content), el foco con teclado,
+     el click del medio y el "abrir en pestaña nueva".
+
+  3. La camara ROTA, y eso es nuevo. Antes el azimut estaba clavado porque los
+     nombres estaban pintados sobre la imagen y cualquier giro los dejaba de
+     costado. Ahora los nombres son HTML --siempre derechos-- asi que el mapa
+     se puede orbitar, que es lo que termina de mostrar el relieve.
+
+  API que consume campaign_map.html:
+
+      window.CampaignMap3D.mount({stage, pins, imageUrl, heightUrl,
+                                  width, height, relief, heightBlur}) -> Promise
+      window.CampaignMap3D.unmount()
+
+  unmount() tiene que devolver el contexto WebGL de verdad: el browser da ~16
+  por pestaña y alternar 2D/3D unas cuantas veces se los come. Por eso cada
+  mount arranca con un <canvas> nuevo y cada unmount hace forceContextLoss().
+{%- endcomment -%}
+
+<script>
+(function () {
+  'use strict';
+
+  var THREE_URL = 'https://unpkg.com/three@0.186.1/build/three.module.js';
+
+  var threeP = null;   // la promesa del import, cacheada: se baja una sola vez
+  var live   = null;   // la escena montada, si hay
+
+  window.CampaignMap3D = {
+    mount: function (opts) {
+      if (!threeP) { threeP = import(THREE_URL); }
+      return threeP.then(function (THREE) {
+        if (live) { live.destroy(); }
+        live = build(THREE, opts);
+        return live;
+      });
+    },
+    unmount: function () {
+      if (live) { live.destroy(); live = null; }
+    },
+    // Diagnostico desde la consola. Sirve para la pregunta que uno se hace
+    // cuando esto se ve mal: "esta desplazada la malla o estoy mirando una
+    // lamina?". Si yRange da ~0 el heightmap no se leyo; si hasNormals da
+    // false no va a haber sombra por mas luz que se agregue.
+    info: function () { return live ? live.info() : null; }
+  };
+
+  // ---- Lectura del heightmap ----------------------------------------------
+
+  // Caja separable con suma corrida: cuesta lo mismo con radio 2 que con radio
+  // 20, asi que el radio se puede subir sin pensar en el costo.
+  function boxPass(src, dst, w, h, r) {
+    var inv = 1 / (2 * r + 1);
+    for (var y = 0; y < h; y++) {
+      var row = y * w, sum = 0, i;
+      // El borde se repite en lugar de valer cero: si no, el mapa se hunde
+      // solo contra los cuatro lados.
+      for (i = -r; i <= r; i++) { sum += src[row + Math.min(w - 1, Math.max(0, i))]; }
+      for (var x = 0; x < w; x++) {
+        dst[x * h + y] = sum * inv;   // se escribe TRASPUESTO: la pasada
+        sum += src[row + Math.min(w - 1, x + r + 1)] -   // vertical es entonces
+               src[row + Math.max(0, x - r)];            // otra horizontal
+      }
+    }
+  }
+
+  // Suaviza el heightmap antes de tocar la malla. Sin esto el relieve sale
+  // escalonado, y no por culpa del render: la acuarela deja mesetas planas
+  // --el mar en 0, la tierra en 41, las sierras en 56/71/114-- con saltos de
+  // hasta 141 niveles entre dos pixeles vecinos. Un salto asi es un acantilado
+  // vertical de un pixel de ancho, que a la resolucion de la malla es
+  // literalmente una pared, y computeVertexNormals lo sombrea como tal.
+  // Interpolar mejor no alcanza: no hay pendiente que interpolar, hay que
+  // fabricarla.
+  //
+  // Tres pasadas de caja aproximan una gaussiana; la rampa que queda mide mas
+  // o menos 3*r pixeles. Medido sobre map-height.png, r = 6 deja la costa en
+  // unos 26 grados y la ladera mas parada en 55, sin una sola cara de mas de
+  // 60 --que es donde el ojo empieza a leer "pared" en vez de "monte".
+  //
+  // r se redondea porque despues indexa el buffer: un radio fraccionario
+  // devuelve undefined de la Float32Array y el terreno entero sale NaN.
+  function blur(src, w, h, r) {
+    r = Math.round(r);
+    if (!(r >= 1)) { return src; }
+    var a = src, b = new Float32Array(w * h);
+    for (var i = 0; i < 3; i++) {
+      boxPass(a, b, w, h, r);   // queda traspuesto (h x w)
+      var t = a; a = b; b = t;
+      boxPass(a, b, h, w, r);   // y vuelve (w x h)
+      t = a; a = b; b = t;
+    }
+    return a;
+  }
+
+  function sampler(img, blurPx) {
+    // Se pasa por un canvas porque WebGL no deja leer la textura de vuelta, y
+    // las alturas se necesitan en JS: para desplazar los vertices y para saber
+    // a que altura apoyar cada pin.
+    var c = document.createElement('canvas');
+    c.width = img.naturalWidth;
+    c.height = img.naturalHeight;
+    var g = c.getContext('2d', { willReadFrequently: true });
+    g.drawImage(img, 0, 0);
+    var d = g.getImageData(0, 0, c.width, c.height).data;
+    var w = c.width, h = c.height;
+
+    var f = new Float32Array(w * h);
+    for (var i = 0; i < f.length; i++) { f[i] = d[i * 4] / 255; }
+    f = blur(f, w, h, blurPx);
+
+    // Bilineal: con vecino mas cercano, 640x460 de heightmap contra 385x277 de
+    // malla dan escalones visibles en las laderas.
+    return function (u, v) {
+      var x = Math.min(w - 1, Math.max(0, u * (w - 1)));
+      var y = Math.min(h - 1, Math.max(0, v * (h - 1)));
+      var x0 = Math.floor(x), y0 = Math.floor(y);
+      var x1 = Math.min(w - 1, x0 + 1), y1 = Math.min(h - 1, y0 + 1);
+      var fx = x - x0, fy = y - y0;
+      var a = f[y0 * w + x0], b = f[y0 * w + x1];
+      var c2 = f[y1 * w + x0], e = f[y1 * w + x1];
+      return a * (1 - fx) * (1 - fy) + b * fx * (1 - fy) +
+             c2 * (1 - fx) * fy + e * fx * fy;
+    };
+  }
+
+  function loadImage(url) {
+    return new Promise(function (res, rej) {
+      var im = new Image();
+      im.crossOrigin = 'anonymous';
+      im.onload = function () { res(im); };
+      im.onerror = function () { rej(new Error('no cargo ' + url)); };
+      im.src = url;
+    });
+  }
+
+  // ---- La escena -----------------------------------------------------------
+
+  function build(THREE, o) {
+    var stage    = o.stage;
+    var pinLayer = stage.querySelector('.campaign-map-pins');
+    var homeBtn  = stage.querySelector('.campaign-map-home');
+
+    // Canvas NUEVO en cada mount: el anterior quedo con el contexto perdido a
+    // proposito (ver destroy) y eso no se recupera sobre el mismo elemento.
+    var canvas = document.createElement('canvas');
+    canvas.className = 'campaign-map-canvas';
+    stage.querySelector('.campaign-map-canvas').replaceWith(canvas);
+
+    var ac = new AbortController();
+    var on = function (el, ev, fn, opt) {
+      opt = opt || {};
+      opt.signal = ac.signal;
+      el.addEventListener(ev, fn, opt);
+    };
+
+    var reduce = !!(window.matchMedia &&
+                    window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+    // ---- Constantes (las perillas visuales estan todas aca) ---------------
+    var MAP_D  = 2;                                  // profundidad del mapa
+    var MAP_W  = MAP_D * (o.width / o.height);       // ancho, de la imagen real
+    var RELIEF = (o.relief || 0.12) * MAP_D;         // exageracion vertical
+    // Radio del suavizado del heightmap, en pixeles de la imagen. Sube: costa
+    // y sierras mas tendidas, pero tambien picos mas bajos --el promedio se
+    // come las cumbres angostas-- asi que suele ir de la mano de subir relief.
+    var SMOOTH = isFinite(o.heightBlur) ? o.heightBlur : 6;
+    var FOV    = 38;
+    var SKY    = 0x1d242b;                           // fondo y niebla
+    var ZOOM_IN = 0.24;
+    var TILT_MIN = THREE.MathUtils.degToRad(22);
+    var TILT_MAX = THREE.MathUtils.degToRad(74);
+    var NAME_ZOOM = 0.55;   // debajo de esto aparecen los nombres chicos
+
+    // Malla: en pantalla chica se baja la subdivision. 385x277 vertices son
+    // ~107k, que se calculan UNA vez al montar, no por cuadro.
+    var small = stage.clientWidth < 700;
+    var SEG_X = small ? 192 : 384;
+    var SEG_Z = Math.round(SEG_X * MAP_D / MAP_W);
+
+    var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+    var scene = new THREE.Scene();
+    scene.background = new THREE.Color(SKY);
+    scene.fog = new THREE.Fog(SKY, 1, 10);
+
+    var camera   = new THREE.PerspectiveCamera(FOV, 1, 0.02, 200);
+    var probeCam = new THREE.PerspectiveCamera(FOV, 1, 0.02, 200);
+
+    // ---- Luz --------------------------------------------------------------
+    // La direccional viene del noroeste, que es donde corre la cordillera de
+    // las Montañas Ardientes: es la orientacion que mejor la dibuja. La
+    // hemisferica rellena las sombras para que el lado oscuro no se cierre.
+    var sun = new THREE.DirectionalLight(0xfff0d8, 2.4);
+    sun.position.set(-MAP_W * 0.6, MAP_D * 1.1, -MAP_D * 0.45);
+    scene.add(sun);
+    scene.add(new THREE.HemisphereLight(0xcfe2f2, 0x6b6257, 1.5));
+
+    var group = new THREE.Group();   // todo lo que se puede tirar de una
+    scene.add(group);
+
+    // ---- Terreno y agua ----------------------------------------------------
+    var terrain = null, water = null, colorTex = null, sampleH = null;
+    var ready = false;
+    var yLo = 0, yHi = 0;   // rango real de altura de la malla, para info()
+
+    Promise.all([loadImage(o.heightUrl), loadTexture(o.imageUrl)])
+      .then(function (r) {
+        sampleH = sampler(r[0], SMOOTH);
+        colorTex = r[1];
+        makeTerrain();
+        placePins();
+        ready = true;
+        recomputeBounds(false);
+        goal.d = view.d = fitDist;
+        dirty = true;
+      })
+      .catch(function (err) {
+        console.warn('campaign_map_3d: no se pudo armar el terreno.', err);
+      });
+
+    function loadTexture(url) {
+      return new Promise(function (res, rej) {
+        new THREE.TextureLoader().load(url, function (t) {
+          t.colorSpace = THREE.SRGBColorSpace;
+          t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+          res(t);
+        }, undefined, function () { rej(new Error('no cargo ' + url)); });
+      });
+    }
+
+    function makeTerrain() {
+      var geo = new THREE.PlaneGeometry(MAP_W, MAP_D, SEG_X, SEG_Z);
+      // Se acuesta la geometria de una vez, en los atributos, en lugar de
+      // rotar el mesh: asi el desplazamiento de abajo es directamente en Y y
+      // las alturas que se leen coinciden con las que usan los pines.
+      geo.rotateX(-Math.PI / 2);
+
+      var pos = geo.attributes.position, uv = geo.attributes.uv;
+      for (var i = 0; i < pos.count; i++) {
+        // uv.y = 1 es el borde de ARRIBA de la imagen (el norte); el
+        // heightmap se lee con la fila 0 arriba, de ahi el 1 - v.
+        pos.setY(i, sampleH(uv.getX(i), 1 - uv.getY(i)) * RELIEF);
+      }
+      pos.needsUpdate = true;
+      geo.computeVertexNormals();   // sin esto no hay sombra, y sin sombra no hay relieve
+
+      yLo = Infinity; yHi = -Infinity;
+      for (var j = 0; j < pos.count; j++) {
+        var yv = pos.getY(j);
+        if (yv < yLo) { yLo = yv; }
+        if (yv > yHi) { yHi = yv; }
+      }
+
+      terrain = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
+        map: colorTex, roughness: 0.96, metalness: 0.0
+      }));
+      group.add(terrain);
+
+      // El agua es lo que termina de leerse como terreno: sin ella la costa es
+      // solo el borde de una lamina. Va apenas encima del cero para tapar el
+      // fondo plano del mar, que el heightmap dejo en 0.
+      water = new THREE.Mesh(
+        new THREE.PlaneGeometry(MAP_W * 1.6, MAP_D * 1.6),
+        new THREE.MeshStandardMaterial({
+          color: 0x4a6b84, roughness: 0.25, metalness: 0.1,
+          transparent: true, opacity: 0.82
+        })
+      );
+      water.rotation.x = -Math.PI / 2;
+      water.position.y = RELIEF * 0.035;
+      group.add(water);
+    }
+
+    // ---- Marcadores ---------------------------------------------------------
+    // map_x / map_y son porcentajes desde la esquina superior izquierda de la
+    // imagen, los mismos que come el modo 2D: no hay un segundo sistema de
+    // coordenadas, se leen del mismo JSON.
+    var items = [];
+
+    function placePins() {
+      (o.pins || []).forEach(function (p) {
+        var a = document.createElement('a');
+        a.href = p.url;
+        a.setAttribute('aria-label', p.title);
+
+        var dot = document.createElement('span');
+        dot.className = 'campaign-map-dot';
+        dot.setAttribute('data-kind', p.kind || '');
+        a.appendChild(dot);
+
+        var name = document.createElement('span');
+        name.className = 'campaign-map-name';
+        name.textContent = p.title;
+        a.appendChild(name);
+
+        var holder = document.createElement('div');
+        holder.className = 'campaign-map-pin';
+        // Las regiones llevan el nombre siempre: son las que antes estaban
+        // escritas con carteles sobre el dibujo. El resto aparece al acercarse,
+        // porque veinte nombres juntos tapan el mapa.
+        if (p.kind === 'region') { holder.classList.add('is-region'); }
+        holder.appendChild(a);
+        pinLayer.appendChild(holder);
+
+        var u = p.x / 100, v = p.y / 100;
+        items.push({
+          el: holder,
+          pos: new THREE.Vector3((u - 0.5) * MAP_W,
+                                 sampleH(u, v) * RELIEF,
+                                 (v - 0.5) * MAP_D),
+          sx: 0, sy: 0, vis: false
+        });
+      });
+    }
+
+    // ---- Camara -------------------------------------------------------------
+    var CORNERS = [
+      new THREE.Vector3(-MAP_W / 2, 0, -MAP_D / 2),
+      new THREE.Vector3( MAP_W / 2, 0, -MAP_D / 2),
+      new THREE.Vector3( MAP_W / 2, 0,  MAP_D / 2),
+      new THREE.Vector3(-MAP_W / 2, 0,  MAP_D / 2)
+    ];
+    var scratch = new THREE.Vector3();
+
+    var view = { x: 0, z: 0, d: 6, az: 0, tilt: THREE.MathUtils.degToRad(52) };
+    var goal = { x: 0, z: 0, d: 6, az: 0, tilt: THREE.MathUtils.degToRad(52) };
+    var fitDist = 6, minDist = 2;
+
+    function place(cam, s) {
+      var ch = Math.sin(s.tilt) * s.d;
+      var cr = Math.cos(s.tilt) * s.d;
+      cam.position.set(s.x + Math.sin(s.az) * cr, ch, s.z + Math.cos(s.az) * cr);
+      cam.lookAt(s.x, 0, s.z);
+      cam.updateMatrixWorld();
+      cam.updateProjectionMatrix();
+    }
+
+    function clamp(v, lo, hi) { return v < lo ? lo : (v > hi ? hi : v); }
+
+    function fitsAt(dist) {
+      place(probeCam, { x: 0, z: 0, d: dist, az: goal.az, tilt: goal.tilt });
+      for (var i = 0; i < 4; i++) {
+        scratch.copy(CORNERS[i]).project(probeCam);
+        if (scratch.z > 1 || Math.abs(scratch.x) > 0.96 || Math.abs(scratch.y) > 0.96) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    // Biseccion en vez de un factor a ojo: "entra" es monotono en la distancia,
+    // asi que da el valor justo y se adapta solo a cualquier proporcion de
+    // pantalla y a cualquier angulo de orbita.
+    function fitDistance() {
+      probeCam.aspect = camera.aspect;
+      var lo = 0.05, hi = 80;
+      if (!fitsAt(hi)) { return hi; }
+      for (var i = 0; i < 24; i++) {
+        var mid = (lo + hi) * 0.5;
+        if (fitsAt(mid)) { hi = mid; } else { lo = mid; }
+      }
+      return hi;
+    }
+
+    function zoomT() {
+      var span = fitDist - minDist;
+      return span > 0 ? clamp((goal.d - minDist) / span, 0, 1) : 1;
+    }
+
+    // Cuanto mas lejos, menos paneo: alejado del todo el mapa entra entero y no
+    // hay nada que panear, asi que queda clavado en el centro. Es el
+    // equivalente del maxBounds de Leaflet en la vista 2D.
+    function clampTarget(g) {
+      var t = zoomT();
+      var rx = (MAP_W * 0.5) * (1 - t), rz = (MAP_D * 0.5) * (1 - t);
+      g.x = clamp(g.x, -rx, rx);
+      g.z = clamp(g.z, -rz, rz);
+    }
+
+    function recomputeBounds(keepZoom) {
+      var t = keepZoom ? zoomT() : 1;
+      fitDist = fitDistance();
+      minDist = fitDist * ZOOM_IN;
+      goal.d = minDist + (fitDist - minDist) * t;
+      clampTarget(goal);
+    }
+
+    // ---- Proyeccion de los marcadores ---------------------------------------
+    function layoutPins() {
+      var w = stage.clientWidth, h = stage.clientHeight;
+      var near = zoomT() < NAME_ZOOM;
+      for (var i = 0; i < items.length; i++) {
+        var it = items[i];
+        scratch.copy(it.pos).project(camera);
+        var sx = (scratch.x * 0.5 + 0.5) * w;
+        var sy = (-scratch.y * 0.5 + 0.5) * h;
+        var vis = scratch.z <= 1 && sx > -60 && sx < w + 60 && sy > -40 && sy < h + 40;
+        it.sx = sx; it.sy = sy; it.vis = vis;
+
+        if (!vis) {
+          if (it.el.style.visibility !== 'hidden') { it.el.style.visibility = 'hidden'; }
+          continue;
+        }
+        it.el.style.visibility = '';
+        it.el.style.transform =
+          'translate3d(' + sx.toFixed(1) + 'px,' + sy.toFixed(1) + 'px,0) translate(-50%,-50%)';
+        // Reemplaza el riseOnHover de Leaflet: lo de adelante tapa lo de atras.
+        it.el.style.zIndex = String(1000 - Math.round(scratch.z * 900));
+        it.el.classList.toggle('is-near', near);
+      }
+    }
+
+    // Tabular tiene que poder llegar a un pin fuera de cuadro: el foco no puede
+    // terminar en algo que no se ve.
+    on(pinLayer, 'focusin', function (ev) {
+      for (var i = 0; i < items.length; i++) {
+        if (!items[i].el.contains(ev.target)) { continue; }
+        var it = items[i], w = stage.clientWidth, h = stage.clientHeight;
+        if (!it.vis || it.sx < w * 0.1 || it.sx > w * 0.9 ||
+            it.sy < h * 0.1 || it.sy > h * 0.9) {
+          goal.x = it.pos.x;
+          goal.z = it.pos.z;
+          goal.d = Math.min(goal.d, minDist + (fitDist - minDist) * 0.4);
+          clampTarget(goal);
+        }
+        return;
+      }
+    });
+
+    // ---- Controles -----------------------------------------------------------
+    var pointers = new Map();
+    var pinchPrev = 0, dragDist = 0, suppressClick = false, wheelOn = false;
+    var DRAG_PX = 6;
+
+    var ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+
+    function groundAt(ev) {
+      if (!terrain) { return null; }
+      var r = canvas.getBoundingClientRect();
+      if (!r.width || !r.height) { return null; }
+      ndc.set(((ev.clientX - r.left) / r.width) * 2 - 1,
+              -((ev.clientY - r.top) / r.height) * 2 + 1);
+      ray.setFromCamera(ndc, camera);
+      var hits = ray.intersectObject(terrain);
+      return hits.length ? hits[0].point : null;
+    }
+
+    function orbiting(ev) {
+      return ev.button === 2 || ev.shiftKey;
+    }
+
+    // Los punteros se escuchan en el ESCENARIO, no en el canvas: asi arrastrar
+    // empezando encima de un pin tambien mueve el mapa en vez de trabarse.
+    //
+    // OJO con setPointerCapture: NO va en el pointerdown. Capturando desde ahi,
+    // el pointerup se redirige al escenario y el click que el browser sintetiza
+    // deja de salir del <a> del pin: clickear un marcador no navegaba a ningun
+    // lado. Se captura recien cuando el gesto ya es un arrastre.
+    on(stage, 'pointerdown', function (ev) {
+      if (ev.pointerType === 'mouse' && ev.button !== 0 && ev.button !== 2) { return; }
+      pointers.set(ev.pointerId, {
+        x: ev.clientX, y: ev.clientY, caught: false, orbit: orbiting(ev)
+      });
+      dragDist = 0;
+      suppressClick = false;
+    });
+
+    on(stage, 'contextmenu', function (ev) { ev.preventDefault(); });
+
+    function grab(p, id) {
+      if (p.caught) { return; }
+      p.caught = true;
+      try { stage.setPointerCapture(id); } catch (e) {}
+    }
+
+    on(stage, 'pointermove', function (ev) {
+      var p = pointers.get(ev.pointerId);
+      if (!p) { return; }
+      var dx = ev.clientX - p.x, dy = ev.clientY - p.y;
+      p.x = ev.clientX; p.y = ev.clientY;
+
+      if (pointers.size === 1) {
+        dragDist += Math.abs(dx) + Math.abs(dy);
+        if (dragDist > DRAG_PX) { grab(p, ev.pointerId); }
+
+        if (p.orbit) {
+          goal.az -= dx * 0.006;
+          goal.tilt = clamp(goal.tilt + dy * 0.005, TILT_MIN, TILT_MAX);
+          recomputeBounds(true);   // el encuadre depende del angulo
+        } else {
+          // Cuantas unidades de mundo mide un pixel sobre el suelo a esta
+          // distancia. En profundidad hay que dividir por sin(tilt) porque el
+          // suelo se ve en escorzo: un pixel vertical tapa mas mundo.
+          var upp = (2 * view.d * Math.tan(THREE.MathUtils.degToRad(FOV) / 2)) /
+                    Math.max(1, stage.clientHeight);
+          var s = Math.sin(view.az), c = Math.cos(view.az);
+          // Con la camara girada el arrastre tiene que girar con ella, o el
+          // mapa se va para cualquier lado menos para donde se lo lleva.
+          goal.x -= (c * dx) * upp - (s * dy) * upp / Math.sin(view.tilt);
+          goal.z -= (-s * dx) * upp + (c * dy) * upp / Math.sin(view.tilt);
+          clampTarget(goal);
+          view.x = goal.x; view.z = goal.z;   // 1:1 mientras se arrastra
+        }
+        dirty = true;
+      } else if (pointers.size === 2) {
+        grab(p, ev.pointerId);
+        var a = [];
+        pointers.forEach(function (q) { a.push(q); });
+        var d = Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y);
+        if (pinchPrev && d) {
+          goal.d = clamp(goal.d * (pinchPrev / d), minDist, fitDist);
+          clampTarget(goal);
+          view.d = goal.d;
+          dirty = true;
+        }
+        pinchPrev = d;
+      }
+    });
+
+    function endPointer(ev) {
+      var p = pointers.get(ev.pointerId);
+      if (!p) { return; }
+      pointers.delete(ev.pointerId);
+      if (p.caught) {
+        try { stage.releasePointerCapture(ev.pointerId); } catch (e) {}
+      }
+      if (pointers.size < 2) { pinchPrev = 0; }
+      if (dragDist > DRAG_PX) { suppressClick = true; }
+    }
+    on(stage, 'pointerup', endPointer);
+    on(stage, 'pointercancel', endPointer);
+
+    // Soltar un arrastre encima de un pin no puede navegar.
+    on(stage, 'click', function (ev) {
+      if (suppressClick) { ev.preventDefault(); ev.stopPropagation(); }
+      suppressClick = false;
+    }, { capture: true });
+
+    // Rueda: igual que en 2D, solo despues de clickear el mapa y se apaga al
+    // salir, para no robarle el scroll a la pagina.
+    on(stage, 'click', function () { wheelOn = true; });
+    on(stage, 'mouseleave', function () { wheelOn = false; });
+    on(stage, 'wheel', function (ev) {
+      if (!wheelOn) { return; }
+      ev.preventDefault();
+      var dy = ev.deltaY * (ev.deltaMode === 1 ? 16 : 1);
+      goal.d = clamp(goal.d * Math.exp(dy * 0.0011), minDist, fitDist);
+      clampTarget(goal);
+    }, { passive: false });
+
+    on(stage, 'dblclick', function (ev) {
+      var hit = groundAt(ev);
+      goal.d = clamp(goal.d * 0.55, minDist, fitDist);
+      if (hit) { goal.x = hit.x; goal.z = hit.z; }
+      clampTarget(goal);
+    });
+
+    if (homeBtn) {
+      on(homeBtn, 'click', function (ev) {
+        ev.preventDefault();
+        goal.x = 0; goal.z = 0; goal.az = 0;
+        goal.tilt = THREE.MathUtils.degToRad(52);
+        recomputeBounds(false);
+        goal.d = fitDist;
+      });
+    }
+
+    // ---- Tamaño ---------------------------------------------------------------
+    function resize() {
+      var w = stage.clientWidth, h = stage.clientHeight;
+      if (!w || !h) { return; }
+      renderer.setSize(w, h, false);   // false: el tamaño CSS lo pone la hoja
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      if (ready) { recomputeBounds(true); }
+      dirty = true;
+    }
+    var ro = new ResizeObserver(resize);
+    ro.observe(stage);
+
+    // ---- Loop -----------------------------------------------------------------
+    var raf = 0, last = 0, dirty = true, onScreen = true;
+    var prev = { x: NaN, z: NaN, d: NaN, az: NaN, tilt: NaN };
+
+    function frame(now) {
+      raf = requestAnimationFrame(frame);
+      var dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
+
+      // Amortiguado independiente del framerate: a 60fps da ~0.12 por cuadro.
+      var k = reduce ? 1 : 1 - Math.pow(0.0005, dt);
+      view.x += (goal.x - view.x) * k;
+      view.z += (goal.z - view.z) * k;
+      view.d += (goal.d - view.d) * k;
+      view.az += (goal.az - view.az) * k;
+      view.tilt += (goal.tilt - view.tilt) * k;
+
+      var moved = Math.abs(view.x - prev.x) > 1e-5 || Math.abs(view.z - prev.z) > 1e-5 ||
+                  Math.abs(view.d - prev.d) > 1e-5 || Math.abs(view.az - prev.az) > 1e-5 ||
+                  Math.abs(view.tilt - prev.tilt) > 1e-5;
+
+      if (!moved && !dirty) { return; }   // escena quieta: no se gasta GPU
+
+      place(camera, view);
+      // La niebla acompaña al zoom: fija, de cerca taparia todo y de lejos no
+      // se veria. Es floja a proposito, solo para hundir el borde lejano.
+      scene.fog.near = view.d * 1.15;
+      scene.fog.far = view.d * 4.2;
+      layoutPins();
+      prev.x = view.x; prev.z = view.z; prev.d = view.d;
+      prev.az = view.az; prev.tilt = view.tilt;
+
+      dirty = false;
+      renderer.render(scene, camera);
+    }
+
+    // Esto vive en la home, arriba del grafo: si el rAF siguiera corriendo con
+    // el mapa fuera de pantalla estaria quemando GPU por nada.
+    function sync() {
+      var run = onScreen && !document.hidden;
+      if (run && !raf) {
+        last = performance.now();
+        raf = requestAnimationFrame(frame);
+      } else if (!run && raf) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      }
+    }
+    var io = new IntersectionObserver(function (es) {
+      onScreen = es[0].isIntersecting;
+      sync();
+    }, { threshold: 0 });
+    io.observe(stage);
+    on(document, 'visibilitychange', sync);
+
+    resize();
+    sync();
+
+    // ---- Limpieza ---------------------------------------------------------------
+    function destroy() {
+      if (raf) { cancelAnimationFrame(raf); raf = 0; }
+      io.disconnect();
+      ro.disconnect();
+      ac.abort();
+      pinLayer.textContent = '';
+      items.length = 0;
+
+      group.traverse(function (n) {
+        if (n.geometry) { n.geometry.dispose(); }
+        if (n.material) { n.material.dispose(); }
+      });
+      if (colorTex) { colorTex.dispose(); }
+
+      // El paso que importa: sin esto, alternar 2D/3D unas diez veces llena la
+      // cuota de contextos WebGL de la pestaña y el mapa deja de dibujarse.
+      renderer.forceContextLoss();
+      renderer.dispose();
+    }
+
+    function info() {
+      var lights = 0;
+      scene.traverse(function (n) { if (n.isLight) { lights++; } });
+      return {
+        ready: ready,
+        verts: terrain ? terrain.geometry.attributes.position.count : 0,
+        segX: SEG_X,
+        segZ: SEG_Z,
+        yRange: yHi - yLo,
+        relief: RELIEF,
+        smooth: SMOOTH,
+        hasNormals: !!(terrain && terrain.geometry.attributes.normal),
+        lights: lights,
+        water: !!water,
+        pinHeights: items.map(function (it) { return it.pos.y; }),
+        zoom: zoomT(),
+        azimuth: view.az,
+        tilt: view.tilt
+      };
+    }
+
+    return { destroy: destroy, info: info };
+  }
+})();
+</script>

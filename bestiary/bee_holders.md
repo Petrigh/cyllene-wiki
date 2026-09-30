@@ -3,11 +3,11 @@ title: Bee-Holders
 parent: Bestiary
 summary: Guardaban los items de la Corte del Jester
 kind: monstrosity
-location: Templo del Jester
+location: Bosque Inescrutable
 ---
 
 # Bee-Holders
-Dos de ellos, en el [Templo del Jester](../locations/buildings/templo_jester.md).
+Dos de ellos, cerca del [Templo del Jester](../locations/buildings/templo_jester.md).
 
 ## Encontrado en
 

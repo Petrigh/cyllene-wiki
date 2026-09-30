@@ -4,7 +4,7 @@ parent: Characters
 type: npc
 summary: Dios del Caos
 pantheon: Panteón del Bosque
-location: Bosque Inescrutable
+location: Templo de Jester
 aliases:
   - The Jester
   - Jester
