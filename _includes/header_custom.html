@@ -1,0 +1,12 @@
+{%- comment -%}
+  Gancho del tema para meter cosas en la barra de arriba. El nombre es fijo: lo
+  llama _includes/components/header.html de just-the-docs, justo entre el
+  buscador y los aux_links, y un archivo propio con ese nombre lo pisa. Mismo
+  mecanismo que head_custom.html.
+
+  Queda como capa fina --un include y nada mas-- por el mismo motivo que
+  _layouts/wiki_base.html: el nombre lo elige el tema, asi que la feature vive
+  en un archivo que se llama como lo que hace, y mañana entra otra abajo sin
+  tener que partir nada.
+{%- endcomment -%}
+{% include random_page.html %}

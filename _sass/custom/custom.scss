@@ -1717,3 +1717,70 @@ $legend-scan-width: 22rem;
 
   .cy-form { flex-wrap: wrap; }
 }
+
+// ---- Boton "Al azar" (_includes/random_page.html) -------------------------
+//
+// Vive adentro de .main-header, que a partir de `md` es un flex con
+// space-between: a la izquierda el buscador (que crece) y a la derecha los
+// aux_links. El boton se mete en el medio, o sea pegado a los aux_links, y
+// copia de .aux-nav las tres cosas que lo alinean con ellos: alto completo,
+// display flex y el mismo padding-right. Asi los dos textos quedan sobre la
+// misma linea sin tocar una sola regla del tema.
+//
+// El <button> ya trae .site-button y .btn-reset del tema: de ahi salen el
+// display:flex con align-items:center, el padding y el degrade del hover.
+// Quedan tres cosas que ninguna de las dos cubre: el color --btn-reset no
+// toca `color`, asi que sin esto el dado sale del gris de boton del browser en
+// vez del verde de los links--, el gap entre el dado y la palabra, y el
+// cursor, que .btn-reset tampoco pone.
+//
+// Se engancha por `.random-page .site-button` y no por el id: con el id esta
+// regla pesaria mas que cualquier cosa que venga despues, y no hay motivo para
+// que una regla de color sea la mas fuerte del archivo. Dos clases ya le ganan
+// a la `.site-button` pelada del tema, que es todo lo que hace falta.
+
+.random-page {
+  display: flex;
+  height: 100%;
+
+  @include mq(md) {
+    padding-right: $gutter-spacing-sm;
+  }
+}
+
+.random-page .site-button {
+  gap: 0.4rem;
+  color: $link-color;
+  white-space: nowrap;
+  cursor: pointer;
+
+  @include fs-2;
+}
+
+.rp-die {
+  flex: 0 0 auto;
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+// El dado gira solo mientras se espera el JSON. Con la precarga del hover eso
+// casi nunca llega a verse --para cuando el click ocurre la promesa ya esta
+// resuelta--, y justamente por eso vale la pena: el unico caso en que aparece
+// es el de conexion lenta, que es cuando hace falta avisar que algo esta
+// pasando.
+.is-rolling .rp-die {
+  animation: rp-roll 0.6s linear infinite;
+}
+
+@keyframes rp-roll {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-rolling .rp-die { animation: none; }
+}
+
+// En pantalla angosta no hay nada que ajustar: .main-header se despliega con el
+// menu y apila sus hijos en vertical, el padding-right ya esta detras de
+// mq(md), y la palabra "Al azar" se queda a proposito --un dado suelto arriba
+// del buscador no se entiende solo--.
