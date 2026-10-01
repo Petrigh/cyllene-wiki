@@ -7,7 +7,7 @@ summary: Si son un reflejo, habla mal de la party
 # Anti Clones
 
 | Character | Reflejo |
-|---|---|
+| --- | --- |
 | [Anti Denzen](../characters/NPCs/anti_denzen.md) | Denzen Durgromoth |
 | [Anti First](../characters/NPCs/anti_first.md) | First’Righ |
 | [Anti Harold](../characters/NPCs/anti_harold.md) | Harold Fielt |

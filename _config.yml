@@ -37,6 +37,14 @@ today_df: 780
 # false` en su front matter; en un link suelto, {:data-no-preview=""}.
 link_previews: true
 
+# Boton "Al azar" en la barra de arriba, al lado del buscador
+# (_includes/random_page.html): manda a una pagina cualquiera del wiki. Como el
+# grafo y las previews, no cuesta build y no cuesta nada a quien no lo usa: la
+# lista sale de assets/preview-data.json --el mismo archivo de las previews-- y
+# ese fetch arranca recien cuando el mouse llega al boton.
+# En false desaparece el boton.
+random_page: true
+
 # Boton 2D/3D en el mapa de la home (_includes/campaign_map.html). La vista 3D
 # dibuja el mapa como TERRENO: una malla desplazada segun assets/img/map-height.png
 # --que genera tools/make_heightmap.py a partir de la acuarela-- con luz, agua y

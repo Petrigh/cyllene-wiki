@@ -1,0 +1,159 @@
+{%- comment -%}
+  Boton "Al azar": manda a una pagina cualquiera del wiki, como el "Random
+  article" de Wikipedia. Vive en la barra de arriba, al lado del buscador (ver
+  _includes/header_custom.html).
+
+  ---- De donde sale la lista ----
+
+  De assets/preview-data.json, que ya es el censo completo de paginas con
+  titulo y no hubo que inventar nada: el mismo archivo que alimenta la tarjeta
+  de hover. Se reusa y no se genera uno nuevo por dos motivos. Uno, el browser
+  lo cachea una sola vez para las dos cosas. Dos, y mas importante: la lista NO
+  puede incrustarse en la pagina. Este include corre en las ~244 paginas, asi
+  que el cuerpo de CADA una pasaria a contener la URL de TODAS las demas y
+  backlinks.html --que busca `q.content contains page.url`-- veria una mencion
+  universal. Es el mismo motivo por el que graph-data.json existe como archivo
+  aparte; esta explicado largo alla.
+
+  Por eso aca abajo no se toca site.pages: lo unico que se interpola son dos
+  strings y todo el trabajo pasa en el browser.
+
+  ---- El fetch es perezoso ----
+
+  Igual que link_preview.html: quien no use el boton no se baja el JSON. El
+  pedido arranca al primer hover o foco sobre el boton --o sea mientras el
+  mouse todavia esta viajando-- y el click lo unico que hace es esperar esa
+  promesa, que para entonces ya suele estar resuelta. Si alguien clickea de
+  una, el `is-rolling` le da vueltas al dado mientras tanto.
+
+  ---- Que cuenta como "una pagina del wiki" ----
+
+  Se piden las dos cosas:
+
+    n.s != ""           tiene seccion, o sea que cae en characters, locations,
+                        factions, items, quests, sessions, bestiary, lore o
+                        rules. Deja afuera la home y cylledle.html, que son
+                        paginas del sitio pero no articulos.
+    n.u termina en .html  deja afuera los diez index.md, cuya URL es la de la
+                        carpeta (/characters/). Son indices, no fichas.
+
+  Quedan ~257 destinos. Si manana aparece una seccion nueva, lo unico que hay
+  que tocar es `pv_sections` en assets/preview-data.json; aca no hay lista de
+  carpetas que mantener.
+
+  Interruptor, igual que backlinks, graph y link_previews: `random_page: false`
+  en _config.yml lo saca de todo el sitio.
+{%- endcomment -%}
+
+{%- if site.random_page != false -%}
+<div class="random-page">
+  <button type="button" id="random-page-btn" class="site-button btn-reset"
+          data-src="{{ '/assets/preview-data.json' | relative_url }}"
+          data-base="{{ site.baseurl }}"
+          title="Ir a una pagina al azar">
+    {%- comment -%}
+      Un d20 dibujado a mano: hexagono, la cara grande y la chica invertida
+      adentro. Va inline y no por el sprite del tema porque el sprite es del
+      tema y no tiene dados. `fill="none"` + `currentColor` para que herede el
+      color del boton y funcione igual si algun dia hay modo oscuro.
+    {%- endcomment -%}
+    <svg class="rp-die" viewBox="0 0 24 24" aria-hidden="true" focusable="false"
+         fill="none" stroke="currentColor" stroke-width="1.4"
+         stroke-linejoin="round" stroke-linecap="round">
+      <path d="M12 2 20.66 7v10L12 22 3.34 17V7z"/>
+      <path d="M12 2 20.66 17H3.34z"/>
+      <path d="M16.33 9.5 12 17 7.67 9.5z"/>
+    </svg>
+    <span class="rp-label">Legend Lore</span>
+  </button>
+</div>
+
+<script>
+(function () {
+  var btn = document.getElementById('random-page-btn');
+  if (!btn) { return; }
+
+  var base = btn.dataset.base || '';
+  var poolP = null;   // promesa del JSON ya filtrado, cacheada
+
+  // Las ultimas elegidas, para que apretar diez veces seguidas den diez
+  // paginas distintas y no "otra vez la taberna". En sessionStorage y no en
+  // localStorage a proposito: la racha dura lo que dura la pestaña, asi que
+  // volver mañana no arranca con 25 paginas vedadas.
+  var SEEN_KEY = 'cy-random-seen';
+  var SEEN_MAX = 25;
+
+  function seen() {
+    try { return JSON.parse(sessionStorage.getItem(SEEN_KEY)) || []; }
+    catch (e) { return []; }   // modo privado, storage bloqueado, JSON roto
+  }
+
+  function remember(u) {
+    try {
+      var s = seen();
+      s.push(u);
+      while (s.length > SEEN_MAX) { s.shift(); }
+      sessionStorage.setItem(SEEN_KEY, JSON.stringify(s));
+    } catch (e) { /* sin memoria el boton sigue andando, solo repite mas */ }
+  }
+
+  function pool() {
+    if (!poolP) {
+      poolP = fetch(btn.dataset.src)
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          return d.nodes.filter(function (n) {
+            return n.s && n.u.slice(-5) === '.html';
+          });
+        })
+        .catch(function (e) {
+          console.warn('random_page: no se pudieron leer los datos.', e);
+          return [];
+        });
+    }
+    return poolP;
+  }
+
+  // Precarga: el primer hover/foco/toque dispara el fetch y se desengancha.
+  ['pointerenter', 'focus', 'touchstart'].forEach(function (ev) {
+    btn.addEventListener(ev, pool, { once: true, passive: true });
+  });
+
+  // La pagina actual escrita como las `u` del JSON, o sea sin baseurl (ver el
+  // comentario de assets/preview-data.json).
+  function here() {
+    var p = window.location.pathname;
+    if (base && p.indexOf(base) === 0) { p = p.slice(base.length); }
+    return p;
+  }
+
+  function pick(list) {
+    var cur = here();
+    var skip = seen().concat(cur);
+    var free = list.filter(function (n) { return skip.indexOf(n.u) < 0; });
+
+    // Dio la vuelta entera (wiki chico, o SEEN_MAX mas grande que el pool):
+    // se olvida todo y se vuelve a empezar, salvo la pagina de parado.
+    if (!free.length) {
+      try { sessionStorage.removeItem(SEEN_KEY); } catch (e) {}
+      free = list.filter(function (n) { return n.u !== cur; });
+    }
+    if (!free.length) { free = list; }
+
+    return free[Math.floor(Math.random() * free.length)];
+  }
+
+  btn.addEventListener('click', function () {
+    btn.classList.add('is-rolling');
+    pool().then(function (list) {
+      btn.classList.remove('is-rolling');
+      if (!list.length) { return; }
+      var n = pick(list);
+      if (!n) { return; }
+      remember(n.u);
+      window.location.href = base + n.u;
+    });
+  });
+})();
+</script>
+{%- endif -%}
