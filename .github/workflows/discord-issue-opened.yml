@@ -1,0 +1,59 @@
+name: Obeon, Discord notifier
+
+on:
+  issues:
+    types: [opened, reopened]
+
+# El job sólo sale para afuera; no necesita tocar el repo.
+permissions: {}
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Postear en Discord
+        env:
+          # Todo lo que venga del issue entra por env, NUNCA interpolado dentro
+          # del script: el repo es publico y cualquiera puede abrir un issue con
+          # comillas o backticks en el titulo para romper el shell.
+          WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_OBEON }}
+          TITLE:   ${{ github.event.issue.title }}
+          NUMBER:  ${{ github.event.issue.number }}
+          URL:     ${{ github.event.issue.html_url }}
+          WHO:     ${{ github.event.sender.login }}
+          ACTION:  ${{ github.event.action }}
+        run: |
+          # Un ticket reabierto no es un pedido nuevo: cambia el saludo y el color.
+          if [ "$ACTION" = "reopened" ]; then
+            lead="Hey Clippy, this one's back — have another go:"
+            color=16098851   # ambar
+          else
+            lead="Hey Clippy, fix this:"
+            color=3447003    # azul
+          fi
+
+          # jq arma el JSON y escapa el titulo; concatenar a mano se rompe
+          # con la primera comilla o salto de linea.
+          # El slice [0:250] evita pasarse del limite de 256 de Discord:
+          # GitHub permite titulos de 256 y el prefijo "#NN — " los desborda.
+          payload=$(jq -n \
+            --arg lead  "$lead" \
+            --arg title "#${NUMBER} — ${TITLE}" \
+            --arg url   "$URL" \
+            --arg who   "$WHO" \
+            --argjson color "$color" \
+            '{
+              content: $lead,
+              allowed_mentions: { parse: [] },
+              embeds: [{
+                title: $title[0:250],
+                url: $url,
+                color: $color,
+                footer: { text: ("Reported by " + $who) }
+              }]
+            }')
+          curl -sS -f -X POST \
+            -H "Content-Type: application/json" \
+            -d "$payload" \
+            "$WEBHOOK"
