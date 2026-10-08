@@ -1,6 +1,6 @@
 # ---- Configuracion SOLO local -------------------------------------------
-# GitHub Pages construye el sitio leyendo _config.yml y nada mas: no hay
-# workflow en .github/ (solo CODEOWNERS), asi que este archivo jamas se lee en
+# GitHub Pages construye el sitio leyendo _config.yml y nada mas: el 
+# workflow de Discord no construye el sitio, asi que este archivo jamas se lee en
 # produccion. Se carga a mano, encadenado al principal:
 #
 #     jekyll serve --config _config.yml,_config_local.yml

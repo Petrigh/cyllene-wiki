@@ -1,0 +1,46 @@
+name: Clippy, Discord notifier
+
+on:
+  issues:
+    types: [closed]
+
+# El job sólo sale para afuera; no necesita tocar el repo.
+permissions: {}
+
+jobs:
+  notify:
+    # "Closed as not planned" no es un ticket resuelto: no avisamos.
+    if: github.event.issue.state_reason == 'completed'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Postear en Discord
+        env:
+          # Todo lo que venga del issue entra por env, NUNCA interpolado dentro
+          # del script: el repo es publico y cualquiera puede abrir un issue con
+          # comillas o backticks en el titulo para romper el shell.
+          WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          TITLE:   ${{ github.event.issue.title }}
+          NUMBER:  ${{ github.event.issue.number }}
+          URL:     ${{ github.event.issue.html_url }}
+          WHO:     ${{ github.event.sender.login }}
+        run: |
+          # jq arma el JSON y escapa el titulo; concatenar a mano se rompe
+          # con la primera comilla o salto de linea.
+          payload=$(jq -n \
+            --arg title "#${NUMBER} — ${TITLE}" \
+            --arg url   "$URL" \
+            --arg who   "$WHO" \
+            '{
+              embeds: [{
+                title: $title,
+                url: $url,
+                description: "Listo. Ya está publicado en el [wiki](https://petrigh.github.io/cyllene-wiki/).",
+                color: 5763719,
+                footer: { text: ("Cerrado por " + $who) }
+              }]
+            }')
+          curl -sS -f -X POST \
+            -H "Content-Type: application/json" \
+            -d "$payload" \
+            "$WEBHOOK"
