@@ -13,7 +13,7 @@ pruebas.
 - Son los [Paladines de Carnahan](../factions/paladines_carnahan.md), en conjunto con
   un [Kraken de un ojo](../factions/one_eyed_kraken.md).
 
-- *[Sesion 31](../sessions/31.md)* — tambien esta llegando a [Glavok](../locations/settlements/glavok.md): la [party de bardos](../factions/party_bardos.md) salio dopada a la final del torneo.
+- *[Sesion 31](../sessions/31.md)* — tambien esta llegando a [Glavok](../locations/settlements/glavok.md): la [party de bardos](../factions/twinkle_toes.md) salio dopada a la final del torneo.
 
 ## El reloj
 

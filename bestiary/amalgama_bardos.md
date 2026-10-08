@@ -10,7 +10,7 @@ status: Muerto
 # Amalgama de Bardos
 
 ## Que es
-Lo que se armo con los restos de la [party de bardos](../factions/party_bardos.md) durante la final del torneo del [Colozoo](../locations/buildings/colozoo.md), en la [sesion 31](../sessions/31.md).
+Lo que se armo con los restos de la [party de bardos](../factions/twinkle_toes.md) durante la final del torneo del [Colozoo](../locations/buildings/colozoo.md), en la [sesion 31](../sessions/31.md).
 
 ## Que aprendio la party
 - Los bardos peleaban dopados con [RCaine](../items/rcaine.md): la magia les salia rara y terminaron explotando uno por uno.

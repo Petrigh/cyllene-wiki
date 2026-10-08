@@ -1,14 +1,17 @@
 ---
-title: Party de Bardos
+title: Twinkle Toes
 parent: Factions
 summary: Archirivales de Iri
 status: Disuelta
 kind: party
+aliases:
+  - Twinkle Toes
+  - Party de Bardos
 ---
 
-# Party de Bardos
+# Twinkle Toes
 
-Party inscripta en el torneo del [Colozoo](../locations/buildings/colozoo.md). Su lider se hace llamar **twinkle toes**.
+Party de bardos inscripta en el torneo del [Colozoo](../locations/buildings/colozoo.md), que se hace llamar **Twinkle Toes**.
 
 ## Con la party
 En la [sesion 28](../sessions/28.md) se metieron en una apuesta con [The Greater Five](party.md): todos los items de la party contra las liras de ellos.

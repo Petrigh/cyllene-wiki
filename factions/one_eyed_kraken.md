@@ -1,7 +1,7 @@
 ---
 title: Kraken de un ojo
 parent: Factions
-summary: Asociasion secreta
+summary: Asociacion secreta
 ---
 
 # One eyed Kraken

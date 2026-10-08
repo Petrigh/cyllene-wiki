@@ -29,4 +29,4 @@ En el hall hay cinco estatuas con la boca abierta: un conejo, un leon, [Glavok](
 | Primera | — | [29](../../sessions/29.md) |
 | Desafio | Cuatro blancos de arqueria y un anagrama: *Victoria u Olvido* | [30](../../sessions/30.md) |
 | Segunda | [Las Bastardettes](../../factions/bastardettes.md) | [30](../../sessions/30.md) |
-| Final | La [party de bardos](../../factions/party_bardos.md), y despues la [amalgama](../../bestiary/amalgama_bardos.md) en la que se convirtieron | [31](../../sessions/31.md) |
+| Final | La [party de bardos](../../factions/twinkle_toes.md), y despues la [amalgama](../../bestiary/amalgama_bardos.md) en la que se convirtieron | [31](../../sessions/31.md) |
