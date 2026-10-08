@@ -137,7 +137,7 @@ Al enterarse de esto [Luthor](luthor.md) le acompañó a recuperar el oro, y ent
 Durante el adentramiento en las catacumbas de la [catedral de verna](../../locations/buildings/catedral_verna.md), Iri pudo ver como un [Corazon negro](../../bestiary/corazon_ghama.md) atravezaba a Cachito, matandolo al instante.
 
 #### Glavok
-En [Glavok](../../locations/settlements/glavok.md) Iri se metió en una apuesta contra la [Party de bardos](../../factions/party_bardos.md) sobre qué grupo ganará el torneo del [Colozoo](../../locations/buildings/colozoo.md), apostando sus instrumentos contra los de ellos.
+En [Glavok](../../locations/settlements/glavok.md) Iri se metió en una apuesta contra la [Party de bardos](../../factions/twinkle_toes.md) sobre qué grupo ganará el torneo del [Colozoo](../../locations/buildings/colozoo.md), apostando sus instrumentos contra los de ellos.
 Durante el desarrollo del torneo surgió el rumor de que Iri era el príncipe de un reino lejano, lo cual le trajo esperanzas al creer que alguien lo había reconocido por fin. Finalmente resultó que los rumores habían sido esparcidos por [Denzen](denzen.md).
 Sin embargo esto consiguió que Iri sea invitado a desayunar en el palco del emperador de Glavok, [Sipho Glavok II](../NPCs/sipho_glavok.md), quien al notar lo dañado de su armadura y la falta de una corona le regaló una corona ornamental y la Armadura de Glavok una armadura ligera de cuero tachonado +1.
 La party acabó ganando el torneo, pero Iri no pudo tomar los premios de su apuesta ya que los instrumentos se encontraban inutilizables.

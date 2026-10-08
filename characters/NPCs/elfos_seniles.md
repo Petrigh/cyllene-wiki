@@ -2,7 +2,7 @@
 title: Elfos Seniles
 parent: Characters
 type: npc
-summary: Investigadora pagana
+summary: Aumentar la expectativa de vida no es gratis
 race: Elfo
 status: Vivo
 location: Safepoint

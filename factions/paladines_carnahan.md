@@ -1,7 +1,7 @@
 ---
 title: Paladines de Carnahan
 parent: Factions
-summary: Asociasion de paladines que mantienen viva los valores de Carnahan.
+summary: Asociacion de paladines que mantienen viva los valores de Carnahan.
 kind: orden
 seat: Brolwund
 status: Activa
