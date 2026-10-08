@@ -32,12 +32,14 @@ jobs:
             --arg url   "$URL" \
             --arg who   "$WHO" \
             '{
+              content: "Of course, darling — consider it handled.",
+              allowed_mentions: { parse: [] },
               embeds: [{
                 title: $title,
                 url: $url,
-                description: "Listo. Ya está publicado en el [wiki](https://petrigh.github.io/cyllene-wiki/).",
+                description: "All tucked neatly into the [wiki](https://petrigh.github.io/cyllene-wiki/). Do have a look.",
                 color: 5763719,
-                footer: { text: ("Cerrado por " + $who) }
+                footer: { text: ("At your service · " + $who) }
               }]
             }')
           curl -sS -f -X POST \
