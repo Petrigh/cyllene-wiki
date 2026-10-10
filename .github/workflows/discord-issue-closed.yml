@@ -25,21 +25,64 @@ jobs:
           URL:     ${{ github.event.issue.html_url }}
           WHO:     ${{ github.event.sender.login }}
         run: |
+          # Apareada por indice con las listas de discord-issue-opened.yml: la
+          # linea N de aca contesta a la N de Obeon, sea la version "nuevo" o la
+          # "reabierto". Si agregas o sacas una, hacelo en los TRES arrays.
+          respuestas=(
+            "Of course, darling — consider it handled."
+            "I was already on my way, dear."
+            "Off the pile and out of your hair."
+            "Handled. Did you ever doubt me?"
+            "Mine, and now finished. Naturally."
+            "Fixed, polished, and filed. You're welcome."
+            "A small matter, elegantly resolved."
+            "And aren't you glad you have me."
+          )
+          # Asignacion y no (( ... )): bajo "set -e" un resultado 0 mataria el step.
+          idx=$(( NUMBER % ${#respuestas[@]} ))
+          lead="${respuestas[$idx]}"
+
+          # El cierre y la firma son sabor, no dialogo: van al azar y multiplican
+          # las combinaciones sobre los 8 beats.
+          cierres=(
+            "All tucked neatly into the [wiki](https://petrigh.github.io/cyllene-wiki/). Do have a look."
+            "Written up and filed in the [wiki](https://petrigh.github.io/cyllene-wiki/), where it belongs."
+            "It's in the [wiki](https://petrigh.github.io/cyllene-wiki/) now. Tidier than you left it."
+            "Safely in the [wiki](https://petrigh.github.io/cyllene-wiki/). I took the liberty of smoothing the edges."
+            "Noted in the [wiki](https://petrigh.github.io/cyllene-wiki/). No need to thank me."
+            "The [wiki](https://petrigh.github.io/cyllene-wiki/) is current again. Do try to keep up."
+          )
+          desc="${cierres[$RANDOM % ${#cierres[@]}]}"
+
+          firmas=(
+            "At your service · {who}"
+            "As always, for {who}"
+            "With my compliments · {who}"
+            "Anything else, {who}?"
+            "Do call again · {who}"
+          )
+          footer="${firmas[$RANDOM % ${#firmas[@]}]}"
+          footer="${footer//\{who\}/$WHO}"
+
           # jq arma el JSON y escapa el titulo; concatenar a mano se rompe
           # con la primera comilla o salto de linea.
+          # El slice [0:250] evita pasarse del limite de 256 de Discord:
+          # GitHub permite titulos de 256 y el prefijo "#NN — " los desborda.
           payload=$(jq -n \
-            --arg title "#${NUMBER} — ${TITLE}" \
-            --arg url   "$URL" \
-            --arg who   "$WHO" \
+            --arg lead   "$lead" \
+            --arg title  "#${NUMBER} — ${TITLE}" \
+            --arg url    "$URL" \
+            --arg desc   "$desc" \
+            --arg footer "$footer" \
             '{
-              content: "Of course, darling — consider it handled.",
+              content: $lead,
               allowed_mentions: { parse: [] },
               embeds: [{
-                title: $title,
+                title: $title[0:250],
                 url: $url,
-                description: "All tucked neatly into the [wiki](https://petrigh.github.io/cyllene-wiki/). Do have a look.",
+                description: $desc,
                 color: 5763719,
-                footer: { text: ("At your service · " + $who) }
+                footer: { text: $footer }
               }]
             }')
           curl -sS -f -X POST \
