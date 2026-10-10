@@ -24,24 +24,66 @@ jobs:
           WHO:     ${{ github.event.sender.login }}
           ACTION:  ${{ github.event.action }}
         run: |
+          # Las tres listas (estas dos y la de Clippy en discord-issue-closed.yml)
+          # estan apareadas por indice: la respuesta N de Clippy contesta a la
+          # linea N de aca. Si agregas o sacas una linea, hacelo en los TRES
+          # arrays o el ida y vuelta se desfasa.
+          nuevos=(
+            "Hey Clippy, fix this:"
+            "Clippy. Desk. Now:"
+            "One more for the pile, Clippy:"
+            "Think you can handle this one?"
+            "Clippy, this is yours now:"
+            "Something's broken. Go:"
+            "A small matter for you, Clippy:"
+            "I'd do it myself, but that's what I have you for:"
+          )
+          reabiertos=(
+            "Hey Clippy, this one's back — have another go:"
+            "Clippy. Desk. Again:"
+            "Back on the pile, Clippy. It didn't take:"
+            "Apparently you couldn't handle this one. Again:"
+            "Clippy, this is yours again:"
+            "Still broken, Clippy. Go:"
+            "That small matter again, Clippy:"
+            "I'd do it myself, but you insist on trying:"
+          )
+
+          # El numero de issue elige el beat; el mismo calculo del otro lado
+          # hace que Clippy conteste justo esa linea. Va como asignacion y no
+          # como (( ... )): bajo "set -e" un resultado 0 mataria el step.
+          idx=$(( NUMBER % ${#nuevos[@]} ))
+
           # Un ticket reabierto no es un pedido nuevo: cambia el saludo y el color.
           if [ "$ACTION" = "reopened" ]; then
-            lead="Hey Clippy, this one's back — have another go:"
+            lead="${reabiertos[$idx]}"
             color=16098851   # ambar
           else
-            lead="Hey Clippy, fix this:"
+            lead="${nuevos[$idx]}"
             color=3447003    # azul
           fi
+
+          # La firma es puro sabor, no dialogo: va al azar y multiplica las
+          # combinaciones sobre los 8 beats.
+          firmas=(
+            "Reported by {who}"
+            "Filed by {who}"
+            "Courtesy of {who}"
+            "Blame {who}"
+            "Brought to my attention by {who}"
+          )
+          footer="${firmas[$RANDOM % ${#firmas[@]}]}"
+          footer="${footer//\{who\}/$WHO}"
 
           # jq arma el JSON y escapa el titulo; concatenar a mano se rompe
           # con la primera comilla o salto de linea.
           # El slice [0:250] evita pasarse del limite de 256 de Discord:
           # GitHub permite titulos de 256 y el prefijo "#NN — " los desborda.
           payload=$(jq -n \
-            --arg lead  "$lead" \
-            --arg title "#${NUMBER} — ${TITLE}" \
-            --arg url   "$URL" \
-            --arg who   "$WHO" \
+            --arg lead   "$lead" \
+            --arg title  "#${NUMBER} — ${TITLE}" \
+            --arg url    "$URL" \
+            --arg footer "$footer" \
             --argjson color "$color" \
             '{
               content: $lead,
@@ -50,7 +92,7 @@ jobs:
                 title: $title[0:250],
                 url: $url,
                 color: $color,
-                footer: { text: ("Reported by " + $who) }
+                footer: { text: $footer }
               }]
             }')
           curl -sS -f -X POST \
