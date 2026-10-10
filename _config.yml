@@ -47,7 +47,7 @@ random_page: true
 
 # Boton 2D/3D en el mapa de la home (_includes/campaign_map.html). La vista 3D
 # dibuja el mapa como TERRENO: una malla desplazada segun assets/img/map-height.png
-# --que genera tools/make_heightmap.py a partir de la acuarela-- con luz, agua y
+# --que genera tools/make_heightmap.py a partir de tools/map-tiers.png-- con luz, agua y
 # camara que orbita. Tampoco cuesta build, y ademas no cuesta NADA a quien no la
 # usa: three.js (~650 KB) se baja recien cuando alguien aprieta el boton.
 # En false desaparece el boton y queda solo el mapa plano de Leaflet. Sin WebGL
@@ -67,12 +67,29 @@ map_3d_default: true
 # conviene no pasarse.
 map_3d_relief: 0.12
 
-# Radio, en pixeles de map-height.png, con el que se difumina el heightmap
-# antes de levantar la malla. La acuarela se pinta con brochazos planos y deja
-# mesetas: sin esto la costa es un acantilado vertical y las sierras son cajas.
-# Subirlo tiende las laderas, pero tambien achata los picos angostos.
-#   0 = crudo, 3 = apenas, 6 = por defecto, 12+ = colinas suaves
+# Radio, en pixeles de map-height.png, con el que el NAVEGADOR difumina el
+# heightmap antes de levantar la malla.
+#
+# Va en 0 y conviene dejarlo ahi. El suavizado ya lo hizo el generador, que
+# fabrica cada pendiente con una transformada de distancia en vez de confiar en
+# un promedio: el heightmap publicado no tiene un solo salto mayor a 5 niveles
+# entre pixeles vecinos. Subir esto solo achata las cumbres angostas y gasta
+# tres pasadas sobre 294k floats en el hilo principal antes del primer cuadro.
+# Si el relieve se ve mal, lo que hay que tocar es tools/map-tiers.png.
+#   0 = la imagen tal cual viene (lo correcto hoy), 6+ = colinas derretidas
 map_3d_smooth: 0
+
+# Nivel del mar, en las mismas unidades 0..1 del heightmap. De aca sale la
+# altura del plano de agua.
+#
+# NO es una perilla de gusto: lo fija tools/make_heightmap.py --es H[1], el piso
+# del primer escalon de tierra-- y toda la tierra queda por encima POR
+# CONSTRUCCION. No se copia a mano: el generador compara este numero contra su
+# H[1] al terminar y falla si no coinciden.
+#   python tools/make_heightmap.py --write-config   lo corrige solo.
+# Antes este numero no existia: el JS tenia un 0.035 clavado que no sabia nada
+# del dibujo, y por eso habia 569 pixeles de tierra pintada abajo del agua.
+map_3d_sea: 0.25
 
 # Piso de apariciones para que una entidad pueda SER la respuesta del acertijo
 # diario (cylledle.md / _includes/cylledle.html). Una entidad "aparece" en una
@@ -160,7 +177,8 @@ defaults:
 exclude:
   - dm/
   # Herramienta de autor, no parte del sitio: genera assets/img/map-height.png
-  # a partir de la acuarela. Su salida SI se publica; el script no.
+  # a partir de tools/map-tiers.png, la mascara de escalones que se pinta a
+  # mano. Su salida SI se publica; ni el script ni la mascara.
   - tools/
   - notion-csv/
   - README.md

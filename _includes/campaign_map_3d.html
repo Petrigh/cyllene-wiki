@@ -6,7 +6,8 @@
 
   Es una MALLA DESPLAZADA de verdad, no un plano inclinado: un PlaneGeometry
   subdividido al que se le levanta cada vertice segun assets/img/map-height.png
-  (lo genera tools/make_heightmap.py a partir de la acuarela; ver ahi como).
+  (lo genera tools/make_heightmap.py a partir de tools/map-tiers.png, una
+  mascara de relleno plano; ver ahi por que no se pinta el heightmap a mano).
   El relieve se ve porque hay LUZ: con MeshBasicMaterial una malla desplazada se
   ve tan plana como un plano. La sombra es el relieve.
 
@@ -31,7 +32,7 @@
   API que consume campaign_map.html:
 
       window.CampaignMap3D.mount({stage, pins, imageUrl, heightUrl,
-                                  width, height, relief, heightBlur}) -> Promise
+                                  width, height, relief, heightBlur, sea}) -> Promise
       window.CampaignMap3D.unmount()
 
   unmount() tiene que devolver el contexto WebGL de verdad: el browser da ~16
@@ -86,19 +87,21 @@
     }
   }
 
-  // Suaviza el heightmap antes de tocar la malla. Sin esto el relieve sale
-  // escalonado, y no por culpa del render: la acuarela deja mesetas planas
-  // --el mar en 0, la tierra en 41, las sierras en 56/71/114-- con saltos de
-  // hasta 141 niveles entre dos pixeles vecinos. Un salto asi es un acantilado
-  // vertical de un pixel de ancho, que a la resolucion de la malla es
-  // literalmente una pared, y computeVertexNormals lo sombrea como tal.
-  // Interpolar mejor no alcanza: no hay pendiente que interpolar, hay que
-  // fabricarla.
+  // Suaviza el heightmap antes de tocar la malla.
   //
-  // Tres pasadas de caja aproximan una gaussiana; la rampa que queda mide mas
-  // o menos 3*r pixeles. Medido sobre map-height.png, r = 6 deja la costa en
-  // unos 26 grados y la ladera mas parada en 55, sin una sola cara de mas de
-  // 60 --que es donde el ojo empieza a leer "pared" en vez de "monte".
+  // Ojo: hoy esto normalmente NO corre (map_3d_smooth vale 0). Las rampas ya
+  // vienen hechas en la imagen: tools/make_heightmap.py fabrica cada pendiente
+  // con una transformada de distancia y despues pasa su propio desenfoque, asi
+  // que el heightmap publicado llega con un salto maximo de 5 niveles entre
+  // pixeles vecinos --el que se pintaba a mano llegaba a 164-- y con ninguna
+  // cara arriba de ~52 grados.
+  //
+  // Volver a difuminar aca no arregla nada y cuesta dos veces: se come las
+  // cumbres angostas que el generador modelo a proposito, y gasta tres pasadas
+  // sobre 294k floats en el hilo principal ANTES del primer cuadro, en cada
+  // montaje. Queda como valvula de escape para mirar un heightmap ajeno o
+  // viejo; si hace falta subirlo para que el relieve se vea bien, el problema
+  // esta en la mascara y se arregla alla.
   //
   // r se redondea porque despues indexa el buffer: un radio fraccionario
   // devuelve undefined de la Float32Array y el terreno entero sale NaN.
@@ -186,7 +189,20 @@
     // Radio del suavizado del heightmap, en pixeles de la imagen. Sube: costa
     // y sierras mas tendidas, pero tambien picos mas bajos --el promedio se
     // come las cumbres angostas-- asi que suele ir de la mano de subir relief.
-    var SMOOTH = isFinite(o.heightBlur) ? o.heightBlur : 6;
+    var SMOOTH = isFinite(o.heightBlur) ? o.heightBlur : 0;
+    // Nivel del mar, en las mismas unidades 0..1 que devuelve sampleH. No es
+    // una perilla de gusto: lo fija el generador del heightmap (es H[1], el
+    // piso del primer escalon de tierra) y toda la tierra queda por encima POR
+    // CONSTRUCCION. Antes aca habia un 0.035 clavado que no sabia nada del
+    // dibujo, y de ahi salia tierra pintada abajo del agua.
+    var SEA    = isFinite(o.sea) ? o.sea : 0.25;
+    // El plano de agua va en el nivel del mar MENOS UN PELO. Justo EN el nivel,
+    // el agua y la orilla quedan coplanares a lo largo de toda la costa y eso
+    // titila; el pelo de menos deja ver una franja de playa. Es una sola
+    // constante porque de ella dependen el plano, el test de los pines y la
+    // fraccion de mapa que asoma: si se calculara en tres lados, se
+    // desincronizarian.
+    var WATER_Y = (SEA - 0.003) * RELIEF;
     var FOV    = 38;
     var SKY    = 0x1d242b;                           // fondo y niebla
     var ZOOM_IN = 0.24;
@@ -226,12 +242,14 @@
     var terrain = null, water = null, colorTex = null, sampleH = null;
     var ready = false;
     var yLo = 0, yHi = 0;   // rango real de altura de la malla, para info()
+    var landFrac = 0;       // fraccion de la malla que asoma del agua
 
     Promise.all([loadImage(o.heightUrl), loadTexture(o.imageUrl)])
       .then(function (r) {
         sampleH = sampler(r[0], SMOOTH);
         colorTex = r[1];
         makeTerrain();
+        for (var c = 4; c < 8; c++) { CORNERS[c].y = yHi; }
         placePins();
         ready = true;
         recomputeBounds(false);
@@ -269,10 +287,29 @@
       geo.computeVertexNormals();   // sin esto no hay sombra, y sin sombra no hay relieve
 
       yLo = Infinity; yHi = -Infinity;
+      var above = 0;
       for (var j = 0; j < pos.count; j++) {
         var yv = pos.getY(j);
         if (yv < yLo) { yLo = yv; }
         if (yv > yHi) { yHi = yv; }
+        if (yv > WATER_Y) { above++; }
+      }
+      landFrac = above / pos.count;
+
+      // El nivel del mar viaja del generador al plano de agua por tres saltos
+      // --H[1] en make_heightmap.py, map_3d_sea en _config.yml, data-sea en el
+      // include-- mientras que el heightmap viaja por su propia URL. Si los dos
+      // caminos se desincronizan --un PNG viejo en cache, o H[1] cambiado sin
+      // copiar-- no hay error en ningun lado: simplemente se hunde el mapa.
+      // Medido: el heightmap generado deja 0.31 de la malla afuera del agua; el
+      // pintado a mano, cuya meseta de tierra esta en 0.161, deja 0.068, porque
+      // asoman solo las cumbres. Abajo de 0.15 no es un mapa oceanico, es un
+      // heightmap que no corresponde a este nivel del mar.
+      if (landFrac < 0.15) {
+        console.warn('campaign_map_3d: solo el ' + (landFrac * 100).toFixed(1) +
+          '% de la malla asoma del agua (sea = ' + SEA + '). El heightmap y ' +
+          'map_3d_sea no corresponden. Recargar duro (Ctrl+Shift+R); si sigue, ' +
+          'revisar H[1] en tools/make_heightmap.py contra map_3d_sea en _config.yml.');
       }
 
       terrain = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
@@ -281,8 +318,10 @@
       group.add(terrain);
 
       // El agua es lo que termina de leerse como terreno: sin ella la costa es
-      // solo el borde de una lamina. Va apenas encima del cero para tapar el
-      // fondo plano del mar, que el heightmap dejo en 0.
+      // solo el borde de una lamina. Va en WATER_Y, el nivel del mar que
+      // declara el heightmap menos un pelo (ver arriba).
+      // Ya no hay que taparle nada al fondo del mar: el generador le da una
+      // cuenca que se hunde al alejarse de la costa, no una chapa plana en 0.
       water = new THREE.Mesh(
         new THREE.PlaneGeometry(MAP_W * 1.6, MAP_D * 1.6),
         new THREE.MeshStandardMaterial({
@@ -291,7 +330,7 @@
         })
       );
       water.rotation.x = -Math.PI / 2;
-      water.position.y = RELIEF * 0.035;
+      water.position.y = WATER_Y;
       group.add(water);
     }
 
@@ -338,7 +377,15 @@
     }
 
     // ---- Camara -------------------------------------------------------------
+    // Las ocho esquinas de la CAJA del terreno, no las cuatro del plano: las de
+    // arriba se suben a yHi cuando la malla ya existe. Con las cuatro de abajo
+    // solamente, fitsAt() encuadraba el plano sin desplazar y las cumbres se
+    // salian del cuadro a la distancia que el propio encuadre eligio.
     var CORNERS = [
+      new THREE.Vector3(-MAP_W / 2, 0, -MAP_D / 2),
+      new THREE.Vector3( MAP_W / 2, 0, -MAP_D / 2),
+      new THREE.Vector3( MAP_W / 2, 0,  MAP_D / 2),
+      new THREE.Vector3(-MAP_W / 2, 0,  MAP_D / 2),
       new THREE.Vector3(-MAP_W / 2, 0, -MAP_D / 2),
       new THREE.Vector3( MAP_W / 2, 0, -MAP_D / 2),
       new THREE.Vector3( MAP_W / 2, 0,  MAP_D / 2),
@@ -692,6 +739,17 @@
         yRange: yHi - yLo,
         relief: RELIEF,
         smooth: SMOOTH,
+        sea: SEA,
+        waterY: WATER_Y,
+        // Con el heightmap generado da ~0.31. Si da ~0.07 el PNG que cargo el
+        // navegador no es el que corresponde a este sea (ver el warn en
+        // makeTerrain).
+        landFrac: landFrac,
+        // Tiene que dar 0. Es el test de regresion de un pixel para el bug que
+        // trajo todo esto: tierra pintada que terminaba abajo del agua.
+        pinsBelowSea: items.filter(function (it) {
+          return it.pos.y < WATER_Y;
+        }).length,
         hasNormals: !!(terrain && terrain.geometry.attributes.normal),
         lights: lights,
         water: !!water,
