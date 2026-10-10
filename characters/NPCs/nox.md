@@ -5,6 +5,7 @@ type: npc
 summary: Gnomo del bosque
 race: Gnomo
 location: Bosque Inescrutable
+faction: Jester's Court
 ---
 
 # Nox
