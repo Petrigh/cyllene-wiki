@@ -2,7 +2,7 @@
 title: Brolwund
 parent: Locations
 summary: Ciudad de los Cinco Grandes, ahora tomada por los paladines.
-kind: settlement
+kind: asentamiento
 region: Valle de los Cinco Grandes
 map_x: 66.0
 map_y: 36.0

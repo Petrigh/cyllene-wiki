@@ -2,7 +2,7 @@
 title: Blob con ojos
 parent: Bestiary
 summary: Se come las almas de los habitantes de Slumberhaven
-kind: aberration
+kind: aberracion
 location: Slumberhaven
 status: Muerto
 ---

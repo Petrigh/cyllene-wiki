@@ -2,7 +2,7 @@
 title: Fywick
 parent: Locations
 summary: Pequeño pueblo fortificado como se puede, entre Garnier y Fadefair.
-kind: settlement
+kind: asentamiento
 region: Hondonada de los faros
 ---
 

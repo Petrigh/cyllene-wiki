@@ -2,7 +2,7 @@
 title: Capilla de Garnier
 parent: Locations
 summary: Capilla
-kind: building
+kind: edificacion
 settlement: Garnier
 ---
 

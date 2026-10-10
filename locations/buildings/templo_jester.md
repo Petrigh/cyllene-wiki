@@ -2,7 +2,7 @@
 title: Templo del Jester
 parent: Locations
 summary: La Corte del Jester — estatuas rotas, altares y tres pruebas.
-kind: building
+kind: edificacion
 region: Bosque Inescrutable
 status: Abandonado
 ---

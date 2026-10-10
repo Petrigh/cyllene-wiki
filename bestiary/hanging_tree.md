@@ -2,7 +2,7 @@
 title: The Hanging Tree
 parent: Bestiary
 summary: Lo primero que salió a recibir a la party dentro del Bosque
-kind: plant
+kind: planta
 location: Bosque Inescrutable
 status: Muerto
 ---

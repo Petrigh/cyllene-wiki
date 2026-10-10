@@ -2,7 +2,7 @@
 title: Leaf Letting
 parent: Locations
 summary: Destino de la party al escapar de Verna.
-kind: settlement
+kind: asentamiento
 region: Valle de los Cinco Grandes
 ---
 

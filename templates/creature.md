@@ -17,15 +17,16 @@ title: Fen Hag
 parent: Bestiary
 summary: Bargains in names, and keeps every one it is given
 cr: "7"
-kind: fey             # aberration | beast | undead | plant | construct
-                      # humanoid | fey | monstrosity  -- en minuscula
+kind: feerico         # aberracion | bestia | no-muerto | planta | constructo
+                      # humanoide | feerico | monstruosidad  -- en minuscula
 location: Greyfen     # donde se la encontro
 status: Muerto        # Vivo | Muerto -- si la party la liquido
 ---
 ```
 
-`kind`, `location` y `status` son ademas tres de las columnas de Cylledle
-(ver [the side card reference](card.md)). Lo que no se sepa se omite.
+`kind` y `location` alimentan ademas las dos columnas de lore de Cylledle
+---Tipo y Region--- y `status` sale en la ficha (ver [the side card
+reference](card.md)). Lo que no se sepa se omite.
 
 ## What it is
 

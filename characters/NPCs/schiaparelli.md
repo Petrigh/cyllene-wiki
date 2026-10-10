@@ -7,4 +7,4 @@ location: Brolwund
 ---
 
 # Camora Schiaparelli
-Dueño del [casio](../../locations/buildings/casino_diva.md) de [Brolwund](../../locations/settlements/brolwund.md). Viste el [anillo](../../items/los_anillos.md) de [Brolwund](brolwund.md)
+Dueño del casino [El Diva](../../locations/buildings/casino_diva.md) de [Brolwund](../../locations/settlements/brolwund.md). Viste el [anillo](../../items/los_anillos.md) de [Brolwund](brolwund.md)

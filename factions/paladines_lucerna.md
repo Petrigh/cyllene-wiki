@@ -2,7 +2,7 @@
 title: Paladines de Lucerna
 parent: Factions
 summary: Orden de auxilio, tipo bomberos voluntarios
-kind: order
+kind: orden
 events:
   - year: 262
     era: DF

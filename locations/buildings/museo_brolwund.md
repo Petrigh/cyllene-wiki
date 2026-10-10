@@ -2,7 +2,7 @@
 title: Museo de Brolwund
 parent: Locations
 summary: Museo de Brolwund, visitado por Denzen.
-kind: building
+kind: edificacion
 settlement: Brolwund
 ---
 

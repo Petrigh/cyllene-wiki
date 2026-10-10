@@ -2,7 +2,7 @@
 title: Naivara
 parent: Locations
 summary: Ciudad fundada en honor a Naivara, uno de los Cinco Grandes.
-kind: settlement
+kind: asentamiento
 region: Valle de los Cinco Grandes
 map_x: 60.0
 map_y: 50.8

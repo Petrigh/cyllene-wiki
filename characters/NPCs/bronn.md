@@ -1,9 +1,10 @@
 ---
 title: Bronn
 parent: Characters
-summary: Goatkin de montaña
+summary: Guia de la Muralla del Bosque
 type: npc
 race: Goatkin
+subrace: De montaña
 location: Slumberhaven
 ---
 

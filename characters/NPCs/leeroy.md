@@ -5,7 +5,7 @@ type: npc
 summary: La mejor pet.
 status: Vivo
 location: Costa Brumosa
-race: Dwarf
+race: Enano
 ---
 
 # Leeroy

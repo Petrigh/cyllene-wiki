@@ -2,7 +2,7 @@
 title: Fadefair
 parent: Locations
 summary: Pueblo vecino a Fywick, atacado por Froghouls.
-kind: settlement
+kind: asentamiento
 region: Hondonada de los faros
 status: Destruido
 ---

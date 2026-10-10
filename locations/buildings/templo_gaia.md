@@ -2,7 +2,7 @@
 title: Templo de Gaia
 parent: Locations
 summary: Templo de Gaia la diosa, cerrado a la party.
-kind: building
+kind: edificacion
 region: Bosque Inescrutable
 ---
 

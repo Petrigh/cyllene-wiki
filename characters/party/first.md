@@ -4,8 +4,9 @@ parent: The Party
 summary: Navegante con interes en los montes.
 grand_parent: Factions
 type: pc
-race: Hill dwarf
-class: Ranger 7 (Revised)
+race: Enano
+subrace: De la colina
+class: Ranger (Revised)
 player: Petrigh
 faction: The Party
 status: Vivo

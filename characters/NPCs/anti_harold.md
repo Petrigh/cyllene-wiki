@@ -3,6 +3,7 @@ title: Anti-Harold
 parent: Characters
 summary: Clon malvado
 type: npc
+class: Monje
 location: Verna
 ---
 

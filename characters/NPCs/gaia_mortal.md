@@ -3,7 +3,8 @@ title: Gaia (mortal)
 parent: Characters
 type: npc
 summary: Investigadora pagana
-race: Wood elf
+race: Elfo
+subrace: Del bosque
 status: Vivo
 faction: Jester's Court
 location: Safepoint

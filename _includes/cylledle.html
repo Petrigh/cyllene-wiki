@@ -8,7 +8,7 @@
 
   ---- De donde sale cada columna ----
 
-  Las dos de lore (naturaleza y region) salen del front matter, via
+  Las dos de lore (tipo y region) salen del front matter, via
   assets/cylledle-data.json.
 
   Hubo tambien una columna de afiliacion y una de estado. Se sacaron porque no
@@ -181,16 +181,17 @@
 
   function pad(n) { return (n < 10 ? '0' : '') + n; }
 
-  // Mayuscula inicial para la celda, nada mas. El front matter escribe los
-  // `kind` de lugares en minuscula (building, settlement, region...) mientras
-  // que las razas y casi todo lo demas ya vienen capitalizados, asi que la
-  // columna Naturaleza mezclaba las dos formas.
+  // Mayuscula inicial para la celda, nada mas. Hoy casi no hace falta: los
+  // `kind` llegan capitalizados desde _data/kinds.yml (ver
+  // assets/cylledle-data.json) y las razas vienen asi del front matter.
+  // Queda como red de seguridad para un `kind` que no este en el vocabulario,
+  // que sale crudo -- o sea en minuscula -- y desentonaria con el resto de la
+  // columna.
   //
   // Es primera letra y no `text-transform: capitalize`, que va palabra por
-  // palabra y convertiria "Hill dwarf" en "Hill Dwarf" y "Tiefling de
-  // Levistus" en "Tiefling De Levistus". Toca solo lo que se dibuja: el
-  // puntaje compara con norm(), que pasa todo a minuscula, asi que esto no
-  // puede cambiar un color.
+  // palabra: un valor de dos palabras como "Costa brumosa" saldria "Costa
+  // Brumosa". Toca solo lo que se dibuja: el puntaje compara con norm(), que
+  // pasa todo a minuscula, asi que esto no puede cambiar un color.
   function cap(s) {
     s = String(s == null ? '' : s);
     return s ? s.charAt(0).toUpperCase() + s.slice(1) : s;

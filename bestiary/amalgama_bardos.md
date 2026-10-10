@@ -2,7 +2,7 @@
 title: Amalgama de Bardos
 parent: Bestiary
 summary: Lo que quedo de la party de bardos en el Colozoo
-kind: aberration
+kind: aberracion
 location: Glavok
 status: Muerto
 ---

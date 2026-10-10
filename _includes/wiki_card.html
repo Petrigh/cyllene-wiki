@@ -82,22 +82,20 @@
 {%- assign wc_aliases = wc_alias_items | strip | split: "|" | join: ", " -%}
 
 {%- comment -%}
-  `kind` se guarda en ingles porque con eso agrupa el arbol de ubicaciones
-  (location_children.html); en la ficha se muestra traducido.
+  `kind` se escribe en castellano y en minuscula; la ficha lo dibuja con la
+  mayuscula inicial que trae su `label`.
 
-  Las primeras seis son las de locations, las unicas que miran el arbol. Las que
-  siguen son de bestiary (tipo de criatura, los de 5e) y de factions (que clase
-  de organizacion). Esas dos secciones no tenian `kind` hasta que lo pidio la
-  columna "Naturaleza" de Cylledle (ver templates/card.md), y se guardan en
-  ingles y en minuscula por la misma regla, aunque nadie las agrupe todavia.
-  Un kind que no este en esta lista se muestra tal cual, sin romper nada.
+  El vocabulario vive en _data/kinds.yml, que es la fuente unica: lo leen
+  tambien location_children.html (los grupos del arbol), preview-data.json,
+  cylledle-data.json y el lint de _meta/index.md. Un kind que no este ahi se
+  muestra crudo, sin romper nada, y el lint lo reporta.
+
+  La clave pasa por una variable suelta antes del corchete a proposito:
+  site.data.kinds[page.kind] es un lookup anidado y Liquid lo resuelve a nil
+  sin fallar, el mismo problema que esta documentado mas abajo con wc_key.
 {%- endcomment -%}
-{%- assign wc_kinds = "world|Mundo,continent|Continente,region|Region,settlement|Asentamiento,building|Edificacion,nature|Naturaleza,aberration|Aberracion,beast|Bestia,undead|No-muerto,plant|Planta,construct|Constructo,humanoid|Humanoide,fey|Feerico,monstrosity|Monstruosidad,order|Orden,gang|Banda,council|Consejo,school|Escuela,family|Familia,party|Party" | split: "," -%}
-{%- assign wc_kind = page.kind -%}
-{%- for wc_k in wc_kinds -%}
-  {%- assign wc_pair = wc_k | split: "|" -%}
-  {%- if wc_pair[0] == page.kind -%}{%- assign wc_kind = wc_pair[1] -%}{%- break -%}{%- endif -%}
-{%- endfor -%}
+{%- assign wc_kkey = page.kind -%}
+{%- assign wc_kind = site.data.kinds[wc_kkey].label | default: page.kind -%}
 
 {%- comment -%}
   El cuarto campo, opcional, es la seccion donde tiene que buscar el link. Hace
@@ -106,7 +104,7 @@
   enlazaba a la NPC en vez de a la ciudad. Es el mismo mapa de campo -> seccion
   que usa backlinks.html para contar menciones, y los dos tienen que coincidir.
 {%- endcomment -%}
-{%- assign wc_fields = "race|Raza,class|Clase,player|Jugador,role|Rol,rarity|Rareza,attunement|Sintonizacion,holder|Portador|link|/characters/,leader|Lider|link|/characters/,seat|Sede|link|/locations/,members|Miembros,pantheon|Panteon|link|/lore/,faction|Faccion|link|/factions/,settlement|En|link|/locations/,region|Region|link|/locations/,continent|Continente|link|/locations/,world|Mundo|link|/locations/,location|Donde|link|/locations/,status|Estado,standing|Con la party,attitude|Con la party" | split: "," -%}
+{%- assign wc_fields = "race|Raza,subrace|Subraza,class|Clase,player|Jugador,role|Rol,rarity|Rareza,attunement|Sintonizacion,holder|Portador|link|/characters/,leader|Lider|link|/characters/,seat|Sede|link|/locations/,members|Miembros,pantheon|Panteon|link|/lore/,faction|Faccion|link|/factions/,settlement|En|link|/locations/,region|Region|link|/locations/,continent|Continente|link|/locations/,world|Mundo|link|/locations/,location|Donde|link|/locations/,status|Estado,standing|Con la party,attitude|Con la party" | split: "," -%}
 
 {%- capture wc_facts -%}
   {%- if wc_aliases != "" -%}<li><b>Alias</b> {{ wc_aliases }}</li>{%- endif -%}

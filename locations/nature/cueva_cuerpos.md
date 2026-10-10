@@ -2,8 +2,8 @@
 title: Cueva Cuerpos Druidicos
 parent: Locations
 summary: Ritual de empatia.
-kind: nature
-continent: Bosque Inescrutable
+kind: naturaleza
+region: Bosque Inescrutable
 ---
 
 # Cueva Cuerpos Druidicos 

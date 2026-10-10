@@ -2,7 +2,7 @@
 title: Safepoint
 parent: Locations
 summary: Asentamiento de los Mushies dentro del Bosque Inescrutable.
-kind: settlement
+kind: asentamiento
 region: Bosque Inescrutable
 ---
 

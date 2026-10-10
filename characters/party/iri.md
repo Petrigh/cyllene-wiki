@@ -4,8 +4,9 @@ parent: The Party
 summary: Principe de Aira
 grand_parent: Factions
 type: pc
-race: High elf
-class: Bardo 7 (Lore)
+race: Elfo
+subrace: Alto
+class: Bardo (Lore)
 faction: The Party
 location: Aira
 status: Vivo
@@ -43,7 +44,7 @@ Indice
 ### Personalidad
 
 ### Apariencia
-Iri es un [high elf](https://5e.tools/races.html#elf%20(high)_phb) de pelo rubio platinado y ojos celestes.
+Iri es un [elfo alto](https://5e.tools/races.html#elf%20(high)_phb) de pelo rubio platinado y ojos celestes.
 
 Iniciando la campaña vistió mayormente la ropa con la que se despertó en la cueva, telas finas provenientes de [Aira](../../locations/settlements/aira.md).
 
@@ -62,7 +63,7 @@ Actualmente viste la Armadura de Glavok debajo de sus ropas tradicionales Aureas
 ### Feats
 
 ### Especie
-Iri es un [High Elf](https://5e.tools/races.html#elf%20(high)_phb)
+Iri es un [elfo alto](https://5e.tools/races.html#elf%20(high)_phb)
 
 ### Background
 Iri tiene el background [Entertainer](https://5e.tools/backgrounds.html#entertainer_phb)

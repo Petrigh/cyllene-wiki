@@ -1,0 +1,55 @@
+# Vocabulario de `kind`. La CLAVE es el valor que va tal cual en el front
+# matter; no hay traduccion de por medio.
+#
+#   label    como se dibuja (la ficha, la tarjeta de preview, el acertijo)
+#   plural   OPCIONAL. Tenerlo es lo que convierte al kind en un grupo del
+#            arbol de ubicaciones, y es el titulo de ese grupo.
+#
+# EL ORDEN DE ESTE ARCHIVO ES EL ORDEN DE LOS GRUPOS EN EL ARBOL. Jekyll carga
+# el YAML en un Hash de Ruby, que conserva el orden de insercion, y
+# _includes/location_children.html itera de aca. Mover una linea mueve un
+# grupo del arbol.
+#
+# `label` se escribe aunque salga de capitalizar la clave: es lo que mantiene
+# no-nil el lookup del lint en _meta/index.md, que con un valor YAML vacio
+# daria nil y reportaria TODAS las paginas.
+#
+# Quien lo lee:
+#   _includes/location_children.html  los grupos del arbol (plural + orden)
+#   _includes/wiki_card.html          la ficha lateral ("Tipo")
+#   assets/preview-data.json          la tarjeta al pasar el mouse
+#   assets/cylledle-data.json         la columna "Tipo" del acertijo diario
+#   _meta/index.md                    el lint: un kind que no este aca se lista
+#
+# Un kind fuera de esta lista no rompe nada: se dibuja crudo y el lint lo
+# reporta. Agregar uno es agregar una linea.
+#
+# Ojo con Liquid: site.data.kinds[pagina.kind] es un lookup anidado y devuelve
+# nil sin fallar. La clave tiene que pasar antes por una variable suelta.
+
+# locations/ -- las unicas que arman el arbol. `mundo` no lleva plural porque
+# es la raiz: locations/index.md lo siembra aparte, nunca es un grupo.
+mundo:          { label: Mundo }
+continente:     { label: Continente,   plural: Continentes }
+region:         { label: Region,       plural: Regiones }
+naturaleza:     { label: Naturaleza,   plural: Naturaleza }
+asentamiento:   { label: Asentamiento, plural: Asentamientos }
+edificacion:    { label: Edificacion,  plural: Edificaciones }
+
+# bestiary/ -- tipo de criatura, los de 5e
+aberracion:     { label: Aberracion }
+bestia:         { label: Bestia }
+no-muerto:      { label: No-muerto }
+planta:         { label: Planta }
+constructo:     { label: Constructo }
+humanoide:      { label: Humanoide }
+feerico:        { label: Feerico }
+monstruosidad:  { label: Monstruosidad }
+
+# factions/ -- que clase de organizacion
+orden:          { label: Orden }
+banda:          { label: Banda }
+consejo:        { label: Consejo }
+escuela:        { label: Escuela }
+familia:        { label: Familia }
+party:          { label: Party }

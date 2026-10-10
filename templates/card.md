@@ -47,8 +47,9 @@ whichever ones are present:
 | Key | Label | Used by | |
 |---|---|---|---|
 | `aliases` | Alias | characters | see below |
-| `kind` | Tipo | locations | shown in Spanish; stays in English in the file |
+| `kind` | Tipo | locations, bestiary, factions | Spanish in the file, shown capitalised |
 | `race` | Raza | characters | |
+| `subrace` | Subraza | characters | only when the race has one |
 | `class` | Clase | characters | |
 | `player` | Jugador | characters | |
 | `role` | Rol | characters | |
@@ -96,20 +97,27 @@ facts:                              # bullets libres, para lo que no entra arrib
 ## What Cylledle reads
 
 The daily puzzle ([`cylledle.md`](../cylledle.md), `_includes/cylledle.html`)
-grades a guess column by column against the answer. Four of its seven columns
-come straight from the frontmatter above — filling them in makes the game
-sharper *and* fills in the card, since they are the same keys.
+grades a guess column by column against the answer. Two of its five scored
+columns come straight from the frontmatter above — filling them in makes the
+game sharper *and* fills in the card, since they are the same keys.
 
 | Column | Key | Where it applies |
 |---|---|---|
-| Naturaleza | `race` on characters, `kind` on everything else | all |
-| Afiliacion | `faction` | mostly characters |
+| Tipo | `race` on characters, `kind` on everything else | all |
 | Region | `location` on characters, `settlement`/`region`/`continent`/`world` on places, `seat` on factions | all |
-| Estado | `status` | all |
 
-The other three columns — **Seccion**, **1a aparicion** and **N de sesiones** —
-are derived, not written: the game counts which session pages link the entity.
+The other three — **Categoria**, **1a aparicion** and **Sesiones** — are
+derived, not written: the game counts which session pages link the entity.
 Nothing to fill in there; just link things from the session logs as usual.
+
+`faction` and `status` used to be columns and no longer are: `faction` is set
+on under half the entities so it was almost always grey, and `status` is `Vivo`
+on nearly all the rest so it was almost always green. A column that gives the
+same colour whatever you guess rules nothing out. The reasoning is in the
+header of `_includes/cylledle.html`; both still show on the card.
+
+`subrace` is **not** a column either, for the same reason — seven entries
+carry one, so it would be grey almost every day. It only shows on the card.
 
 A key left out is **not** an error. The game paints that cell grey and does not
 score it, which is the honest answer for something the wiki has not said yet.
@@ -117,15 +125,62 @@ Guessing a value to fill the grid would show the table a wrong answer as canon.
 
 ### `kind:` values
 
-Stored in English and lowercase, shown translated (see `wc_kinds` in
-`_includes/wiki_card.html`). Only the `locations` set groups the Locations tree;
-the other two just label the page and feed the game.
+Spanish, lowercase, no accents, and shown just capitalised — there is no
+translation step. The vocabulary is [`_data/kinds.yml`](../_data/kinds.yml),
+and that one file is read by the Locations tree, the side card, the hover
+preview, the Cylledle board and the health-page lint. Adding a kind means
+adding one line there and nothing else.
 
 | Section | Values |
 |---|---|
-| `locations/` | `world` `continent` `region` `settlement` `building` `nature` |
-| `bestiary/` | `aberration` `beast` `undead` `plant` `construct` `humanoid` `fey` `monstrosity` |
-| `factions/` | `order` `gang` `council` `school` `family` `party` |
+| `locations/` | `mundo` `continente` `region` `asentamiento` `edificacion` `naturaleza` |
+| `bestiary/` | `aberracion` `bestia` `no-muerto` `planta` `constructo` `humanoide` `feerico` `monstruosidad` |
+| `factions/` | `orden` `banda` `consejo` `escuela` `familia` `party` |
+
+Use a value that is not in that list and two things tell you: the page lands in
+the **Otros** bucket of the Locations tree, and the health page lists it. Both
+are visible, which matters because everything else about `kind` fails silently.
+
+**`kind` is not free text.** It groups the Locations tree
+(`_includes/location_children.html`), seeds its roots
+(`locations/index.md`) and colours the map pins (`[data-kind=…]` in
+`_sass/custom/custom.scss`). Mistype one and nothing errors — the page just
+quietly stops being where it should be.
+
+The location **keys** (`settlement:`, `region:`, `continent:`, `world:`) are a
+different thing and stay in English — see
+[the Location template](location.md).
+
+### `race:` and `subrace:` values
+
+The opposite rule to `kind`: nothing links or groups by race, so it is written
+in Spanish directly in the file. It is only ever **compared** — by the card,
+which prints it as-is, and by Cylledle, which matches without accents or case
+but has no dictionary. `Elf` and `Elfo` are the same race and the board scored
+them red, which is why the vocabulary is closed:
+
+| | Values |
+|---|---|
+| Translated | `Elfo` `Enano` `Gnomo` `Humano` `Semielfo` `Diablo` |
+| Kept as-is | `Tiefling` `Halfling` `Aasimar` `Goblin` `Satyr` |
+| Homebrew | `Goatkin` `Owling` |
+
+Masculine singular whatever the character'"'"'s gender — it is the species, not
+the person, and the column has to compare. The health page lists anything else.
+
+`subrace:` takes the qualifier that used to be glued to the race, so that two
+elves score green on Tipo and the detail survives on the card:
+
+| `race` | `subrace` |
+|---|---|
+| `Elfo` | `Alto` `Del bosque` |
+| `Enano` | `De la colina` |
+| `Tiefling` | `Levistus` |
+| `Goatkin` | `De montaña` |
+
+It is open-ended and not linted — add one when the race has a real variant,
+leave it out otherwise. `Semielfo` is a race of its own in 5e, not an elf
+subrace.
 
 ### `status:` values
 

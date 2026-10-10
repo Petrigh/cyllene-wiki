@@ -2,7 +2,7 @@
 title: Aira
 parent: Locations
 summary: Reino de Iranon Goldenstag.
-kind: settlement
+kind: asentamiento
 world: Ta Phaestri
 ---
 

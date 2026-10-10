@@ -2,7 +2,7 @@
 title: Chimi's
 parent: Locations
 summary: Restaurante de Brolwund, salvación de los antojos fae.
-kind: building
+kind: edificacion
 settlement: Brolwund
 ---
 

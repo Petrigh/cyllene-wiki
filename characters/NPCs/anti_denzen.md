@@ -3,6 +3,8 @@ title: Anti-Denzen
 parent: Characters
 summary: Clon malvado
 type: npc
+race: Tiefling
+class: Hexblade Warlock
 location: Brolwund
 ---
 

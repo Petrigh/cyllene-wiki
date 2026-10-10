@@ -1,7 +1,7 @@
 ---
 title: Casino El Diva
 parent: Locations
-kind: building
+kind: edificacion
 settlement: Brolwund
 summary: Juegos de azar y glamour
 ---
