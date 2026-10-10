@@ -70,8 +70,42 @@
 {%- if site.map_3d_default == true -%}{%- assign map_mode_default = "3d" -%}{%- endif -%}
 
 {%- assign map_relief = site.map_3d_relief | default: 0.12 -%}
-{%- assign map_blur = site.map_3d_smooth | default: 6 -%}
+{%- comment -%}
+  El fallback es 0 y no 6: el heightmap ya viene suavizado desde
+  tools/make_heightmap.py, y volver a difuminarlo aca solo achata las cumbres
+  que el generador modelo a proposito.
+{%- endcomment -%}
+{%- assign map_blur = site.map_3d_smooth | default: 0 -%}
+{%- comment -%}
+  Nivel del mar, en las mismas unidades 0..1 que tiene el heightmap. Lo FIJA el
+  generador --es H[1], el piso del primer escalon de tierra-- y de aca sale la
+  altura del plano de agua. El generador verifica que _config.yml diga lo mismo
+  que su H[1], asi que el default de aca solo cubre un _config.yml sin la clave.
+  Antes era un 0.035 clavado en el JS que no tenia ninguna relacion con el
+  dibujo, y por eso habia tierra pintada abajo del agua.
+{%- endcomment -%}
+{%- assign map_sea = site.map_3d_sea | default: 0.25 -%}
 {%- assign map_height_img = "/assets/img/map-height.png" -%}
+
+{%- comment -%}
+  La URL del heightmap va versionada por fecha de modificacion. No es higiene:
+  el heightmap se regenera cada vez que se repinta la mascara, pero el nivel del
+  mar con el que hay que leerlo sale de _config.yml, que el navegador recarga
+  siempre. Sin versionar, el navegador empareja un heightmap VIEJO con un
+  map_3d_sea NUEVO. Medido contra el heightmap pintado a mano: la meseta de
+  tierra esta en 0.161 y el plano de agua queda en 0.247, o sea el continente
+  entero abajo del agua, en silencio y sin un solo cambio en el codigo.
+
+  El fallback a site.time esta porque modified_time depende de la version de
+  Jekyll: si no existiera, el assign quedaria vacio, saldria un "?v=" pelado y
+  volveria el bug. Peor caso, se bustea una vez por build.
+{%- endcomment -%}
+{%- assign map_height_file = site.static_files | where: "path", map_height_img | first -%}
+{%- if map_height_file.modified_time -%}
+  {%- assign map_height_v = map_height_file.modified_time | date: "%s" -%}
+{%- else -%}
+  {%- assign map_height_v = site.time | date: "%s" -%}
+{%- endif -%}
 
 {%- comment -%}
   La textura del terreno: la version sin carteles si ya existe. Se pregunta por
@@ -97,9 +131,10 @@
   style="--campaign-map-max-height: {{ map_max_height }};"
   data-image="{{ map_image | relative_url }}"
   data-texture="{{ map_texture | relative_url }}"
-  data-heightmap="{{ map_height_img | relative_url }}"
+  data-heightmap="{{ map_height_img | relative_url }}?v={{ map_height_v }}"
   data-relief="{{ map_relief }}"
   data-smooth="{{ map_blur }}"
+  data-sea="{{ map_sea }}"
   data-mode-default="{{ map_mode_default }}">
 
   {%- if map_3d_on %}
@@ -293,6 +328,9 @@
       heightUrl: wrap.dataset.heightmap,
       relief: parseFloat(wrap.dataset.relief) || 0.12,
       heightBlur: parseFloat(wrap.dataset.smooth),
+      // isFinite y no "|| 0.25": con || un nivel del mar de 0 seria imposible
+      // de expresar, y 0 es un valor legitimo (mapa sin agua).
+      sea: parseFloat(wrap.dataset.sea),
       width: W,
       height: H
     }).catch(function (err) {

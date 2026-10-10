@@ -1,0 +1,6 @@
+# Salidas de diagnostico de make_heightmap.py: se regeneran solas y no son
+# fuente. Lo que SI va al repo es map-tiers.png, que es el dibujo.
+map-tiers-draft.png
+map-tiers-draft-overlay.png
+map-tiers-overlay.png
+map-tiers-problemas.png
