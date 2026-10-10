@@ -2,7 +2,7 @@
 title: Salacia
 parent: Locations
 summary: Asentamiento.
-kind: settlement
+kind: asentamiento
 settlement: Ciudad Capital
 ---
 

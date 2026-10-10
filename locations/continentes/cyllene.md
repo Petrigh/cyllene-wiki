@@ -1,7 +1,7 @@
 ---
 title: Cyllene
 parent: Locations
-kind: continent
+kind: continente
 world: Ta Phaestri
 summary: el norte en esta region es una sugerencia
 image: /assets/img/map.jpg

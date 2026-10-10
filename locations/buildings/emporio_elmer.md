@@ -2,7 +2,7 @@
 title: Shady Elmer's Fun Emporium
 parent: Locations
 summary: Dungeon temática de payasos, espejos y carnavales.
-kind: building
+kind: edificacion
 continent: Cyllene
 status: Destruido
 ---

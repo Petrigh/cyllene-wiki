@@ -115,7 +115,7 @@
   transition: transform 0.12s ease-out, background-color 0.12s ease-out;
 
   &[data-kind="region"] { background: #7d6a32; }
-  &[data-kind="nature"] { background: #3f6b3a; }
+  &[data-kind="naturaleza"] { background: #3f6b3a; }
 }
 
 // El unico feedback INMEDIATO del marcador, y por eso importa que se quede:

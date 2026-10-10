@@ -2,7 +2,7 @@
 title: Faro de Slumberhaven
 parent: Locations
 summary: Pequeño faro conectado a la costa por una red de raíces.
-kind: building
+kind: edificacion
 settlement: Slumberhaven
 ---
 

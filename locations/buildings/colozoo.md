@@ -2,7 +2,7 @@
 title: Colozoo
 parent: Locations
 summary: Coliseo de Glavok
-kind: building
+kind: edificacion
 settlement: Glavok
 ---
 

@@ -2,7 +2,7 @@
 title: Capilla de Treboles
 parent: Locations
 summary: Un shopping abandonado.
-kind: building
+kind: edificacion
 settlement: Brolwund
 status: Abandonado
 ---

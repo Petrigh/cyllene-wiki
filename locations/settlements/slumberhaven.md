@@ -2,7 +2,7 @@
 title: Slumberhaven
 parent: Locations
 summary: Último pueblo antes de la muralla del Bosque.
-kind: settlement
+kind: asentamiento
 region: Hondonada de los faros
 ---
 

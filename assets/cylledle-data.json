@@ -82,19 +82,29 @@ nav_exclude: true
   {%- endif -%}
 
   {%- comment -%}
-    Naturaleza: la columna generalizada. En personajes es la raza; en el resto
-    es `kind`, que en locations ya significa exactamente esto (asentamiento,
+    Tipo: la columna generalizada. En personajes es la raza; en el resto es
+    `kind`, que en locations ya significa exactamente esto (asentamiento,
     edificio, region...) y se extiende igual a facciones y bestiario.
 
     En personajes NO cae de vuelta a `type`: ahi vale "pc"/"npc", que es lo que
     ya dice la columna de seccion. Una celda que repite la anterior no aporta
     nada, y peor: se veria como dato cuando no lo es. Sin raza sale vacia, que
     el tablero pinta gris y no puntua.
+
+    El `kind` se escribe en castellano y en minuscula; de _data/kinds.yml sale
+    su `label`, o sea la forma capitalizada, la misma que dibujan la ficha y la
+    tarjeta de preview. La `race` ya viene en castellano del front matter (hay
+    un lint en _meta/index.md que cuida las dos), asi que la columna entera
+    queda en un solo idioma y dos entidades iguales puntuan igual.
+
+    Ojo: site.data.kinds[cy_p.kind] seria un lookup anidado y Liquid lo
+    resuelve a nil sin fallar. La clave tiene que pasar por cy_kkey primero.
   {%- endcomment -%}
   {%- if cy_sec == "pc" or cy_sec == "npc" -%}
     {%- assign cy_nat = cy_p.race | default: "" -%}
   {%- else -%}
-    {%- assign cy_nat = cy_p.kind | default: cy_p.type | default: "" -%}
+    {%- assign cy_kkey = cy_p.kind | default: cy_p.type | default: "" -%}
+    {%- assign cy_nat = site.data.kinds[cy_kkey].label | default: cy_kkey -%}
   {%- endif -%}
 
   {%- comment -%}

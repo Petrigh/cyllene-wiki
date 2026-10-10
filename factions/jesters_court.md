@@ -2,7 +2,7 @@
 title: Jester's Court
 parent: Factions
 summary: Los que siguen a Jester en el Bosque Inescrutable
-kind: order
+kind: orden
 seat: Templo del Jester
 members: Gareth y Gaia, de Safepoint
 status: Activa

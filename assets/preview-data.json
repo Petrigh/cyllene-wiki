@@ -51,11 +51,13 @@ nav_exclude: true
 
 {%- comment -%}
   Subtipo, traducido igual que en la ficha: `type` en characters, `kind` en
-  locations. El mapa de `kind` es el mismo de wiki_card.html -- se guarda en
-  ingles porque con eso agrupa location_children.html -- y si aparece uno que no
-  esta en la lista se muestra crudo en vez de desaparecer.
+  el resto. El mapa de `kind` sale de _data/kinds.yml, la fuente unica que
+  comparten wiki_card.html, cylledle-data.json y el lint de _meta/index.md.
+  Antes habia una copia parcial aca y se desincronizaba. Un kind que no este
+  en el mapa se muestra crudo en vez de desaparecer.
+
+  `pc`/`npc` no son kinds sino valores de `type`, asi que van aparte.
 {%- endcomment -%}
-{%- assign pv_kinds = "pc|Party Member,npc|NPC,world|Mundo,continent|Continente,region|Region,settlement|Asentamiento,building|Edificacion,nature|Naturaleza" | split: "," -%}
 
 {%- comment -%}
   Todo lo que tenga titulo. El `sort: "url"` es por lo mismo que en
@@ -82,12 +84,13 @@ nav_exclude: true
     {%- endif -%}
   {%- endfor -%}
 
-  {%- assign pv_kind = pv_p.type | default: pv_p.kind | default: "" -%}
-  {%- if pv_kind != "" -%}
-    {%- for pv_k in pv_kinds -%}
-      {%- assign pv_pair = pv_k | split: "|" -%}
-      {%- if pv_pair[0] == pv_kind -%}{%- assign pv_kind = pv_pair[1] -%}{%- break -%}{%- endif -%}
-    {%- endfor -%}
+  {%- assign pv_kkey = pv_p.type | default: pv_p.kind | default: "" -%}
+  {%- if pv_kkey == "pc" -%}
+    {%- assign pv_kind = "Party Member" -%}
+  {%- elsif pv_kkey == "npc" -%}
+    {%- assign pv_kind = "NPC" -%}
+  {%- else -%}
+    {%- assign pv_kind = site.data.kinds[pv_kkey].label | default: pv_kkey -%}
   {%- endif -%}
 
   {%- comment -%}

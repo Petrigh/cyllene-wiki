@@ -19,7 +19,7 @@ title: Marrow Quillane
 parent: Characters
 type: npc
 summary: Undertaker in Greyfen who knows which graves are empty
-race: Human
+race: Humano
 role: Undertaker
 status: Vivo          # Vivo | Muerto | Atrapado | Desaparecido
 faction: The Ashen Compact   # uno solo, no una lista; se omite si no tiene
@@ -35,8 +35,10 @@ facts:
 Every page under `characters/` gets a card in the right-hand column, built
 from the frontmatter above — no include to add, it is automatic.
 
-- `race`, `class`, `player`, `role`, `pantheon`, `faction`, `location`,
-  `status`, `attitude`, `aliases` and `facts` are the fields it reads here.
+- `race`, `subrace`, `class`, `player`, `role`, `pantheon`, `faction`,
+  `location`, `status`, `attitude`, `aliases` and `facts` are the fields it
+  reads here. `race` goes in Spanish and from a closed list — see
+  [the side card reference](card.md).
   Leave out whatever you do not know yet.
 - The portrait comes from `assets/pjs/`, matched on the filename: a page at
   `characters/NPCs/gareth.md` picks up `assets/pjs/Gareth.jpeg`.

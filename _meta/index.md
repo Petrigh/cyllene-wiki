@@ -655,8 +655,8 @@ vigila los archivos que le pasan por `--config` y se reinicia solo.
   Tres las deriva solo de los links de las sesiones y no hay nada que cargar.
   Las otras dos salen del front matter, y son las que se llenan a mano:
 
-      Naturaleza   race en characters, kind en el resto
-      Region       region / settlement / location / continent / seat / world
+      Tipo     race en characters, kind en el resto
+      Region   region / settlement / location / continent / seat / world
 
   `faction` y `status` supieron ser columnas y ya no lo son (ver el porque en
   el encabezado de _includes/cylledle.html), asi que su cobertura no se mide
@@ -672,9 +672,10 @@ vigila los archivos que le pasan por `--config` y se reinicia solo.
 
   1. Un valor fuera del vocabulario. "Viva" y "Vivo" son la misma idea escrita
      de dos formas, y la ficha las muestra tal cual: dos entidades en el mismo
-     estado terminan diciendo cosas distintas. Un kind fuera de la lista
-     ademas sale sin traducir en la ficha, y ese kind SI es una columna del
-     acertijo (Naturaleza).
+     estado terminan diciendo cosas distintas. En `race` eso ya habia pasado y
+     se notaba en el juego: "Elf" y "Elfo" son la misma raza y la columna Tipo
+     las puntuaba en rojo. Un kind fuera del mapa, ademas, sale sin traducir
+     tanto en la ficha como en el tablero.
   2. Un faction con mas de un valor. wiki_card lo enlaza, o sea que espera un
      escalar; una lista la pega en un solo string y deja de resolver. Ya paso
      una vez, y quien lo encontro fue el chequeo de front matter de mas
@@ -683,8 +684,18 @@ vigila los archivos que le pasan por `--config` y se reinicia solo.
   El barrido es lineal y sobre hs_scan, el mismo predicado que usan
   assets/graph-data.json y assets/cylledle-data.json. No inventar otra lista.
 {%- endcomment -%}
-{%- assign hs_cy_kinds  = "|world|continent|region|settlement|building|nature|aberration|beast|undead|plant|construct|humanoid|fey|monstrosity|order|gang|council|school|family|party|" -%}
+{%- comment -%}
+  El vocabulario de `kind` NO se escribe aca: son las claves de _data/kinds.yml,
+  el mismo mapa con el que la ficha y el acertijo lo traducen. Un kind que no
+  este ahi es justamente el que sale sin traducir, asi que una sola lista
+  decide las dos cosas y no se pueden desincronizar.
+
+  `status` y `race` si viven aca: no se traducen en ningun lado, solo se
+  comparan, asi que no hay otro archivo que los conozca. La referencia para
+  quien escribe esta en templates/card.md.
+{%- endcomment -%}
 {%- assign hs_cy_states = "|Vivo|Muerto|Atrapado|Desaparecido|En pie|Destruido|Tomado|Abandonado|Perdido|Activa|Disuelta|Latente|" -%}
+{%- assign hs_cy_races  = "|Elfo|Enano|Gnomo|Humano|Semielfo|Diablo|Tiefling|Halfling|Aasimar|Goblin|Satyr|Goatkin|Owling|" -%}
 {%- assign hs_cy_secs = "/characters/,/locations/,/factions/,/bestiary/" | split: "," -%}
 {%- assign hs_cy_n = 0 -%}
 {%- assign hs_cy_nat = 0 -%}
@@ -700,7 +711,7 @@ vigila los archivos que le pasan por `--config` y se reinicia solo.
   {%- unless hs_cy_in -%}{%- continue -%}{%- endunless -%}
   {%- assign hs_cy_n = hs_cy_n | plus: 1 -%}
 
-  {%- comment -%} Naturaleza: la raza en personajes, el kind en todo lo demas. {%- endcomment -%}
+  {%- comment -%} Tipo: la raza en personajes, el kind en todo lo demas. {%- endcomment -%}
   {%- if hs_p.url contains "/characters/" -%}
     {%- assign hs_cy_nature = hs_p.race -%}
   {%- else -%}
@@ -710,10 +721,29 @@ vigila los archivos que le pasan por `--config` y se reinicia solo.
   {%- assign hs_cy_where = hs_p.region | default: hs_p.settlement | default: hs_p.location | default: hs_p.continent | default: hs_p.seat | default: hs_p.world -%}
   {%- if hs_cy_where -%}{%- assign hs_cy_reg = hs_cy_reg | plus: 1 -%}{%- endif -%}
 
+  {%- comment -%}
+    La clave pasa por una variable suelta: site.data.kinds[hs_p.kind] es un
+    lookup anidado y Liquid lo resuelve a nil sin fallar, con lo cual TODO
+    kind saldria reportado.
+  {%- endcomment -%}
   {%- if hs_p.kind -%}
-    {%- assign hs_cy_probe = "|" | append: hs_p.kind | append: "|" -%}
-    {%- unless hs_cy_kinds contains hs_cy_probe -%}
+    {%- assign hs_cy_kkey = hs_p.kind -%}
+    {%- unless site.data.kinds[hs_cy_kkey] -%}
       {%- capture hs_cy_bad -%}{{ hs_cy_bad }}<li><a href="{{ hs_p.url | relative_url }}">{{ hs_p.title }}</a> &mdash; <code>kind: {{ hs_p.kind }}</code></li>{%- endcapture -%}
+      {%- assign hs_cy_nbad = hs_cy_nbad | plus: 1 -%}
+    {%- endunless -%}
+  {%- endif -%}
+
+  {%- comment -%}
+    La raza se compara, no se traduce: "Elf" y "Elfo" son la misma raza y el
+    tablero las puntuaba en rojo. Por eso va en castellano y en masculino
+    singular, igual que `status`. La subraza NO se valida: es abierta y son
+    siete entradas.
+  {%- endcomment -%}
+  {%- if hs_p.race -%}
+    {%- assign hs_cy_probe = "|" | append: hs_p.race | append: "|" -%}
+    {%- unless hs_cy_races contains hs_cy_probe -%}
+      {%- capture hs_cy_bad -%}{{ hs_cy_bad }}<li><a href="{{ hs_p.url | relative_url }}">{{ hs_p.title }}</a> &mdash; <code>race: {{ hs_p.race }}</code></li>{%- endcapture -%}
       {%- assign hs_cy_nbad = hs_cy_nbad | plus: 1 -%}
     {%- endunless -%}
   {%- endif -%}
@@ -747,7 +777,7 @@ sesiones&mdash; no se cargan a mano y no figuran aca.
 
 | Columna | Clave | Cargadas | |
 |---|---|--:|---|
-| Naturaleza | `race` / `kind` | {{ hs_cy_nat }} / {{ hs_cy_n }} | {{ hs_cy_nat | times: 100 | divided_by: hs_cy_n }}% |
+| Tipo | `race` / `kind` | {{ hs_cy_nat }} / {{ hs_cy_n }} | {{ hs_cy_nat | times: 100 | divided_by: hs_cy_n }}% |
 | Region | `location` y compania | {{ hs_cy_reg }} / {{ hs_cy_n }} | {{ hs_cy_reg | times: 100 | divided_by: hs_cy_n }}% |
 
 {% if hs_cy_nbad == 0 %}
@@ -757,8 +787,10 @@ Todos los valores estan dentro del vocabulario.
 <summary><b>Valores fuera del vocabulario</b> &mdash; {{ hs_cy_nbad }}</summary>
 <p>El juego compara sin acentos ni mayusculas, pero no sabe que dos palabras
 distintas significan lo mismo: <code>Viva</code> y <code>Vivo</code> puntuan
-como estados diferentes. Los valores validos estan en
-<code>templates/card.md</code>.</p>
+como estados diferentes, y <code>Elf</code> no empata con <code>Elfo</code>.
+Los valores validos de <code>status</code> y <code>race</code> estan en
+<code>templates/card.md</code>; los de <code>kind</code>, en
+<code>_data/kinds.yml</code>.</p>
 <ul>{{ hs_cy_bad }}</ul>
 </details>
 {% endif %}

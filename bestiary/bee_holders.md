@@ -2,7 +2,7 @@
 title: Bee-Holders
 parent: Bestiary
 summary: Guardaban los items de la Corte del Jester
-kind: monstrosity
+kind: monstruosidad
 location: Bosque Inescrutable
 ---
 

@@ -4,10 +4,12 @@
   Uso:  {% include location_children.html title=page.title depth=0 %}
 
   Un hijo es CUALQUIER pagina de Locations que nombre a este titulo en su
-  world / continent / region / settlement — sin importar su kind. Por eso una
-  building colgada de un continente (Shady Elmer's), un settlement colgado del
-  mundo (Aira) o una nature colgada de una region (Muralla del Bosque) aparecen
-  donde corresponde en vez de perderse.
+  world / continent / region / settlement — sin importar su kind. Ojo que esos
+  cuatro son CLAVES del front matter y van en ingles; los kind son valores y
+  van en castellano. Por eso una edificacion colgada de un continente (Shady
+  Elmer's), un asentamiento colgado del mundo (Aira) o una naturaleza colgada
+  de una region (Muralla del Bosque) aparecen donde corresponde en vez de
+  perderse.
 
   Cada hijo lo dibuja location_item.html, que decide si va plegable o suelto.
 
@@ -34,32 +36,43 @@
 
   {%- if lc_kids.size > 0 -%}
 
-    {%- assign lc_groups = "continent|Continentes,region|Regiones,nature|Naturaleza,settlement|Asentamientos,building|Edificaciones" | split: "," -%}
-    {%- for lc_g in lc_groups -%}
-      {%- assign lc_all = site.pages | where: "parent", "Locations" -%}
-      {%- assign lc_w = lc_all | where: "world",      include.title -%}
-      {%- assign lc_c = lc_all | where: "continent",  include.title -%}
-      {%- assign lc_r = lc_all | where: "region",     include.title -%}
-      {%- assign lc_s = lc_all | where: "settlement", include.title -%}
-      {%- assign lc_kids = lc_w | concat: lc_c | concat: lc_r | concat: lc_s | uniq -%}
-      {%- assign lc_pair = lc_g | split: "|" -%}
-      {%- assign lc_set = lc_kids | where: "kind", lc_pair[0] | sort: "title" -%}
-      {%- if lc_set.size > 0 -%}
-        <p class="loc-group"><b>{{ lc_pair[1] }}</b></p>
-        <ul>
-        {%- for lc_kid in lc_set -%}
-          {% include location_item.html page=lc_kid depth=include.depth %}
-        {%- endfor %}
-        </ul>
+    {%- comment -%}
+      Los grupos salen de _data/kinds.yml: un kind con `plural` es un grupo, y
+      el orden del archivo es el orden en que salen. Antes la lista vivia aca,
+      duplicando el vocabulario que el lint y la ficha ya sacaban de alla sin
+      que nada obligara a las dos a coincidir.
+
+      lc_k[0] es la clave (el valor que va en el front matter) y lc_k[1] el
+      hash con label y plural.
+    {%- endcomment -%}
+    {%- for lc_k in site.data.kinds -%}
+      {%- assign lc_meta = lc_k[1] -%}
+      {%- if lc_meta.plural -%}
+        {%- assign lc_all = site.pages | where: "parent", "Locations" -%}
+        {%- assign lc_w = lc_all | where: "world",      include.title -%}
+        {%- assign lc_c = lc_all | where: "continent",  include.title -%}
+        {%- assign lc_r = lc_all | where: "region",     include.title -%}
+        {%- assign lc_s = lc_all | where: "settlement", include.title -%}
+        {%- assign lc_kids = lc_w | concat: lc_c | concat: lc_r | concat: lc_s | uniq -%}
+        {%- assign lc_set = lc_kids | where: "kind", lc_k[0] | sort: "title" -%}
+        {%- if lc_set.size > 0 -%}
+          <p class="loc-group"><b>{{ lc_meta.plural }}</b></p>
+          <ul>
+          {%- for lc_kid in lc_set -%}
+            {% include location_item.html page=lc_kid depth=include.depth %}
+          {%- endfor %}
+          </ul>
+        {%- endif -%}
       {%- endif -%}
     {%- endfor -%}
 
     {%- comment -%}
       Cualquier kind que no sea uno de los cinco de arriba — vacio, mal escrito
-      o nuevo — cae aca en vez de desaparecer del arbol. lc_kids se recalcula
-      por lo mismo que arriba: el for de los grupos ya recursiono.
+      o nuevo — cae aca en vez de desaparecer del arbol. "De arriba" es ahora
+      "tiene plural en _data/kinds.yml", asi que no hay una segunda lista que
+      se pueda desincronizar de la primera. lc_kids se recalcula por lo mismo
+      que arriba: el for de los grupos ya recursiono.
     {%- endcomment -%}
-    {%- assign lc_known = "continent,region,nature,settlement,building" | split: "," -%}
     {%- assign lc_all = site.pages | where: "parent", "Locations" -%}
     {%- assign lc_w = lc_all | where: "world",      include.title -%}
     {%- assign lc_c = lc_all | where: "continent",  include.title -%}
@@ -68,7 +81,14 @@
     {%- assign lc_rest = lc_w | concat: lc_c | concat: lc_r | concat: lc_s | uniq | sort: "title" -%}
     {%- capture lc_other -%}
       {%- for lc_kid in lc_rest -%}
-        {%- unless lc_known contains lc_kid.kind -%}
+        {%- comment -%}
+          La clave por variable suelta: site.data.kinds[lc_kid.kind] es un
+          lookup anidado y Liquid lo resuelve a nil sin fallar, con lo cual
+          TODAS las paginas caerian en Otros.
+        {%- endcomment -%}
+        {%- assign lc_kk = lc_kid.kind -%}
+        {%- assign lc_km = site.data.kinds[lc_kk] -%}
+        {%- unless lc_km.plural -%}
           {% include location_item.html page=lc_kid depth=include.depth %}
         {%- endunless -%}
       {%- endfor -%}

@@ -5,7 +5,7 @@ type: npc
 summary: Abuelo de Iri
 location: CreekWater Ranch
 status: Vivo
-race: Elf
+race: Elfo
 ---
 
 # Jebediah Creekwater

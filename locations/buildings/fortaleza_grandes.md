@@ -1,7 +1,7 @@
 ---
 title: Fortaleza de los Cinco
 parent: Locations
-kind: building
+kind: edificacion
 region: Costa Brumosa
 summary: No tiene forma de T
 ---

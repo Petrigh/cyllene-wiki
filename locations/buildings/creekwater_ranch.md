@@ -1,7 +1,7 @@
 ---
 title: CreekWater Ranch
 parent: Locations
-kind: building
+kind: edificacion
 region: Costa Brumosa
 summary: Rancho del abuelo de Iri
 ---

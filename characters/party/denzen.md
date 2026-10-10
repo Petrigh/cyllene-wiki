@@ -4,7 +4,8 @@ parent: The Party
 summary: 6to miembro de los Cinco Grandes
 grand_parent: Factions
 type: pc
-race: Tiefling de Levistus
+race: Tiefling
+subrace: Levistus
 class: Hexblade Warlock
 player: Johnny
 faction: Cinco Grandes

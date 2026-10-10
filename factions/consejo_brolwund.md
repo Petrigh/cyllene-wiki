@@ -2,7 +2,7 @@
 title: Consejo de Brolwund
 parent: Factions
 summary: La party se entera de su existencia en la muni.
-kind: council
+kind: consejo
 seat: Brolwund
 status: Activa
 ---

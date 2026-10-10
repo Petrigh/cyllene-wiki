@@ -15,7 +15,7 @@ Copy into `factions/`.
 title: The Ashen Compact
 parent: Factions
 summary: Salvagers with a monopoly on anything pulled from the burn scar
-kind: gang            # order | gang | council | school | family | party
+kind: banda           # orden | banda | consejo | escuela | familia | party
 standing: Wary
 leader: Marrow Quillane
 seat: Greyfen

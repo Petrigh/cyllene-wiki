@@ -2,7 +2,7 @@
 title: Garnier
 parent: Locations
 summary: Pueblo al sur este del bosque.
-kind: settlement
+kind: asentamiento
 region: Hondonada de los faros
 ---
 

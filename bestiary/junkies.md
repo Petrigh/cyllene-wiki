@@ -2,7 +2,7 @@
 title: Junkies
 parent: Bestiary
 summary: Consumidores de RCaine, explotan
-kind: humanoid
+kind: humanoide
 location: Brolwund
 ---
 

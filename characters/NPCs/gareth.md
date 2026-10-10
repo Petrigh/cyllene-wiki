@@ -3,7 +3,8 @@ title: Gareth
 parent: Characters
 type: npc
 summary: Ranger de Safepoint que buscaba a su hermana
-race: Wood elf
+race: Elfo
+subrace: Del bosque
 status: Vivo
 faction: Jester's Court
 location: Safepoint

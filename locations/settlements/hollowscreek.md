@@ -2,7 +2,7 @@
 title: HollowsCreek
 parent: Locations
 summary: 
-kind: settlement
+kind: asentamiento
 region: Hondonada de los faros
 summary: Pueblo sin alma
 ---

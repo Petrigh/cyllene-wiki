@@ -3,6 +3,8 @@ title: Anti-First
 parent: Characters
 summary: Clon malvado
 type: npc
+race: Enano
+class: Ranger (Revised)
 ---
 
 # Anti-First

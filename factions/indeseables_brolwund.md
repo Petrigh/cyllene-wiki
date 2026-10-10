@@ -4,9 +4,9 @@ parent: Factions
 summary: Bandidos echados de Brolwund por los paladines.
 image: /assets/img/Indeseables Brolwund.jpg
 image_alt: Parche de los Indeseables de Brolwund
-kind: pandilla
+kind: banda
 seat: HollowsCreek
-status: Presa
+status: Presos
 ---
 
 # Indeseables de Brolwund

@@ -2,7 +2,7 @@
 title: Mushy
 parent: Bestiary
 summary: Humanoid Mushrooms
-kind: plant
+kind: planta
 location: Safepoint
 ---
 

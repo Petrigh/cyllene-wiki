@@ -2,7 +2,7 @@
 title: Biblioteca de Brolwund
 parent: Locations
 summary: Donde la party encontró los mapas con información.
-kind: building
+kind: edificacion
 settlement: Brolwund
 ---
 

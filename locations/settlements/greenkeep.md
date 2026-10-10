@@ -2,7 +2,7 @@
 title: Greenkeep
 parent: Locations
 summary: Otro asentamiento de los Mushies, solo mencionado.
-kind: settlement
+kind: asentamiento
 region: Bosque Inescrutable
 ---
 

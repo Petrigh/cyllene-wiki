@@ -5,7 +5,7 @@ type: npc
 summary: Wizard de los 5 Grandes
 faction: Cinco Grandes
 location: Naivara
-race: Elf
+race: Elfo
 ---
 
 # Naivara Noldorin

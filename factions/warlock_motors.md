@@ -3,7 +3,7 @@ title: Warlock Motors
 parent: Factions
 summary: Conocidos en el roadtrip.
 image: /assets/img/Warlock Motors.jpg
-kind: pandilla
+kind: banda
 status: Activa
 ---
 

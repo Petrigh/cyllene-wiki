@@ -1,7 +1,7 @@
 ---
 title: Turn on the Lights
 parent: Locations
-kind: building
+kind: edificacion
 settlement: Verna
 summary: Posada
 ---

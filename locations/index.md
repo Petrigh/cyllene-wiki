@@ -10,7 +10,7 @@ has_toc: false
 Lugares que la party a visitado, o tiene informacion al respecto.
 
 {% assign all = site.pages | where: "parent", page.title %}
-{% assign worlds = all | where: "kind", "world" | sort: "title" %}
+{% assign worlds = all | where: "kind", "mundo" | sort: "title" %}
 
 {% if worlds.size > 0 %}
 <ul class="loc-tree">
@@ -57,7 +57,7 @@ Aun no se han agregado.
 {% assign titles = all | map: "title" %}
 {% capture loose %}
 {%- for p in all -%}
-  {%- unless p.kind == "world" -%}
+  {%- unless p.kind == "mundo" -%}
     {%- assign key = p.settlement | default: p.region | default: p.continent | default: p.world -%}
     {%- if key == nil or key == "" %}
       <li><a href="{{ p.url | relative_url }}">{{ p.title }}</a> — sin lugar asignado</li>
