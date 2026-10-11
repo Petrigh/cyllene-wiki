@@ -82,14 +82,17 @@ map_3d_smooth: 0
 # Nivel del mar, en las mismas unidades 0..1 del heightmap. De aca sale la
 # altura del plano de agua.
 #
-# NO es una perilla de gusto: lo fija tools/make_heightmap.py --es H[1], el piso
-# del primer escalon de tierra-- y toda la tierra queda por encima POR
+# NO es una perilla de gusto: lo fija tools/make_heightmap.py --es H[LAND_TIER],
+# el piso del primer escalon de tierra-- y toda la tierra queda por encima POR
 # CONSTRUCCION. No se copia a mano: el generador compara este numero contra su
-# H[1] al terminar y falla si no coinciden.
+# H[LAND_TIER] al terminar y falla si no coinciden.
+#
+# La UNICA tierra que queda por debajo es la hondonada seca, que esta pintada a
+# proposito y que el visor destapa con assets/img/map-water.png.
 #   python tools/make_heightmap.py --write-config   lo corrige solo.
 # Antes este numero no existia: el JS tenia un 0.035 clavado que no sabia nada
 # del dibujo, y por eso habia 569 pixeles de tierra pintada abajo del agua.
-map_3d_sea: 0.25
+map_3d_sea: 0.400
 
 # Piso de apariciones para que una entidad pueda SER la respuesta del acertijo
 # diario (cylledle.md / _includes/cylledle.html). Una entidad "aparece" en una

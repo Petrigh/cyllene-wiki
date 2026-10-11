@@ -78,14 +78,15 @@
 {%- assign map_blur = site.map_3d_smooth | default: 0 -%}
 {%- comment -%}
   Nivel del mar, en las mismas unidades 0..1 que tiene el heightmap. Lo FIJA el
-  generador --es H[1], el piso del primer escalon de tierra-- y de aca sale la
-  altura del plano de agua. El generador verifica que _config.yml diga lo mismo
-  que su H[1], asi que el default de aca solo cubre un _config.yml sin la clave.
-  Antes era un 0.035 clavado en el JS que no tenia ninguna relacion con el
-  dibujo, y por eso habia tierra pintada abajo del agua.
+  generador --es H[LAND_TIER], el piso del primer escalon de tierra-- y de aca
+  sale la altura del plano de agua. El generador verifica que _config.yml diga
+  lo mismo que su H[LAND_TIER], asi que el default de aca solo cubre un
+  _config.yml sin la clave. Antes era un 0.035 clavado en el JS que no tenia
+  ninguna relacion con el dibujo, y por eso habia tierra pintada abajo del agua.
 {%- endcomment -%}
-{%- assign map_sea = site.map_3d_sea | default: 0.25 -%}
+{%- assign map_sea = site.map_3d_sea | default: 0.4 -%}
 {%- assign map_height_img = "/assets/img/map-height.png" -%}
+{%- assign map_water_img = "/assets/img/map-water.png" -%}
 
 {%- comment -%}
   La URL del heightmap va versionada por fecha de modificacion. No es higiene:
@@ -105,6 +106,29 @@
   {%- assign map_height_v = map_height_file.modified_time | date: "%s" -%}
 {%- else -%}
   {%- assign map_height_v = site.time | date: "%s" -%}
+{%- endif -%}
+
+{%- comment -%}
+  La mascara de agua, por el mismo camino y por el mismo motivo. Es 1 donde hay
+  agua y 0 sobre la hondonada seca --la region que esta abajo del nivel del mar
+  y que NO se inunda-- y sin ella el plano de agua, que es uno solo y cubre
+  todo, la taparia como si fuera un lago.
+
+  Se pregunta por site.static_files: si el archivo no esta --porque el
+  heightmap todavia no se regenero con la version nueva del generador-- el
+  assign queda vacio, no se emite el data-, y el visor dibuja el agua entera
+  como siempre. Es degradacion, no error.
+{%- endcomment -%}
+{%- assign map_water_file = site.static_files | where: "path", map_water_img | first -%}
+{%- if map_water_file -%}
+  {%- if map_water_file.modified_time -%}
+    {%- assign map_water_v = map_water_file.modified_time | date: "%s" -%}
+  {%- else -%}
+    {%- assign map_water_v = site.time | date: "%s" -%}
+  {%- endif -%}
+  {%- assign map_water_url = map_water_img | relative_url | append: "?v=" | append: map_water_v -%}
+{%- else -%}
+  {%- assign map_water_url = "" -%}
 {%- endif -%}
 
 {%- comment -%}
@@ -132,6 +156,7 @@
   data-image="{{ map_image | relative_url }}"
   data-texture="{{ map_texture | relative_url }}"
   data-heightmap="{{ map_height_img | relative_url }}?v={{ map_height_v }}"
+  data-watermask="{{ map_water_url }}"
   data-relief="{{ map_relief }}"
   data-smooth="{{ map_blur }}"
   data-sea="{{ map_sea }}"
@@ -326,6 +351,9 @@
       pins: pins,
       imageUrl: wrap.dataset.texture,
       heightUrl: wrap.dataset.heightmap,
+      // Vacio si el generador todavia no la escribio. El visor lo trata como
+      // "no hay hondonada" y dibuja el agua entera.
+      waterMaskUrl: wrap.dataset.watermask || '',
       relief: parseFloat(wrap.dataset.relief) || 0.12,
       heightBlur: parseFloat(wrap.dataset.smooth),
       // isFinite y no "|| 0.25": con || un nivel del mar de 0 seria imposible

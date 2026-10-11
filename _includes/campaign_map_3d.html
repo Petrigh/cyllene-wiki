@@ -31,7 +31,7 @@
 
   API que consume campaign_map.html:
 
-      window.CampaignMap3D.mount({stage, pins, imageUrl, heightUrl,
+      window.CampaignMap3D.mount({stage, pins, imageUrl, heightUrl, waterMaskUrl,
                                   width, height, relief, heightBlur, sea}) -> Promise
       window.CampaignMap3D.unmount()
 
@@ -191,11 +191,11 @@
     // come las cumbres angostas-- asi que suele ir de la mano de subir relief.
     var SMOOTH = isFinite(o.heightBlur) ? o.heightBlur : 0;
     // Nivel del mar, en las mismas unidades 0..1 que devuelve sampleH. No es
-    // una perilla de gusto: lo fija el generador del heightmap (es H[1], el
+    // una perilla de gusto: lo fija el generador del heightmap (es H[LAND_TIER],
     // piso del primer escalon de tierra) y toda la tierra queda por encima POR
     // CONSTRUCCION. Antes aca habia un 0.035 clavado que no sabia nada del
     // dibujo, y de ahi salia tierra pintada abajo del agua.
-    var SEA    = isFinite(o.sea) ? o.sea : 0.25;
+    var SEA    = isFinite(o.sea) ? o.sea : 0.4;
     // El plano de agua va en el nivel del mar MENOS UN PELO. Justo EN el nivel,
     // el agua y la orilla quedan coplanares a lo largo de toda la costa y eso
     // titila; el pelo de menos deja ver una franja de playa. Es una sola
@@ -240,14 +240,27 @@
 
     // ---- Terreno y agua ----------------------------------------------------
     var terrain = null, water = null, colorTex = null, sampleH = null;
+    var waterTex = null;   // mascara de agua; null = agua en todos lados
     var ready = false;
     var yLo = 0, yHi = 0;   // rango real de altura de la malla, para info()
     var landFrac = 0;       // fraccion de la malla que asoma del agua
 
-    Promise.all([loadImage(o.heightUrl), loadTexture(o.imageUrl)])
+    // La mascara de agua se carga en paralelo pero NO puede voltear el mapa:
+    // si falta o falla, se resuelve en null y el agua se dibuja entera, que es
+    // exactamente lo que pasaba antes de que existiera. Un continente sin agua
+    // seria muchisimo peor que una hondonada inundada.
+    var maskReady = !o.waterMaskUrl ? Promise.resolve(null)
+      : loadTexture(o.waterMaskUrl, false).catch(function () {
+          console.warn('campaign_map_3d: no cargo la mascara de agua (' +
+            o.waterMaskUrl + '); se dibuja el agua entera.');
+          return null;
+        });
+
+    Promise.all([loadImage(o.heightUrl), loadTexture(o.imageUrl), maskReady])
       .then(function (r) {
         sampleH = sampler(r[0], SMOOTH);
         colorTex = r[1];
+        waterTex = r[2];
         makeTerrain();
         for (var c = 4; c < 8; c++) { CORNERS[c].y = yHi; }
         placePins();
@@ -260,10 +273,12 @@
         console.warn('campaign_map_3d: no se pudo armar el terreno.', err);
       });
 
-    function loadTexture(url) {
+    // srgb = false para las mascaras: el alphaMap es un dato, no un color, y
+    // marcarlo como sRGB le aplicaria la curva y correria el canto del agujero.
+    function loadTexture(url, srgb) {
       return new Promise(function (res, rej) {
         new THREE.TextureLoader().load(url, function (t) {
-          t.colorSpace = THREE.SRGBColorSpace;
+          if (srgb !== false) { t.colorSpace = THREE.SRGBColorSpace; }
           t.anisotropy = renderer.capabilities.getMaxAnisotropy();
           res(t);
         }, undefined, function () { rej(new Error('no cargo ' + url)); });
@@ -297,19 +312,20 @@
       landFrac = above / pos.count;
 
       // El nivel del mar viaja del generador al plano de agua por tres saltos
-      // --H[1] en make_heightmap.py, map_3d_sea en _config.yml, data-sea en el
-      // include-- mientras que el heightmap viaja por su propia URL. Si los dos
-      // caminos se desincronizan --un PNG viejo en cache, o H[1] cambiado sin
-      // copiar-- no hay error en ningun lado: simplemente se hunde el mapa.
-      // Medido: el heightmap generado deja 0.31 de la malla afuera del agua; el
-      // pintado a mano, cuya meseta de tierra esta en 0.161, deja 0.068, porque
-      // asoman solo las cumbres. Abajo de 0.15 no es un mapa oceanico, es un
-      // heightmap que no corresponde a este nivel del mar.
+      // --H[LAND_TIER] en make_heightmap.py, map_3d_sea en _config.yml,
+      // data-sea en el include-- mientras que el heightmap viaja por su propia
+      // URL. Si los dos caminos se desincronizan --un PNG viejo en cache, o la
+      // tabla H cambiada sin copiar-- no hay error en ningun lado: simplemente
+      // se hunde el mapa.
+      // Medido: el heightmap generado deja ~0.31 de la malla afuera del agua;
+      // el pintado a mano, cuya meseta de tierra esta en 0.161, deja 0.068,
+      // porque asoman solo las cumbres. Abajo de 0.15 no es un mapa oceanico,
+      // es un heightmap que no corresponde a este nivel del mar.
       if (landFrac < 0.15) {
         console.warn('campaign_map_3d: solo el ' + (landFrac * 100).toFixed(1) +
           '% de la malla asoma del agua (sea = ' + SEA + '). El heightmap y ' +
           'map_3d_sea no corresponden. Recargar duro (Ctrl+Shift+R); si sigue, ' +
-          'revisar H[1] en tools/make_heightmap.py contra map_3d_sea en _config.yml.');
+          'revisar H[LAND_TIER] en make_heightmap.py contra map_3d_sea.');
       }
 
       terrain = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
@@ -322,12 +338,32 @@
       // declara el heightmap menos un pelo (ver arriba).
       // Ya no hay que taparle nada al fondo del mar: el generador le da una
       // cuenca que se hunde al alejarse de la costa, no una chapa plana en 0.
+      var waterMat = new THREE.MeshStandardMaterial({
+        color: 0x4a6b84, roughness: 0.25, metalness: 0.1,
+        transparent: true, opacity: 0.82
+      });
+
+      // La hondonada seca: una region tierra adentro que esta abajo del nivel
+      // del mar y que NO se inunda. Como el agua es UN plano que cubre todo,
+      // la unica forma de que se vea seca es agujerear el plano justo ahi, y
+      // eso lo dice la mascara que escribe tools/make_heightmap.py.
+      //
+      // El plano mide 1.6x el mapa y la mascara cubre el mapa, asi que hay que
+      // mapear la textura al 1/1.6 central: repeat 1.6 y offset -(1.6-1)/2.
+      // Con clamp-to-edge, todo lo que sobresale toma el pixel del borde, que
+      // el generador garantiza que es agua --valida que el anillo exterior de
+      // la mascara sea mar-- asi que el oceano de afuera queda opaco.
+      if (waterTex) {
+        waterTex.wrapS = waterTex.wrapT = THREE.ClampToEdgeWrapping;
+        waterTex.repeat.set(1.6, 1.6);
+        waterTex.offset.set(-0.3, -0.3);
+        waterMat.alphaMap = waterTex;
+        waterMat.needsUpdate = true;
+      }
+
       water = new THREE.Mesh(
         new THREE.PlaneGeometry(MAP_W * 1.6, MAP_D * 1.6),
-        new THREE.MeshStandardMaterial({
-          color: 0x4a6b84, roughness: 0.25, metalness: 0.1,
-          transparent: true, opacity: 0.82
-        })
+        waterMat
       );
       water.rotation.x = -Math.PI / 2;
       water.position.y = WATER_Y;
@@ -745,8 +781,12 @@
         // navegador no es el que corresponde a este sea (ver el warn en
         // makeTerrain).
         landFrac: landFrac,
+        waterMask: !!waterTex,
         // Tiene que dar 0. Es el test de regresion de un pixel para el bug que
         // trajo todo esto: tierra pintada que terminaba abajo del agua.
+        // OJO: un pin DENTRO de la hondonada seca cuenta aca, porque esto mira
+        // la altura y no la mascara de agua. Si alguna vez hay un pin ahi, el
+        // numero deja de ser 0 sin que nada este roto.
         pinsBelowSea: items.filter(function (it) {
           return it.pos.y < WATER_Y;
         }).length,
