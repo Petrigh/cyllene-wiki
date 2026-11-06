@@ -3,8 +3,11 @@ title: Brolwund
 parent: Characters
 summary: Rogue de los 5 Grandes
 type: npc
+race: Gnomo
 faction: Cinco Grandes
-location: Vendaval Gris
+origin: Vendaval Gris
+location: Brolwund
+status: Muerto
 ---
 
 # Brolwund Dogbar

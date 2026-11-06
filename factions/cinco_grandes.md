@@ -15,7 +15,7 @@ Personajes legendarios. Cada uno tiene una ciudad fundada en su honor, que lleva
 
 | Personaje | Clase   | Raza  |
 | -------- | ------- | ----- |
-| [Brolwund](../characters/NPCs/brolwund.md) | Rogue | |
+| [Brolwund](../characters/NPCs/brolwund.md) | Rogue | Gnomo |
 | [Carnahan](../characters/NPCs/carnahan.md) | Paladin | Humano |
 | [Glavok](../characters/NPCs/glavok.md) | Barbar | Enano |
 | [Naivara](../characters/NPCs/naivara.md) | Wizard | Elfa |

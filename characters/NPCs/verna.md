@@ -5,7 +5,8 @@ type: npc
 summary: Cleriga de los 5 Grandes
 race: Halfling
 faction: Cinco Grandes
-location: Montañas Ardientes
+origin: Montañas Ardientes
+location: Verna
 status: Muerto
 ---
 

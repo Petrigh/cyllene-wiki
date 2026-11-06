@@ -3,8 +3,10 @@ title: Carnahan
 parent: Characters
 summary: Paladin de los 5 Grandes
 type: npc
+race: Humano
 faction: Cinco Grandes
 location: Carnahan
+status: Muerto
 ---
 
 # Conrad Carnahan

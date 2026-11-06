@@ -6,6 +6,7 @@ summary: Wizard de los 5 Grandes
 faction: Cinco Grandes
 location: Naivara
 race: Elfo
+status: Vivo
 ---
 
 # Naivara Noldorin
