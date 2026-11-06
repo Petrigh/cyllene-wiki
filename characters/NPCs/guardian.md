@@ -3,6 +3,7 @@ title: The Guardian
 parent: Characters
 type: npc
 summary: Dios de la caza
+race: Dios
 pantheon: Panteón del Bosque
 status: Desaparecido
 aliases:

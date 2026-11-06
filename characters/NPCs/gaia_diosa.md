@@ -3,6 +3,7 @@ title: Gaia
 parent: Characters
 type: npc
 summary: Diosa de la vida
+race: Dios
 pantheon: Panteón del Bosque
 location: Bosque Inescrutable
 aliases:

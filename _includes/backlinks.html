@@ -71,7 +71,7 @@
   se llenaria de edificios de la ciudad Verna. Cada campo solo matchea contra un
   destino de la seccion que le corresponde:
 
-      world/continent/region/settlement/location/seat -> /locations/
+      world/continent/region/settlement/origin/location/seat -> /locations/
       faction                                         -> /factions/
       pantheon                                        -> /lore/
       holder/leader                                   -> /characters/
@@ -199,6 +199,7 @@
     {%- assign bl_x = site.pages | where: "continent",  page.title -%}{%- assign bl_hits = bl_hits | concat: bl_x -%}
     {%- assign bl_x = site.pages | where: "region",     page.title -%}{%- assign bl_hits = bl_hits | concat: bl_x -%}
     {%- assign bl_x = site.pages | where: "settlement", page.title -%}{%- assign bl_hits = bl_hits | concat: bl_x -%}
+    {%- assign bl_x = site.pages | where: "origin",     page.title -%}{%- assign bl_hits = bl_hits | concat: bl_x -%}
     {%- assign bl_x = site.pages | where: "location",   page.title -%}{%- assign bl_hits = bl_hits | concat: bl_x -%}
     {%- assign bl_x = site.pages | where: "seat",       page.title -%}{%- assign bl_hits = bl_hits | concat: bl_x -%}
   {%- elsif page.url contains "/factions/" -%}

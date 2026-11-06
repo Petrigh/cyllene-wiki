@@ -9,7 +9,7 @@ subrace: Levistus
 class: Hexblade Warlock
 player: Johnny
 faction: Cinco Grandes
-location: Salacia
+origin: Salacia
 status: Vivo
 events:
   - year: 245

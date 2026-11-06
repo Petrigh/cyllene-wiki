@@ -2,9 +2,10 @@
 title: Ghama
 parent: Characters
 type: npc
-summary: Mas sola que perro malo
+summary: Mas solo que perro malo
+race: Dios
 pantheon: Panteón de Ghama
 ---
 
 # Ghama
-Diosa de la luz, perteneciente al [panteón de Ghama](../../lore/verna/panteon_ghama.md).
+Dios de la luz, perteneciente al [panteón de Ghama](../../lore/verna/panteon_ghama.md).
