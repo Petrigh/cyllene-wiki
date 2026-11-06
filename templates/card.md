@@ -65,6 +65,7 @@ whichever ones are present:
 | `region` | Region | locations | links |
 | `continent` | Continente | locations | links |
 | `world` | Mundo | locations | links |
+| `origin` | Origen | characters | links |
 | `location` | Donde | characters | links |
 | `status` | Estado | any | |
 | `standing` | Con la party | factions | |
@@ -76,6 +77,13 @@ the build — it just does not link.
 
 A value that is only dashes (`--`, the placeholder for "not filled in yet") is
 skipped, the same as leaving the key out.
+
+`origin` and `location` are two different questions and a character can have
+both: `origin` is where they came from, `location` is where they are now —
+their home, or their grave. Verna was born in the Montañas Ardientes and is
+buried in Verna, so she carries one of each. Only `location` is scored by
+Cylledle (see below); `origin` just shows on the card. Leave either one out
+when the wiki has not said it.
 
 To add a field, add one `clave|Etiqueta|link` entry to `wc_fields` in
 `_includes/wiki_card.html`. Nothing else needs to change.
@@ -164,9 +172,15 @@ them red, which is why the vocabulary is closed:
 | Translated | `Elfo` `Enano` `Gnomo` `Humano` `Semielfo` `Diablo` |
 | Kept as-is | `Tiefling` `Halfling` `Aasimar` `Goblin` `Satyr` |
 | Homebrew | `Goatkin` `Owling` |
+| Divinidades | `Dios` |
 
-Masculine singular whatever the character'"'"'s gender — it is the species, not
+Masculine singular whatever the character's gender — it is the species, not
 the person, and the column has to compare. The health page lists anything else.
+
+`Dios` goes on every page that has a `pantheon:`, and on no other — that key
+is the line. It keeps the gods out of the grey "Tipo" cell without having to
+judge case by case which of them are earthly enough to read as characters.
+Masculine singular applies here too: Ghama is `Dios`, and so is Gaia.
 
 `subrace:` takes the qualifier that used to be glued to the race, so that two
 elves score green on Tipo and the detail survives on the card:

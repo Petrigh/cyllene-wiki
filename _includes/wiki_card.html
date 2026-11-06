@@ -104,7 +104,7 @@
   enlazaba a la NPC en vez de a la ciudad. Es el mismo mapa de campo -> seccion
   que usa backlinks.html para contar menciones, y los dos tienen que coincidir.
 {%- endcomment -%}
-{%- assign wc_fields = "race|Raza,subrace|Subraza,class|Clase,player|Jugador,role|Rol,rarity|Rareza,attunement|Sintonizacion,holder|Portador|link|/characters/,leader|Lider|link|/characters/,seat|Sede|link|/locations/,members|Miembros,pantheon|Panteon|link|/lore/,faction|Faccion|link|/factions/,settlement|En|link|/locations/,region|Region|link|/locations/,continent|Continente|link|/locations/,world|Mundo|link|/locations/,location|Donde|link|/locations/,status|Estado,standing|Con la party,attitude|Con la party" | split: "," -%}
+{%- assign wc_fields = "race|Raza,subrace|Subraza,class|Clase,player|Jugador,role|Rol,rarity|Rareza,attunement|Sintonizacion,holder|Portador|link|/characters/,leader|Lider|link|/characters/,seat|Sede|link|/locations/,members|Miembros,pantheon|Panteon|link|/lore/,faction|Faccion|link|/factions/,settlement|En|link|/locations/,region|Region|link|/locations/,continent|Continente|link|/locations/,world|Mundo|link|/locations/,origin|Origen|link|/locations/,location|Donde|link|/locations/,status|Estado,standing|Con la party,attitude|Con la party" | split: "," -%}
 
 {%- capture wc_facts -%}
   {%- if wc_aliases != "" -%}<li><b>Alias</b> {{ wc_aliases }}</li>{%- endif -%}

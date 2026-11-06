@@ -375,7 +375,7 @@ tal cual esta escrito en el cuerpo.
 {%- assign hs_idx_factions   = site.pages | where_exp: "hs_p", "hs_p.url contains '/factions/'"   | map: "title" | join: "|" | prepend: "|" | append: "|" -%}
 {%- assign hs_idx_lore       = site.pages | where_exp: "hs_p", "hs_p.url contains '/lore/'"       | map: "title" | join: "|" | prepend: "|" | append: "|" -%}
 
-{%- assign hs_fields = "holder|characters,leader|characters,seat|locations,world|locations,continent|locations,region|locations,settlement|locations,location|locations,faction|factions,pantheon|lore" | split: "," -%}
+{%- assign hs_fields = "holder|characters,leader|characters,seat|locations,world|locations,continent|locations,region|locations,settlement|locations,origin|locations,location|locations,faction|factions,pantheon|lore" | split: "," -%}
 {%- assign hs_fm_none = "" -%}
 {%- assign hs_fm_wrong = "" -%}
 {%- assign hs_n_none = 0 -%}
@@ -588,7 +588,7 @@ Todo OK: {{ hs_n_ev }} eventos en {{ hs_tl_pages.size }} paginas.
 {%- if site.health_orphans -%}
 
   {%- assign hs_hay = hs_scan | map: "content" | join: " " -%}
-  {%- capture hs_fm_loc -%}|{{ site.pages | map: "world" | join: "|" }}|{{ site.pages | map: "continent" | join: "|" }}|{{ site.pages | map: "region" | join: "|" }}|{{ site.pages | map: "settlement" | join: "|" }}|{{ site.pages | map: "location" | join: "|" }}|{{ site.pages | map: "seat" | join: "|" }}|{%- endcapture -%}
+  {%- capture hs_fm_loc -%}|{{ site.pages | map: "world" | join: "|" }}|{{ site.pages | map: "continent" | join: "|" }}|{{ site.pages | map: "region" | join: "|" }}|{{ site.pages | map: "settlement" | join: "|" }}|{{ site.pages | map: "origin" | join: "|" }}|{{ site.pages | map: "location" | join: "|" }}|{{ site.pages | map: "seat" | join: "|" }}|{%- endcapture -%}
   {%- capture hs_fm_chr -%}|{{ site.pages | map: "holder" | join: "|" }}|{{ site.pages | map: "leader" | join: "|" }}|{%- endcapture -%}
   {%- capture hs_fm_fac -%}|{{ site.pages | map: "faction" | join: "|" }}|{%- endcapture -%}
   {%- capture hs_fm_lor -%}|{{ site.pages | map: "pantheon" | join: "|" }}|{%- endcapture -%}
@@ -695,7 +695,7 @@ vigila los archivos que le pasan por `--config` y se reinicia solo.
   quien escribe esta en templates/card.md.
 {%- endcomment -%}
 {%- assign hs_cy_states = "|Vivo|Muerto|Atrapado|Desaparecido|En pie|Destruido|Tomado|Abandonado|Perdido|Activa|Disuelta|Latente|" -%}
-{%- assign hs_cy_races  = "|Elfo|Enano|Gnomo|Humano|Semielfo|Diablo|Tiefling|Halfling|Aasimar|Goblin|Satyr|Goatkin|Owling|" -%}
+{%- assign hs_cy_races  = "|Elfo|Enano|Gnomo|Humano|Semielfo|Diablo|Tiefling|Halfling|Aasimar|Goblin|Satyr|Goatkin|Owling|Dios|" -%}
 {%- assign hs_cy_secs = "/characters/,/locations/,/factions/,/bestiary/" | split: "," -%}
 {%- assign hs_cy_n = 0 -%}
 {%- assign hs_cy_nat = 0 -%}

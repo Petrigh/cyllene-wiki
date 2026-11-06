@@ -36,9 +36,10 @@ Every page under `characters/` gets a card in the right-hand column, built
 from the frontmatter above — no include to add, it is automatic.
 
 - `race`, `subrace`, `class`, `player`, `role`, `pantheon`, `faction`,
-  `location`, `status`, `attitude`, `aliases` and `facts` are the fields it
-  reads here. `race` goes in Spanish and from a closed list — see
-  [the side card reference](card.md).
+  `origin`, `location`, `status`, `attitude`, `aliases` and `facts` are the
+  fields it reads here. `race` goes in Spanish and from a closed list — see
+  [the side card reference](card.md). `origin` is where they came from and
+  `location` where they are now; a character can have both, or neither.
   Leave out whatever you do not know yet.
 - The portrait comes from `assets/pjs/`, matched on the filename: a page at
   `characters/NPCs/gareth.md` picks up `assets/pjs/Gareth.jpeg`.
